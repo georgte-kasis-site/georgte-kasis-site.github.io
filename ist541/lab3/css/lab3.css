@@ -5,16 +5,41 @@ body{
 	text-align: center;
 	background-color: lightskyblue;
 }
-
 a {
 	padding: 15px;
 	margin: 3px;
 	font-size: 125%;
-	background-color:whitesmoke;
+	background-color:greenyellow;
 }
 a hover{
-	font-size: 200%;
+	font-size: 125%;
 	background-color: blue;
 	color:red;
 }
 
+footer{
+	align-content: center;
+	background-color: whitesmoke;	 
+    
+}
+a img{
+	align-self: center;
+   
+}
+#box1{
+	border:10px solid blue;
+}
+#box{border:10px solid blue;
+	
+}
+#map{
+	border:10px solid blue;
+
+}
+.title{
+	color :blue;
+}
+#box2{
+	border:10px solid blue;
+
+}
