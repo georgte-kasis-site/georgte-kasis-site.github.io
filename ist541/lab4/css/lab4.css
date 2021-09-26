@@ -20,3 +20,11 @@ a:hover{
 a img{
 	align-content: center;
 }
+
+#box1{
+	
+ border:7px solid blue;
+}
+#box{
+	border:10px solid blue;
+}

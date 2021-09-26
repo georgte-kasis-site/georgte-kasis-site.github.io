@@ -1,0 +1,2421 @@
+/* line 1, ../../css/sass/sass_productStyle/studentPrint.scss */
+html, p {
+  margin: 0;
+  font-size: 12pt;
+  line-height: 1.5em; }
+
+/* line 8, ../../css/sass/sass_productStyle/studentPrint.scss */
+body {
+  margin: 10mm 10mm;
+  font-size: 1em;
+  line-height: 1.5em;
+  background-color: #efefef;
+  font-family: "Times New Roman", Times, Serif;
+  overflow: auto; }
+
+/* line 17, ../../css/sass/sass_productStyle/studentPrint.scss */
+.icon {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  /*font-size: 1.25em;*/
+  font-size-adjust: none;
+  font-stretch: normal;
+  font-feature-settings: normal;
+  font-language-override: normal;
+  font-kerning: auto;
+  font-synthesis: weight style;
+  font-variant: normal;
+  text-rendering: auto;
+  transform: translate(0px, 0px);
+  font-size: 1.5em;
+  line-height: 1.3em; }
+
+/* line 36, ../../css/sass/sass_productStyle/studentPrint.scss */
+.defaultNote:before {
+  content: "\f0c6";
+  padding: 0 .25em; }
+
+/* line 40, ../../css/sass/sass_productStyle/studentPrint.scss */
+.cultureNote:before {
+  content: "\f0ac";
+  padding: 0 .25em; }
+
+/* line 44, ../../css/sass/sass_productStyle/studentPrint.scss */
+.infoNote:before {
+  content: "\f0eb";
+  padding: 0 .25em; }
+
+/* line 48, ../../css/sass/sass_productStyle/studentPrint.scss */
+.grammarNote:before {
+  content: "\f005";
+  padding: 0 .25em; }
+
+/* line 52, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hintNote:before {
+  content: "\f0fa";
+  padding: 0 .25em; }
+
+/* line 56, ../../css/sass/sass_productStyle/studentPrint.scss */
+.historyNote:before {
+  content: "\f19c";
+  padding: 0 .25em; }
+
+/* line 60, ../../css/sass/sass_productStyle/studentPrint.scss */
+.teacherNote:before {
+  content: "\f007";
+  padding: 0 .25em; }
+
+/* line 64, ../../css/sass/sass_productStyle/studentPrint.scss */
+.collaborationNote:before {
+  content: "\f0c0";
+  padding: 0 .25em; }
+
+/* line 68, ../../css/sass/sass_productStyle/studentPrint.scss */
+.developerNote:before {
+  content: "\f0ad";
+  padding: 0 .25em; }
+
+/* global treatment of Right-to-Left text */
+/* line 76, ../../css/sass/sass_productStyle/studentPrint.scss */
+p[dir="rtl"],
+div[dir="rtl"],
+span[dir="rtl"],
+label[dir="rtl"],
+td[dir="rtl"],
+ul[dir="rtl"] > li,
+ol[dir="rtl"] > li {
+  font-size: 16pt;
+  line-height: 1.4em; }
+
+/*prevent 'doubling' of RTL text inside a table, UL, OL */
+/* line 91, ../../css/sass/sass_productStyle/studentPrint.scss */
+td[dir="rtl"] *[dir="rtl"],
+ul[dir="rtl"] > li *[dir="rtl"],
+ol[dir="rtl"] > li *[dir="rtl"]
+a.blankAnchor[dir="rtl"] {
+  font-size: 1em; }
+
+/* line 98, ../../css/sass/sass_productStyle/studentPrint.scss */
+p[dir="rtl"],
+div[dir="rtl"] {
+  text-align: right; }
+
+/* line 103, ../../css/sass/sass_productStyle/studentPrint.scss */
+img {
+  max-width: 100%;
+  height: auto; }
+
+/* line 108, ../../css/sass/sass_productStyle/studentPrint.scss */
+.right {
+  text-align: right; }
+
+/* line 112, ../../css/sass/sass_productStyle/studentPrint.scss */
+input {
+  display: inline-block;
+  color: #000; }
+
+/* line 117, ../../css/sass/sass_productStyle/studentPrint.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%; }
+
+/* line 123, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTable {
+  display: table;
+  width: 100%; }
+
+/* line 128, ../../css/sass/sass_productStyle/studentPrint.scss */
+.shortAnswerDetails .displayTable {
+  table-layout: fixed; }
+
+/* line 132, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableRow {
+  display: table-row; }
+
+/* line 136, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableCell {
+  display: table-cell; }
+
+/* line 140, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityPage {
+  width: 100%; }
+
+/* line 145, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityPageTitle {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 16pt; }
+
+/* line 150, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityPageTitle * {
+  text-align: center; }
+
+/* line 154, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityPageTitle *[dir=rtl] {
+  font-size: 20pt; }
+
+/* line 158, ../../css/sass/sass_productStyle/studentPrint.scss */
+.tabDetail {
+  padding: .25em .25em 1em;
+  display: inline-block;
+  height: auto; }
+
+/* line 164, ../../css/sass/sass_productStyle/studentPrint.scss */
+.introDiv h1 {
+  display: none;
+  width: 100%;
+  text-align: center; }
+
+/* line 170, ../../css/sass/sass_productStyle/studentPrint.scss */
+.introDiv,
+.activityComponent {
+  border: .1px solid #cccccc;
+  border-left-width: .4em;
+  border-bottom-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  border-top-right-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  background-color: #ffffff;
+  margin-left: -4;
+  padding: 1em 1em;
+  margin-bottom: 2em; }
+
+/* line 186, ../../css/sass/sass_productStyle/studentPrint.scss */
+.introDiv .descriptionTxt {
+  display: inline-block;
+  height: auto;
+  width: 99%; }
+
+/* line 192, ../../css/sass/sass_productStyle/studentPrint.scss */
+.componentInstructions {
+  border: 1px solid #009;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background: #ecf2ff !important;
+  margin-bottom: 10mm;
+  padding: 1px .25em;
+  display: block;
+  height: auto; }
+
+/* line 204, ../../css/sass/sass_productStyle/studentPrint.scss */
+.componentInstructions table {
+  width: 100%; }
+
+/* line 208, ../../css/sass/sass_productStyle/studentPrint.scss */
+.instructionBtn {
+  color: #6495FF;
+  font-size: 1.5em;
+  padding: 0.175em 0.25em;
+  background: #FFF none repeat scroll 0% 0%;
+  text-align: center;
+  border: 1px solid #6495FF;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 220, ../../css/sass/sass_productStyle/studentPrint.scss */
+.instructionText {
+  padding: 0 .5em;
+  vertical-align: top;
+  direction: ltr; }
+
+/* line 226, ../../css/sass/sass_productStyle/studentPrint.scss */
+.instructionText p {
+  direction: ltr;
+  unicode-bidi: embed;
+  text-align: left;
+  /*display: block;*/ }
+
+/* line 233, ../../css/sass/sass_productStyle/studentPrint.scss */
+.instructionText p[dir="rtl"] {
+  direction: rtl;
+  unicode-bidi: embed;
+  text-align: right;
+  /*display: block;*/ }
+
+/* line 240, ../../css/sass/sass_productStyle/studentPrint.scss */
+.noteBtn {
+  padding: .25em; }
+
+/* line 244, ../../css/sass/sass_productStyle/studentPrint.scss */
+.ucatMediaElementOverlayPlay,
+.fullPlayerVideoControls,
+.ucatMediaControlsWrapper,
+.transcriptionControls,
+.expandIcon,
+.collapseIcon,
+.componentTabBar,
+.totalsContainer,
+.promptTries,
+.incorrectResponsesCounter {
+  display: none; }
+
+/* line 257, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fa-pencil:before,
+.clearIncorrectHotspotBtn {
+  visibility: hidden; }
+
+/* line 261, ../../css/sass/sass_productStyle/studentPrint.scss */
+.ucatMedia {
+  display: block; }
+
+/* line 265, ../../css/sass/sass_productStyle/studentPrint.scss */
+audio {
+  display: block !important; }
+
+/* line 269, ../../css/sass/sass_productStyle/studentPrint.scss */
+.printAudioIcon:before {
+  content: "\1f3a7";
+  font-size: 1.5em; }
+
+/* line 274, ../../css/sass/sass_productStyle/studentPrint.scss */
+.printVideoIcon:before {
+  content: "\1f4fa";
+  font-size: 4.5em;
+  line-height: 1; }
+
+/* line 280, ../../css/sass/sass_productStyle/studentPrint.scss */
+*[dir=rtl] .printVideoIcon:before {
+  font-size: 2em;
+  line-height: 1; }
+
+/*
+.mejs-container:before {
+	content: "\1F50A";
+	font-size: 2em;
+	color: #333333;
+}
+*/
+/* line 294, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails,
+.multipleChoiceDetails,
+.shortAnswerDetails,
+.trueFalseDetails {
+  padding-bottom: 1.5em; }
+
+/*  ========== General Component Feedback ============== */
+/* line 308, ../../css/sass/sass_productStyle/studentPrint.scss */
+.redX,
+.greenCheck {
+  font-family: Times New Roman;
+  font-style: normal;
+  font-size: 16pt;
+  padding: 0 3mm; }
+
+/* line 316, ../../css/sass/sass_productStyle/studentPrint.scss */
+.redX {
+  color: #ff6248; }
+
+/* line 320, ../../css/sass/sass_productStyle/studentPrint.scss */
+.greenCheck {
+  color: #4CD964; }
+
+/* line 324, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationTable .correctFeedbackDiv,
+.categorizationTable .incorrectFeedbackDiv,
+.trueFalseDetails .correctFeedbackDiv,
+.trueFalseDetails .incorrectFeedbackDiv,
+.shortAnswerDetails .shortAnswerButtonContainer {
+  display: none; }
+
+/* line 332, ../../css/sass/sass_productStyle/studentPrint.scss */
+.correctFeedbackBtn, .incorrectFeedbackBtn, .inlineFeedbackBtn {
+  display: none; }
+
+/* line 336, ../../css/sass/sass_productStyle/studentPrint.scss */
+.correctFeedback, .incorrectFeedback {
+  text-align: center;
+  background: #ffffff;
+  white-space: nowrap;
+  border-radius: 1em;
+  display: inline-block;
+  font-weight: bold;
+  width: 1em;
+  line-height: 1em;
+  padding: .06em; }
+
+/* line 348, ../../css/sass/sass_productStyle/studentPrint.scss */
+.correctFeedback {
+  color: #4CD964;
+  border: 1px solid #4CD964; }
+
+/* line 353, ../../css/sass/sass_productStyle/studentPrint.scss */
+.incorrectFeedback {
+  color: #FF3B30;
+  border: 1px solid #FF3B30; }
+
+/*  ========== Presentation Component ============== */
+/* line 362, ../../css/sass/sass_productStyle/studentPrint.scss */
+.presentationDetails .presentationDiv {
+  /*display: table-cell;*/
+  display: table;
+  width: 100%; }
+
+/* line 368, ../../css/sass/sass_productStyle/studentPrint.scss */
+.presentationDetails .presentationDiv img {
+  max-width: 95%; }
+
+/*  ========== Categorization Component ============== */
+/* line 373, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .categorizationResponses.verticalWordPool {
+  border: 1px solid #C3C7C9;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 10px 5px 5px;
+  margin-bottom: 1.25em; }
+
+/* line 382, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .categorizationResponses .response.draggableContent {
+  margin: 5px;
+  border: 1px solid #333333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 0px 0.25em; }
+
+/* line 391, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .categorizationResponses.verticalWordPool .dragInlineElement {
+  display: inline-block; }
+
+/* line 396, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .prompt {
+  text-align: center;
+  font-size: 16pt;
+  vertical-align: bottom; }
+
+/* line 402, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .responseContainer {
+  border: 2px solid #C3C7C9;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 409, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .responseContainer .draggableContent {
+  margin-bottom: 15px;
+  padding: 5px 5px !important; }
+
+/* line 415, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .responseContainer.odd .draggableContent:nth-of-type(even),
+.categorizationDetails .responseContainer.even .draggableContent:nth-of-type(odd) {
+  background-color: #dddddd; }
+
+/* line 420, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .bufferCellCategoryHeaderColumns,
+.categorizationDetails .bufferCellCategoryColumns {
+  min-width: 1em; }
+
+/* line 425, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationDetails .prompt .feedbackContainer,
+.categorizationDetails .prompt .noteCell {
+  min-width: 2.65em;
+  vertical-align: bottom;
+  padding-bottom: 5px;
+  text-align: center; }
+
+/* line 433, ../../css/sass/sass_productStyle/studentPrint.scss */
+.categorizationPrompt.displayTableCell {
+  vertical-align: bottom; }
+
+/* line 438, ../../css/sass/sass_productStyle/studentPrint.scss */
+table.categorizationTable {
+  width: 100%; }
+
+/* line 442, ../../css/sass/sass_productStyle/studentPrint.scss */
+table.categorizationTable tr td.odd,
+table.categorizationTable tr td.even {
+  border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/*  ========== Fill in the Blank Component ============== */
+/* line 453, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails .prompt p,
+.promptDragAndDropWordPool p,
+.promptDragAndDropWordPool div {
+  display: inline-block;
+  width: 100%; }
+
+/* line 460, ../../css/sass/sass_productStyle/studentPrint.scss */
+.promptDragAndDropWordPool span.blank {
+  display: inline-block; }
+
+/* line 464, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails span.blank,
+.transcriptionDetails span.blank,
+.fnbDetails .customInputBox,
+.transcriptionDetails .customInputBox {
+  border-bottom: 1px solid #000000;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 5em;
+  padding: 0 .25em; }
+
+/* line 482, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails .response.correct,
+.fnbDetails .response.correct .customInputBox {
+  border-color: #00b200; }
+
+/* line 487, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails .response.incorrect,
+.fnbDetails .response.incorrect .customInputBox {
+  border-color: #e50000; }
+
+/* line 493, ../../css/sass/sass_productStyle/studentPrint.scss */
+.arabic {
+  font-family: Times New Roman; }
+
+/* line 497, ../../css/sass/sass_productStyle/studentPrint.scss */
+.promptDragAndDropWordPool .word {
+  display: none;
+  margin: 5mm 5mm; }
+
+/* line 502, ../../css/sass/sass_productStyle/studentPrint.scss */
+.wordPool {
+  margin: 5mm 15mm;
+  min-height: 20mm;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  text-align: center; }
+
+/* line 512, ../../css/sass/sass_productStyle/studentPrint.scss */
+.wordPool .word,
+.blankAnchor .word {
+  display: inline-block;
+  margin: 5mm 5mm;
+  border: 1px solid #333333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 0px 0.25em; }
+
+/* line 523, ../../css/sass/sass_productStyle/studentPrint.scss */
+.blank,
+.blankAnchorCaret.fa {
+  display: none;
+  font-family: Times New Roman; }
+
+/* line 528, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails .prompt {
+  /*line-height: 2;*/ }
+
+/* line 532, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails .promptFeedbackContainer {
+  vertical-align: top; }
+
+/* line 536, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fnbDetails .inlineFeedbackContainer,
+.textSelectorDetails .inlineFeedbackContainer {
+  margin: 0 .25em; }
+
+/* line 545, ../../css/sass/sass_productStyle/studentPrint.scss */
+.inlineHintContainer {
+  display: none; }
+
+/* line 549, ../../css/sass/sass_productStyle/studentPrint.scss */
+.inlineFeedbackContainer .fa-comment.fa-stack-2x {
+  display: none; }
+
+/* line 553, ../../css/sass/sass_productStyle/studentPrint.scss */
+.inlineFeedbackContainer .custom-stack-1x {
+  font-size: 12pt; }
+
+/* line 558, ../../css/sass/sass_productStyle/studentPrint.scss */
+span.blankIncorrect {
+  padding: 1px .5em;
+  border: 1px solid #FF3B30;
+  border-bottom-color: #FF3B30;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-family: Times New Roman;
+  text-decoration: none;
+  background: #ffffff;
+  line-height: 1; }
+
+/* line 571, ../../css/sass/sass_productStyle/studentPrint.scss */
+span.blankCorrect {
+  padding: 1px .5em;
+  border: 1px solid #4CD964;
+  border-color: #4CD964;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-family: Times New Roman;
+  text-decoration: none;
+  line-height: 1; }
+
+/*  ========== Find and Click Feedback ============== */
+/* line 584, ../../css/sass/sass_productStyle/studentPrint.scss */
+.findandClickDetails .clearIncorrectHotspotBtn {
+  display: none; }
+
+/* line 588, ../../css/sass/sass_productStyle/studentPrint.scss */
+.findandClickDetails .totalsContainer {
+  text-align: center; }
+
+/* line 592, ../../css/sass/sass_productStyle/studentPrint.scss */
+.findandClickDetails .totalsContainer .totals {
+  white-space: nowrap;
+  border-radius: 1em;
+  background: #6495ff;
+  color: white;
+  padding: 0 .5em;
+  display: inline-block; }
+
+/* line 602, ../../css/sass/sass_productStyle/studentPrint.scss */
+.findandClickDetails .totalsContainer {
+  width: 4.750em;
+  /*background:GreenYellow;*/
+  text-align: center; }
+
+/* line 609, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspotContainer {
+  display: inline-block;
+  position: relative;
+  z-index: auto; }
+
+/* line 615, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspot,
+.hotspotCorrect,
+.hotspotIncorrect {
+  position: absolute;
+  z-index: 99;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  cursor: pointer; }
+
+/* line 626, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspot {
+  background: rgba(220, 210, 230, 0.5);
+  border: 1px solid blue; }
+
+/* line 631, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotSpotDisplayTable {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  height: 100%; }
+
+/* line 638, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotSpotDisplayTableCell {
+  display: table-cell;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center; }
+
+/* line 646, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspotCorrect {
+  background: rgba(0, 255, 0, 0.15);
+  border: 2px solid #00b200; }
+
+/* line 651, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspotCorrect .correctFeedback {
+  background: #ffffff;
+  color: #00b200;
+  font-size: .9em; }
+
+/* line 657, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspotIncorrect {
+  background: rgba(255, 0, 0, 0.15);
+  border: 2px solid #e50000; }
+
+/* line 662, ../../css/sass/sass_productStyle/studentPrint.scss */
+.hotspotIncorrect .incorrectFeedback {
+  background: #ffffff;
+  color: #e50000;
+  font-size: .9em; }
+
+/*
+.hotspot,
+.hotspotCorrect,
+.hotspotIncorrect {
+	border: 1px solid;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+	border-radius: 12px;
+}
+
+.hotspot {
+	background: rgba(220, 210, 230, 0.25);
+	border-color: #00f;
+}
+
+.hotspotIncorrect {
+	background: rgba(250, 0, 0, 0.25);
+	border-color: #ff3b30;
+}
+
+.hotspotCorrect {
+	background: rgba(0, 255, 0, 0.25);
+	border-color: #4cd964;
+}
+
+.hotspotContainer img {
+	max-width: 100%;
+	height: auto;
+}
+*/
+/*  ========== Ordering Component ============== */
+/* line 699, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .promptFeedbackContainer {
+  text-align: center; }
+
+/* line 703, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .responseContainer {
+  padding: 0 10mm; }
+
+/* line 707, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .orderingResponse {
+  display: table;
+  width: 100%;
+  margin-bottom: 5mm;
+  padding-top: 1em !important; }
+
+/* line 714, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .orderingContentContainer {
+  width: 100%;
+  padding: 0 5px; }
+
+/* line 719, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .orderingDragHandle,
+.orderingDetails .orderingDragContent {
+  display: table-cell;
+  vertical-align: bottom;
+  text-align: center; }
+
+/* line 726, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .orderingDragHandle {
+  min-width: 40px;
+  width: 40px;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent; }
+
+/* line 734, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .orderingFeedbackContainer {
+  vertical-align: bottom;
+  text-align: center;
+  min-width: 40px;
+  width: 40px; }
+
+/* line 741, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .prompt .right {
+  text-align: right; }
+
+/* line 745, ../../css/sass/sass_productStyle/studentPrint.scss */
+.orderingDetails .prompt .floatRight {
+  float: right; }
+
+/*  ========== Matching Component ============== */
+/* line 753, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .prompt .contentCell {
+  padding: 0 .5em;
+  width: auto; }
+
+/* line 758, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .response.contentCell {
+  padding: 0 .5em;
+  width: auto; }
+
+/* line 763, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableCell.matchingColumnDivider {
+  width: 10% !important;
+  text-align: center;
+  vertical-align: middle; }
+
+/* line 769, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .displayTable.responseContainer,
+.matchingDetails .displayTable.matchingPrompt {
+  table-layout: fixed;
+  height: 100%;
+  border: 1px solid #C3C7C9;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 779, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .displayTable.responseContainer {
+  background: #ededed; }
+
+/* line 783, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .matchingLock {
+  font-size: 1.5em; }
+
+/* line 787, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .matchingLock.correct {
+  color: #00b200;
+  font-size: 2em; }
+
+/* line 795, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .displayTable.matchingPrompt .displayTableCell,
+.matchingDetails .displayTable.responseContainer .displayTableCell {
+  height: 100%; }
+
+/* line 804, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .displayTable.responseContainer .displayTableCell .dropArea,
+.matchingDetails .displayTable.matchingPrompt .displayTableCell .dropArea {
+  opacity: 1 !important;
+  background-color: #ffffff;
+  margin: 5%;
+  height: 2.2em;
+  max-height: 2.2em;
+  width: 85%;
+  border: 1px solid #959595;
+  border-color: #959595 !important;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 820, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .displayTable.responseContainer .displayTableCell .dropArea > *,
+.matchingDetails .displayTable.matchingPrompt .displayTableCell .dropArea > * {
+  display: none !important; }
+
+/* line 825, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .displayTable.matchingPrompt.correct,
+.matchingDetails .displayTable.responseContainer.correct {
+  border: 2px solid #00b200; }
+
+/* line 830, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .matchingResponseColumn,
+.matchingDetails .matchingPromptColumn {
+  width: 45%;
+  vertical-align: top;
+  padding: 0.5em 0px;
+  height: 100%; }
+
+/* line 838, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .feedbackContainer {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0 .25em;
+  width: 3.25em; }
+
+/* line 845, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .responseContent {
+  min-height: 2.625em; }
+
+/* line 848, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .responseContentRTL {
+  min-height: 2.625em; }
+
+/* line 852, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .responseContentRTL.right,
+.matchingDetails .matchingPromptDiv.right,
+.matchingPromptDiv.left,
+.matchingDetails .responseContent.left {
+  text-align: center; }
+
+/* line 859, ../../css/sass/sass_productStyle/studentPrint.scss */
+.matchingDetails .responseDisplay {
+  min-height: 1em; }
+
+/*  ========== Short Answer Component ============== */
+/* line 864, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textareaPrint {
+  min-height: 40px;
+  padding: .25em;
+  overflow: visible;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-family: Times New Roman; }
+
+/* line 875, ../../css/sass/sass_productStyle/studentPrint.scss */
+.shortAnswerDetails > table {
+  width: 100%; }
+
+/* line 879, ../../css/sass/sass_productStyle/studentPrint.scss */
+.shortAnswerDetails > table > tbody > tr > td {
+  padding: 0 1em; }
+
+/* line 883, ../../css/sass/sass_productStyle/studentPrint.scss */
+.shortAnswerDetails .shortAnswerResponseContent {
+  border: 1px solid #333333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: .5em; }
+
+/* line 891, ../../css/sass/sass_productStyle/studentPrint.scss */
+.shortAnswerDetails .rationalFeedbackBtn {
+  display: none !important; }
+
+/*  ========== MC, T/F & Text Selector Component ============== */
+/* line 896, ../../css/sass/sass_productStyle/studentPrint.scss */
+.multipleChoiceDetails .floatLeft,
+.orderingDetails .floatLeft,
+.textSelectorDetails .floatLeft,
+.trueFalseDetails .floatLeft {
+  float: left; }
+
+/* line 903, ../../css/sass/sass_productStyle/studentPrint.scss */
+.multipleChoiceDetails .floatRight,
+.orderingDetails .floatRight,
+.textSelectorDetails .floatRight,
+.trueFalseDetails .floatRight {
+  float: right; }
+
+/* line 910, ../../css/sass/sass_productStyle/studentPrint.scss */
+.genericDetails .response {
+  padding: 0.25em 0.25em 0.4em; }
+
+/* line 914, ../../css/sass/sass_productStyle/studentPrint.scss */
+.trueFalseDetails .customRadio,
+.trueFalseDetails .customCheckbox,
+.genericDetails .customRadio,
+.genericDetails .customCheckbox {
+  font-size: 1.5em;
+  vertical-align: middle;
+  /*min-width: 1.875em;*/
+  text-align: center;
+  color: #5e5e5e; }
+
+/* line 925, ../../css/sass/sass_productStyle/studentPrint.scss */
+.genericDetails .customInputWrapper .customRadio i,
+.genericDetails .customInputWrapper .customCheckbox i {
+  /*margin: .5em;*/ }
+
+/* line 930, ../../css/sass/sass_productStyle/studentPrint.scss */
+.trueFalseDetails .responseTrueFalse .customCheckBox {
+  /*display: inline !important;*/ }
+
+/* line 934, ../../css/sass/sass_productStyle/studentPrint.scss */
+input[type="radio"],
+input[type="checkbox"] {
+  width: 1.250em;
+  height: 1.250em; }
+
+/* line 940, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customRadio, .customCheckbox {
+  font-size: 1.5em;
+  /*margin: 0 .125em;*/
+  vertical-align: middle;
+  /*min-width:1.875em;*/
+  text-align: center;
+  color: #5e5e5e;
+  cursor: pointer; }
+
+/* line 950, ../../css/sass/sass_productStyle/studentPrint.scss */
+.fa-stack {
+  height: 1em; }
+
+/* line 954, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customRadio.fa-stack,
+.customCheckbox.fa-stack {
+  width: 1em;
+  /*height: 1em;*/
+  line-height: 1em; }
+
+/* line 961, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customRadio .fa-stack-2x,
+.customCheckbox .fa-stack-2x {
+  font-size: 1em; }
+
+/* line 966, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customRadio .fa-stack-1x {
+  font-size: 0.4em; }
+
+/* line 970, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customCheckbox .fa-stack-1x {
+  font-size: 0.4em;
+  top: -1px; }
+
+/* line 975, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customInputWrapper {
+  padding: 0 .5em;
+  vertical-align: middle; }
+
+/* line 980, ../../css/sass/sass_productStyle/studentPrint.scss */
+.customInputWrapperLabel {
+  cursor: pointer; }
+
+/* line 984, ../../css/sass/sass_productStyle/studentPrint.scss */
+.genericDetails .prompt {
+  vertical-align: middle;
+  border-bottom: 1px solid #cccccc;
+  border-top: 1px solid #cccccc;
+  background: #fbfbfb;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 994, ../../css/sass/sass_productStyle/studentPrint.scss */
+.genericDetails .response {
+  border-bottom: 1px solid #ecf2ff;
+  width: auto; }
+
+/* line 999, ../../css/sass/sass_productStyle/studentPrint.scss */
+.genericDetails .responseContainer {
+  padding: .25em 1em; }
+
+/* line 1003, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .response.correct {
+  border: 1px solid #FF0000;
+  color: #000000;
+  padding: 0 .250em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-color: #00b200;
+  background: #E3F9E7;
+  cursor: default !important; }
+
+/* line 1015, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .selectable.incorrect {
+  border: 1px solid #e50000;
+  color: #000000;
+  /*padding: 0 .250em;*/
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background: #FFE0DF; }
+
+/* line 1025, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .selectable.incorrect.notSelected {
+  border: 1px dashed #e50000;
+  background: transparent; }
+
+/* line 1030, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .totalsContainer {
+  text-align: center; }
+
+/* line 1034, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .totalsContainer .totals {
+  white-space: nowrap;
+  border-radius: 1em;
+  background: #6495ff;
+  color: white;
+  padding: 0 .5em;
+  display: inline-block; }
+
+/* line 1044, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .totalsContainer {
+  width: 4.750em;
+  /*background:GreenYellow;*/
+  text-align: center; }
+
+/* line 1051, ../../css/sass/sass_productStyle/studentPrint.scss */
+.genericDetails .feedbackContainer,
+.trueFalseDetails .feedbackContainer,
+.textSelectorDetails .prompt .feedbackContainer {
+  width: 2em;
+  min-width: 2em;
+  text-align: center; }
+
+/* line 1059, ../../css/sass/sass_productStyle/studentPrint.scss */
+.RTLTable {
+  direction: rtl; }
+
+/*  ========== Multiple Choice Component ============== */
+/* line 1064, ../../css/sass/sass_productStyle/studentPrint.scss */
+.multipleChoiceDetails .RTLTable {
+  direction: rtl; }
+
+/*  ========== True/False Component ============== */
+/* line 1070, ../../css/sass/sass_productStyle/studentPrint.scss */
+.tabDetail.trueFalseDetails {
+  display: table-row !important; }
+
+/* line 1074, ../../css/sass/sass_productStyle/studentPrint.scss */
+.trueFalseDetails > div {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ecf2ff; }
+
+/* line 1080, ../../css/sass/sass_productStyle/studentPrint.scss */
+.trueFalseDetails .promptTextContainer {
+  width: 100%; }
+
+/* line 1084, ../../css/sass/sass_productStyle/studentPrint.scss */
+table.actyTableHdr {
+  width: 100%; }
+
+/* line 1088, ../../css/sass/sass_productStyle/studentPrint.scss */
+table.actyTableHdr .actyTableHeader {
+  display: inline-block;
+  text-align: center; }
+
+/* line 1093, ../../css/sass/sass_productStyle/studentPrint.scss */
+table.actyTableHdr .actyTablePromptHdr,
+table.actyTableHdr .actyTableNoteHdr {
+  width: 70%; }
+
+/* line 1098, ../../css/sass/sass_productStyle/studentPrint.scss */
+table.actyTableHdr .actyTableResponseHeader,
+.trueFalseDetails table tr:nth-child(2) {
+  width: 30%; }
+
+/* line 1103, ../../css/sass/sass_productStyle/studentPrint.scss */
+.promptDragAndDropWordPool,
+.trueFalseDetails table {
+  width: 100%; }
+
+/* line 1108, ../../css/sass/sass_productStyle/studentPrint.scss */
+.responseTrueFalse {
+  display: inline-block;
+  width: 50%;
+  text-align: center; }
+
+/* line 1114, ../../css/sass/sass_productStyle/studentPrint.scss */
+.trueFalseHeader p[dir="rtl"] {
+  text-align: center; }
+
+/*  ========== Text Selector Component ============== */
+/* line 1119, ../../css/sass/sass_productStyle/studentPrint.scss */
+.showSelectableTxt {
+  background: #ffff00;
+  /*yellow*/ }
+
+/* line 1123, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .selectableHighlight {
+  background: #E7EEFF;
+  color: #000000;
+  padding: 0 .250em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #6495ff; }
+
+/* line 1133, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .selectableCorrect,
+.textSelectorDetails .selectableIncorrect {
+  border: 1px solid;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+/* line 1141, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .selectableIncorrect {
+  border-color: #FF3B30;
+  background: #dedede; }
+
+/* line 1146, ../../css/sass/sass_productStyle/studentPrint.scss */
+.textSelectorDetails .selectableCorrect {
+  border-color: #4CD964; }
+
+/* line 1150, ../../css/sass/sass_productStyle/studentPrint.scss */
+.txtSelectTotals {
+  white-space: nowrap; }
+
+/* line 1154, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageHeader {
+  display: block; }
+
+/* line 1158, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageControls,
+#id_printPageInfo {
+  margin: 5mm 15mm; }
+
+/* line 1163, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageControls .buttonCellLeft,
+#id_printPageControls .buttonCellRight,
+#id_printPageControls .messageCell,
+#id_printPageInfo #id_printName,
+#id_printPageInfo #id_printDate {
+  display: table-cell; }
+
+/* line 1170, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageControls .buttonCell {
+  width: 15%; }
+
+/* line 1174, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageControls .messageCell {
+  font-style: italic;
+  padding: 0 10px;
+  width: 90%;
+  vertical-align: top; }
+
+/* line 1181, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageControls .buttonCellRight {
+  text-align: right; }
+
+/* line 1186, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageControls button {
+  width: 100px;
+  height: 40px;
+  font-size: 1.5em; }
+
+/* line 1192, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo input {
+  width: 2.5in;
+  color: red;
+  padding: 0 .25em;
+  line-height: 2.5; }
+
+/* line 1199, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo #id_printTitle {
+  width: 100%;
+  text-align: center;
+  font-size: 12pt;
+  margin: 5mm auto 0; }
+
+/* line 1207, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo #id_printTitle div {
+  font-size: 1.5em;
+  font-weight: bolder;
+  text-align: center; }
+
+/* line 1213, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo #id_printTitle div[dir=rtl] {
+  font-size: 1.75em; }
+
+/* line 1217, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo #id_printName {
+  width: 10%; }
+
+/* line 1221, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo #id_printDate {
+  width: 25%;
+  text-align: right; }
+
+/* Assessment Summary Override*/
+/* line 1227, ../../css/sass/sass_productStyle/studentPrint.scss */
+#id_printPageInfo #id_assessmentSummaryPrintDate {
+  width: 100%;
+  text-align: left; }
+
+@media print {
+  /* line 1234, ../../css/sass/sass_productStyle/studentPrint.scss */
+  body {
+    background-color: #ffffff; }
+
+  /* line 1237, ../../css/sass/sass_productStyle/studentPrint.scss */
+  .activityPage {
+    page-break-after: always; }
+
+  /* line 1240, ../../css/sass/sass_productStyle/studentPrint.scss */
+  .categorizationTable,
+  .activityComponentInstructionDiv {
+    page-break-inside: avoid; }
+
+  @page {
+    margin: 20mm 5mm; }
+  /* line 1247, ../../css/sass/sass_productStyle/studentPrint.scss */
+  #id_printPageControls {
+    display: none; }
+
+  /* line 1250, ../../css/sass/sass_productStyle/studentPrint.scss */
+  #id_printPageInfo input {
+    width: 2.5in;
+    color: #5B657F;
+    border: none;
+    border-bottom: 1px solid #5B657F; } }
+/* Assessment Summary Links Disabled*/
+/* line 1259, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityComponentSummaryRowTitle:hover {
+  text-decoration: none !important; }
+
+/* Language Specific Treatments */
+/* line 1264, ../../css/sass/sass_productStyle/studentPrint.scss */
+.urdu, *[dir=rtl] *[lang="ur"] {
+  font-family: "Jameel Noori Nastaleeq", Nastaliq;
+  line-height: 1.4; }
+
+/* line 1269, ../../css/sass/sass_productStyle/studentPrint.scss */
+.persian-farsi, *[dir=rtl] *[lang="fa"] {
+  font-family: "IRLotus", IRLotus; }
+
+/* ASSESSMENT ADD ONS*/
+/* line 1275, ../../css/sass/sass_productStyle/studentPrint.scss */
+.score {
+  display: inline-block;
+  color: #ffffff;
+  padding: .25em .5em;
+  -webkit-border-radius: .25em;
+  -moz-border-radius: .25em;
+  border-radius: .25em;
+  background: #6495ff;
+  line-height: 1.185em;
+  font-size: .8em; }
+
+/* line 1286, ../../css/sass/sass_productStyle/studentPrint.scss */
+.score::before {
+  content: "Points:"; }
+
+/* line 1289, ../../css/sass/sass_productStyle/studentPrint.scss */
+.moduleScoreTotalSpan {
+  font-size: 1em !important; }
+
+/* line 1293, ../../css/sass/sass_productStyle/studentPrint.scss */
+.scoreCorrect {
+  color: #ffffff;
+  padding: 2px 6px;
+  -webkit-border-radius: .25em;
+  -moz-border-radius: .25em;
+  border-radius: .25em;
+  background: #00b200;
+  line-height: 1.185em;
+  font-size: .8em;
+  display: inline-block; }
+
+/* line 1305, ../../css/sass/sass_productStyle/studentPrint.scss */
+.scorePartiallyCorrect {
+  color: #ffffff;
+  padding: 2px 6px;
+  -webkit-border-radius: .25em;
+  -moz-border-radius: .25em;
+  border-radius: .25em;
+  background: #ff9564;
+  line-height: 1.185em;
+  font-size: .8em; }
+
+/* line 1316, ../../css/sass/sass_productStyle/studentPrint.scss */
+.scoreIncorrect {
+  color: #ffffff;
+  padding: 2px 6px;
+  -webkit-border-radius: .25em;
+  -moz-border-radius: .25em;
+  border-radius: .25em;
+  background: #e50000;
+  line-height: 1.185em;
+  font-size: .8em;
+  display: inline-block; }
+
+/* line 1328, ../../css/sass/sass_productStyle/studentPrint.scss */
+.score p,
+.scoreCorrect p,
+.scoreIncorrect p,
+.scorePartiallyCorrect p {
+  display: inline-block; }
+
+/*Assessment Summary*/
+/* line 1336, ../../css/sass/sass_productStyle/studentPrint.scss */
+.assessmentSummaryHeader {
+  border: 1px solid #cccccc;
+  margin-top: 2.125em; }
+
+/* line 1341, ../../css/sass/sass_productStyle/studentPrint.scss */
+.assessmentSummaryHeader .displayTableCell {
+  padding: .25em .5em;
+  color: #333333;
+  background: #cccccc; }
+
+/* line 1347, ../../css/sass/sass_productStyle/studentPrint.scss */
+.assessmentSummaryHeader .displayTableCell.assessmentSummaryTitle {
+  font-size: 1.1em;
+  font-weight: 600; }
+
+/* line 1352, ../../css/sass/sass_productStyle/studentPrint.scss */
+.assessmentSummaryHeader .displayTableCell.assessmentSummaryName {
+  background: #4bb6f5;
+  color: #ffffff;
+  font-weight: 600;
+  white-space: nowrap; }
+
+/* line 1359, ../../css/sass/sass_productStyle/studentPrint.scss */
+.assessmentSummaryHeader .displayTableCell.assessmentSummaryHeaderButtonContainer {
+  text-align: right; }
+
+/* line 1363, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activitySummaryContainer .displayTableCell,
+.activityComponentSummaryContainer .displayTableCell {
+  background: #ffffff;
+  /*border:1px solid #cccccc;*/ }
+
+/* line 1369, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityComponentSummaryContainer {
+  background: #efefef; }
+
+/* line 1373, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activitySummaryRowData,
+.activitySummaryRowTitle,
+.activityComponentSummaryRowTitle {
+  padding: .25em;
+  border-bottom: 1px solid #cccccc; }
+
+/* line 1380, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableCell .activitySummaryRowData {
+  background: #eeeeee; }
+
+/* line 1384, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableCell .activityComponentSummaryRowData {
+  border-bottom: 1px solid #cccccc;
+  border-left: 1px solid #cccccc; }
+
+/* line 1389, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableCell .activityComponentSummaryRowComment {
+  background: #ffffff;
+  border-bottom: 1px solid #cccccc; }
+
+/* line 1394, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityComponentSummaryRowTitle {
+  cursor: pointer; }
+
+/* line 1398, ../../css/sass/sass_productStyle/studentPrint.scss */
+.activityComponentSummaryRowTitle:hover {
+  text-decoration: underline; }
+
+/* line 1402, ../../css/sass/sass_productStyle/studentPrint.scss */
+.displayTableCell .activitySummaryRowTitle {
+  font-weight: 600;
+  background: #eeeeee; }
+
+/* line 1407, ../../css/sass/sass_productStyle/studentPrint.scss */
+.summaryReportContainer {
+  display: none; }
+
+/* line 1411, ../../css/sass/sass_productStyle/studentPrint.scss */
+.shortAnswerToggleContainer {
+  text-align: center;
+  width: 3em;
+  padding-right: .6em; }
+
+/* Default set of pre-formatted tables; treatment applied through the CKEditor table dialog - advanced tab */
+/*COLORS AND STYLES HERE ARE DIRECT MATCHES OF DEFAULT SELF_STUDY COLORS.*/
+/* THIS SHOULD BE A DIRECT MATCH OF STYLES*/
+/* line 6, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.editable table td p {
+  margin-bottom: 0; }
+
+/* line 10, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable p,
+.checkerboardTable p,
+.stripedRowTable p,
+.stripedColumnTable p,
+.standardDialogTable p,
+.standardDialogTableRTL p,
+.standardDialogTable[dir=rtl] p {
+  margin-bottom: 0; }
+
+/* line 20, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+table caption,
+.plainTable caption,
+.checkerboardTable caption,
+.stripedRowTable caption,
+.stripedColumnTable caption,
+.standardDialogTable caption,
+.standardDialogTableRTL caption,
+.standardDialogTable[dir=rtl] caption {
+  padding: .25em .5em;
+  font-weight: bold; }
+
+/* line 32, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable {
+  border-collapse: collapse; }
+
+/* line 36, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable th,
+.plainTable td {
+  border: 1px solid #92A2CB;
+  padding: .25em .5em; }
+
+/* line 42, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable th {
+  background-color: #92A2CB;
+  color: #ffffff; }
+
+/* Checkerboard Pattern*/
+/* line 48, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable {
+  border-collapse: collapse; }
+
+/* line 52, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable th {
+  background-color: #92A2CB;
+  color: #ffffff; }
+
+/* line 57, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable th,
+.checkerboardTable td {
+  border: 1px solid #92A2CB;
+  padding: .25em .5em; }
+
+/* line 63, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable tr:nth-of-type(odd) td:nth-of-type(odd) {
+  background-color: #ECF2FF; }
+
+/* line 67, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable tr:nth-of-type(odd) td:nth-of-type(even) {
+  background-color: #ffffff; }
+
+/* line 71, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable tr:nth-of-type(even) td:nth-of-type(odd) {
+  background-color: #ffffff; }
+
+/* line 75, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.checkerboardTable tr:nth-of-type(even) td:nth-of-type(even) {
+  background-color: #ECF2FF; }
+
+/* Striped Patterns */
+/* line 80, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.stripedRowTable,
+.stripedColumnTable {
+  border-collapse: collapse; }
+
+/* line 85, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.stripedRowTable th,
+.stripedColumnTable th,
+.stripedRowTable td,
+.stripedColumnTable td {
+  border: 1px solid #92A2CB;
+  padding: .25em .5em; }
+
+/* line 93, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.stripedRowTable th,
+.stripedColumnTable th {
+  background-color: #92A2CB;
+  color: #ffffff; }
+
+/* line 99, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.stripedRowTable tr:nth-of-type(odd),
+.stripedColumnTable td:nth-of-type(odd) {
+  background-color: #ECF2FF; }
+
+/* Standard Dialog Table */
+/* .standardDialogTableRTL is for legacy support - this class has been removed from ckeditor DDL */
+/* line 108, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTable,
+.standardDialogTableRTL {
+  border-collapse: collapse; }
+
+/* line 113, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTable th,
+.standardDialogTableRTL th {
+  background-color: #92A2CB;
+  color: #ffffff; }
+
+/* line 119, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTable th,
+.standardDialogTable td,
+.standardDialogTableRTL th,
+.standardDialogTableRTL td {
+  border: 1px #d3d3d3 solid;
+  padding: .25em .5em; }
+
+/* line 127, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+table[border="0"].standardDialogTable th,
+table[border="0"].standardDialogTable td,
+table[border="0"].standardDialogTableRTL th,
+table[border="0"].standardDialogTableRTL td {
+  border: 1px solid transparent; }
+
+/* line 143, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTable td:nth-child(1) {
+  text-align: right;
+  white-space: nowrap;
+  width: 15%; }
+
+/* line 149, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTable td:nth-child(2),
+.standardDialogTable[dir=rtl] td:nth-child(1) {
+  text-align: left; }
+
+/* line 154, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTableRTL td:nth-child(1),
+.standardDialogTable[dir=rtl] td:nth-child(2) {
+  text-align: right; }
+
+/* line 159, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.standardDialogTableRTL td:nth-child(2) {
+  text-align: left;
+  white-space: nowrap;
+  width: 15%; }
+
+/* RTL Dialog Table */
+/* gray borders in the CKEditor serve as a visual alignment tool to help the SMEs
+   in the student view; the default treatment will be a transparent border; table
+   can be treated differently for a particular theme. */
+/* line 170, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.dialogTable_RTL {
+  border-collapse: collapse;
+  border: 1px solid #cecece; }
+
+/* line 175, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.dialogTable_RTL td {
+  direction: rtl;
+  padding: 0 .25em;
+  font-size: 1.188em;
+  /*approx 18pt*/
+  line-height: 1.5;
+  border: 1px solid #cecece; }
+
+/* line 183, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.dialogTable_RTL td:nth-child(2) {
+  text-align: left; }
+
+/* Plain Table with Background */
+/* line 189, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable_background caption {
+  height: 1.5em;
+  background: #5b657f;
+  /* Old browsers */
+  background: -moz-linear-gradient(left, #5b657f 0%, #92a2cb 25%, #92a2cb 75%, #5b657f 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #5b657f), color-stop(25%, #92a2cb), color-stop(75%, #92a2cb), color-stop(100%, #5b657f));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, #5b657f 0%, #92a2cb 25%, #92a2cb 75%, #5b657f 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, #5b657f 0%, #92a2cb 25%, #92a2cb 75%, #5b657f 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, #5b657f 0%, #92a2cb 25%, #92a2cb 75%, #5b657f 100%);
+  /* IE10+ */
+  background: linear-gradient(to right, #5b657f 0%, #92a2cb 25%, #92a2cb 75%, #5b657f 100%);
+  /* W3C */ }
+
+/* line 200, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable_background caption {
+  padding: .5em 0 0 0;
+  font-size: 1.5em;
+  color: #ffffff;
+  border: 1px solid #92A2CB;
+  border-right-color: #92A2CB; }
+
+/* line 208, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable_background > thead > tr > th:last-child {
+  border-right-color: #92A2CB; }
+
+/* line 212, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable_background,
+.plainTable_background td {
+  border-collapse: collapse;
+  border: 1px solid #92A2CB;
+  padding: .25em .5em; }
+
+/* line 219, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.plainTable_background th {
+  background-color: #ECF2FF;
+  color: #333333; }
+
+/* Timeline Table */
+/* line 225, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable {
+  table-layout: fixed; }
+
+/* line 229, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating,
+.timelineTable.topOnly,
+.timelineTable.bottomOnly {
+  border-collapse: collapse;
+  table-layout: fixed; }
+
+/* line 236, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating tr:nth-child(1) td,
+.timelineTable.topOnly tr:nth-child(1) td {
+  vertical-align: bottom;
+  text-align: center; }
+
+/* line 242, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.bottomOnly tr:nth-child(2) td {
+  vertical-align: top;
+  text-align: center; }
+
+/* line 247, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating tr:nth-child(2) td:nth-of-type(odd),
+.timelineTable.topOnly tr:nth-child(2) td:nth-of-type(odd),
+.timelineTable.topBottomAlternating tr:nth-child(3) td:nth-of-type(even),
+.timelineTable.bottomOnly tr:nth-child(1) td:nth-of-type(even) {
+  height: 2em;
+  text-align: right;
+  vertical-align: bottom;
+  border-left: 1px solid transparent !important;
+  border-right: 1px solid #000000 !important;
+  font-size: .7em; }
+
+/* line 259, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating tr:nth-child(2) td:nth-of-type(odd) {
+  vertical-align: bottom;
+  border-bottom: 1px solid #000000 !important; }
+
+/* line 264, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topOnly tr:nth-child(2) td {
+  border-bottom: 1px solid #000000 !important; }
+
+/* line 268, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating tr:nth-child(3) td:nth-of-type(even) {
+  vertical-align: top;
+  border-top: 1px solid #000000 !important; }
+
+/* line 273, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.bottomOnly tr:nth-child(1) td {
+  vertical-align: top !important;
+  border-top: 1px solid #000000 !important; }
+
+/* line 279, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating tr:nth-child(4) td,
+.timelineTable.topOnly tr:nth-child(2) td {
+  vertical-align: top;
+  text-align: center; }
+
+/* line 285, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable.topBottomAlternating tr:nth-child(1) td:nth-last-child(1),
+.timelineTable.topOnly tr:nth-child(1) td:nth-last-child(1),
+.timelineTable.bottomOnly tr:nth-child(1) td:nth-last-child(1),
+.timelineTable.topBottomAlternating tr:nth-child(2) td:nth-last-child(1),
+.timelineTable.topOnly tr:nth-child(2) td:nth-last-child(1),
+.timelineTable.bottomOnly tr:nth-child(2) td:nth-last-child(1),
+.timelineTable.topBottomAlternating tr:nth-child(3) td:nth-last-child(1),
+.timelineTable.topOnly tr:nth-child(3) td:nth-last-child(1),
+.timelineTable.bottomOnly tr:nth-child(3) td:nth-last-child(1) {
+  border-right: none !important; }
+
+/* line 297, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable .response[type=text] {
+  width: 100%; }
+
+/* Only needed in student view */
+/* line 302, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable .response[type=text] span.customInputBox {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto; }
+
+/* line 311, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable .response[type=text] span.customInputBox[dir=rtl],
+.timelineTable .response.correct[type=text] span.customInputBox[dir=rtl],
+.timelineTable .response.incorrect[type=text] span.customInputBox[dir=rtl] {
+  /*font-size: 1.25em;*/ }
+
+/* line 321, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable .blank.response .word.ui-draggable {
+  white-space: normal !important; }
+
+/* line 325, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.timelineTable .blank.response .word.ui-draggable[dir=rtl],
+.timelineTable .blank.response.dropped *[dir=rtl] {
+  /*font-size: 1.25em;*/
+  padding: 0 .25em; }
+
+/* Fillable Table Cell */
+/* line 335, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.cke_editable td.fillableTableCell:after {
+  color: #e50000;
+  font-size: 1vw;
+  content: "\AOnly one blank recommended";
+  white-space: pre; }
+
+/* line 342, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.cke_editable .contentDiv td.fillableTableCell:after {
+  content: ""; }
+
+/* Topic Header Table */
+/* line 347, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable,
+.topicHeaderTable[dir="rtl"] {
+  background-repeat: no-repeat;
+  height: 100px;
+  min-height: 100px; }
+
+/* line 354, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable[dir="rtl"] {
+  background-position: right top; }
+
+/* line 358, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+table.topicHeaderTable > tbody > tr > td {
+  border: 1px dashed #ff0000;
+  border-collapse: collapse; }
+
+/* line 363, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable {
+  background-position: left top; }
+
+/* line 367, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable[dir=rtl] {
+  background-position: right top; }
+
+/* line 371, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable td:nth-child(1),
+.topicHeaderTable[dir=rtl] td:nth-child(1) {
+  width: 100px; }
+
+/* line 376, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable tr:first-child td:nth-child(2),
+.topicHeaderTable[dir=rtl] tr:first-child td:nth-child(2) {
+  color: #333333;
+  line-height: normal;
+  font-size: 2em; }
+
+/* line 383, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable[dir="rtl"] tr:first-child td:nth-child(2) {
+  line-height: 2em; }
+
+/* line 387, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable tr:first-child td:nth-child(2) p,
+.topicHeaderTable[dir=rtl] tr:first-child td:nth-child(2) p {
+  margin-bottom: 0; }
+
+/* line 392, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerOne,
+.topicHeaderTable[dir=rtl].headerOne {
+  background-image: url("../images/ui/headerOne_icon.png"); }
+
+/* line 397, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerTwo,
+.topicHeaderTable.headerTwo[dir=rtl] {
+  background-image: url("../images/ui/headerTwo_icon.png"); }
+
+/* line 402, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerThree,
+.topicHeaderTable.headerThree[dir=rtl] {
+  background-image: url("../images/ui/headerThree_icon.png"); }
+
+/* line 407, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerFour,
+.topicHeaderTable.headerFour[dir=rtl] {
+  background-image: url("../images/ui/headerFour_icon.png"); }
+
+/* line 412, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerFive,
+.topicHeaderTable.headerFive[dir=rtl] {
+  background-image: url("../images/ui/headerFive_icon.png"); }
+
+/* line 417, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerSix,
+.topicHeaderTable.headerSix[dir=rtl] {
+  background-image: url("../images/ui/headerSix_icon.png"); }
+
+/* line 422, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.topicHeaderTable.headerSeven,
+.topicHeaderTable.headerSeven[dir=rtl] {
+  background-image: url("../images/ui/headerSeven_icon.png"); }
+
+/*Custom Introduction Table*/
+/* line 428, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.introTable {
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-image: url("../images/ui/introTable.png");
+  height: 279px; }
+
+/* line 435, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.introTable > tbody > tr:first-child > td:first-child {
+  width: 270px; }
+
+/* line 439, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.introTable > tbody > tr:first-child > td:nth-child(2) {
+  color: #333333;
+  line-height: normal;
+  font-size: 2em; }
+
+/* line 445, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.introTable p {
+  margin-bottom: 0; }
+
+/* Text Message Table */
+/* line 450, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable {
+  border-collapse: separate !important;
+  border-spacing: 0px !important;
+  width: 420px !important;
+  table-layout: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 360px !important; }
+
+/* line 460, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable thead tr th {
+  border-top: 2px solid #cccccc;
+  font-weight: 400 !important;
+  background: #f6f6f6;
+  padding-top: 1em; }
+
+/* line 467, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr:first-child td {
+  border-top: 1px solid #cccccc; }
+
+/* line 471, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr:last-child td {
+  border-bottom: 1px solid #cccccc; }
+
+/* line 475, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable thead tr th:first-child {
+  border-radius: 2em 0 0 0; }
+
+/* line 479, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable thead tr th:last-child {
+  border-radius: 0 2em 0 0; }
+
+/* line 483, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable thead tr th:first-child,
+.textMessageDialogTable tr td:first-child {
+  border-left: 2px solid #cccccc; }
+
+/* line 488, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable thead tr th:last-child,
+.textMessageDialogTable tr td:last-child {
+  border-right: 2px solid #cccccc; }
+
+/* line 493, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr td {
+  height: 40px;
+  min-height: 40px;
+  background: #ffffff;
+  padding: .25em; }
+
+/* line 500, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr td:first-child,
+.textMessageDialogTable tr th:first-child,
+.textMessageDialogTable tr td:last-child,
+.textMessageDialogTable tr th:last-child {
+  vertical-align: top;
+  width: 45px !important; }
+
+/* line 508, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr td:first-child,
+.textMessageDialogTable tr td:last-child {
+  background: transparent;
+  vertical-align: bottom; }
+
+/* line 514, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr td:first-child {
+  text-align: right; }
+
+/* line 518, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable tr td:last-child {
+  text-align: left; }
+
+/* line 522, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .textMessageDialogLeft {
+  /*.leftBubble { */
+  width: auto;
+  text-align: left;
+  margin-right: 70px; }
+
+/* line 528, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .textMessageDialogRight {
+  /*.rightBubble { */
+  width: auto;
+  text-align: left;
+  margin-left: 70px; }
+
+/* line 534, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .textMessageDialogRight,
+.textMessageDialogTable .textMessageDialogLeft {
+  display: inline-block;
+  padding: .5em; }
+
+/* line 540, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable textMessageDialogRight {
+  text-align: left; }
+
+/* line 544, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .textMessageDialogLeft {
+  background: #cbcbcb;
+  /* Fallback #dedede */
+  background: linear-gradient(#cbcbcb, #dedede);
+  border-radius: 1em 1em 1em 0;
+  color: #555555; }
+
+/* line 551, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .textMessageDialogRight {
+  background: #3f9ce2;
+  /* Fallback */
+  background: linear-gradient(#80c3f5, #6aa9da);
+  border-radius: 1em 1em 0 1em;
+  color: #ffffff; }
+
+/* line 558, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .textMessageDialogRight[dir=rtl],
+.textMessageDialogTable .textMessageDialogLeft[dir=rtl] {
+  padding: .15em .5em;
+  text-align: right; }
+
+/* line 564, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .dialogSpkr {
+  display: block;
+  margin: 0;
+  color: #333333;
+  font-size: .7em; }
+
+/* line 571, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable .dialogSpkr[dir=rtl] {
+  font-size: 1em; }
+
+/* line 575, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageDialogTable p.dialogSpkr[dir=rtl] {
+  text-align: inherit !important; }
+
+/* line 579, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.textMessageLetter {
+  height: 1.5em;
+  max-height: 1.5em;
+  width: 2.0em;
+  max-width: 2.0em;
+  background-color: #808080;
+  color: white;
+  width: 65%;
+  height: auto;
+  border-radius: 50%;
+  font-weight: bold;
+  padding: .25em .5em; }
+
+/* ------------------  Utility Classes    --------------------- */
+/* Style treatments in CKEditor - part of style DDL - These "defaults" will by synchronized with the productStyle.css;
+Ultimately these can be modified as part of theme for a particular project. A project team needs to decide the pedagogical
+purpose of the highlighting schemes and define the treatment (e.g., border w/radius to identify roots, double underline to
+identify conjugation, etc. */
+/* line 601, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.highlight1 {
+  background: #cecece; }
+
+/* line 608, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.highlight2 {
+  color: #cc0808;
+  border-bottom: 1px solid #000000; }
+
+/* line 616, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.highlight3 {
+  border-bottom: 3px double; }
+
+/* line 623, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle1 {
+  padding: 1px;
+  background: #cecece; }
+
+/* line 631, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle2 {
+  color: #cc0808;
+  padding-bottom: 1px;
+  border-bottom: 1px solid #000000; }
+
+/* line 640, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle3 {
+  padding-bottom: 1px;
+  border-bottom: 4px double; }
+
+/* line 648, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle4 {
+  color: blue;
+  padding-bottom: 1px;
+  border-bottom: 4px double; }
+
+/* line 657, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle5 {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #3d3d40;
+  padding: 1px; }
+
+/* line 668, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle6 {
+  padding-bottom: 1px;
+  border-bottom: 1px dashed; }
+
+/* line 676, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle7 {
+  padding: 1px;
+  background: #ffff94; }
+
+/* line 684, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customInlineStyle8 {
+  color: #468847;
+  padding-bottom: 1px;
+  border-bottom: 1px dotted; }
+
+/* line 693, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customBlockStyle1 {
+  color: #cc0808; }
+
+/* line 704, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.customBlockStyle2 {
+  color: #007F24; }
+
+/* line 722, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.blurText {
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
+
+/*Internet Explorer HACK SINCE IT DOESN"T SUPPORT BLURED TEXT
+@media screen\0{
+     .blurText{
+        color:#333333;
+        background-color:#333333; 
+     }
+}
+
+_:-ms-lang(x), .blurText{
+        color:#333333;
+        background-color:#333333; 
+     }
+}
+*/
+/*Custom Image Classes*/
+/* line 743, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+img.polaroid {
+  border: 1px solid #dddddd;
+  padding: 10px 10px 15px;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25); }
+
+/* line 751, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+img.whiteFrameNarrow {
+  background-color: #ffffff;
+  padding: 1em;
+  border: 1px solid #000000;
+  border-radius: .25em; }
+
+/* line 758, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+img.whiteFrameWide {
+  background-color: #ffffff;
+  padding: 2em;
+  border: 1px solid #000000;
+  border-radius: .25em; }
+
+/* line 765, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+img.circularImage {
+  border-radius: 100%;
+  border: 1px solid #000000; }
+
+/* line 770, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+img.roundedCorners {
+  border-radius: .5em; }
+
+/* line 774, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+img.grayscale {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%); }
+
+/*============ new email template =============*/
+/* line 780, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateContainer {
+  width: 100%;
+  border-spacing: 0; }
+
+/* line 784, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateSubjectLine {
+  border-spacing: 0;
+  text-align: left;
+  font-weight: 600;
+  background-color: #ffffff;
+  border-top: solid 1px #e0e9ea;
+  border-bottom: solid 1px #e0e9ea;
+  padding-left: 1em;
+  height: 2em;
+  min-height: 2em;
+  max-height: 2em;
+  width: 100%; }
+
+/* line 797, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateMainBody {
+  border-spacing: 0;
+  margin-top: .5em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  border-top: solid 1px #e0e9ea;
+  border-left: solid 1px #e0e9ea;
+  border-right: solid 1px #e0e9ea;
+  width: 96%; }
+
+/* line 808, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateMainButtonDiv {
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #e6f2ff;
+  border-left: solid 1px #e0e9ea;
+  border-right: solid 1px #e0e9ea;
+  width: 96%; }
+
+/* line 818, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateHead {
+  border-spacing: 0;
+  background-color: #e6f2ff; }
+
+/* line 822, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateHeadBottom {
+  border-spacing: 0;
+  background-color: #e6f2ff; }
+
+/* line 826, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFrom {
+  border-spacing: 0;
+  text-align: left;
+  text-indent: 1em;
+  height: 1.5em;
+  min-height: 1.5em;
+  max-height: 1.5em;
+  width: 70%; }
+
+/* line 835, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateTo {
+  border-spacing: 0;
+  width: 70%;
+  text-align: left;
+  text-indent: 1em;
+  height: 1.5em;
+  min-height: 1.5em;
+  max-height: 1.5em; }
+
+/* line 844, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateDate {
+  border-spacing: 0;
+  text-align: right;
+  padding-right: .5em;
+  width: 30%; }
+
+/* line 850, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateEmailSection {
+  padding: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  border: solid 1px #e0e9ea;
+  width: 96%; }
+
+/* line 858, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateAttachments {
+  border-spacing: 0;
+  font-weight: bold;
+  text-align: left;
+  text-indent: 1em;
+  height: 1.5em;
+  min-height: 1.5em;
+  max-height: 1.5em;
+  width: 70%; }
+
+/* line 868, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateBottomBarSpacer {
+  height: .25em;
+  min-height: .25em;
+  max-height: .25em; }
+
+/*================ Email Template Full ================*/
+/* line 875, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullTable {
+  text-shadow: none;
+  border-collapse: collapse; }
+
+/* line 879, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullBase {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #ffffff; }
+
+/* line 884, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullIcon {
+  text-align: center;
+  color: transparent;
+  text-shadow: 0 0 0 white;
+  vertical-align: top; }
+
+/* line 890, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.firstColumnEmailTemplate {
+  vertical-align: top;
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  color: #ffffff;
+  background-color: #003366; }
+
+/* line 898, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.secondColumnEmailTemplate {
+  vertical-align: top;
+  background-color: #ffffff; }
+
+/* line 902, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateLeft {
+  border-spacing: 0;
+  vertical-align: middle;
+  font-weight: 600;
+  background-color: #003366;
+  color: #ffffff; }
+
+/* line 909, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullCompose {
+  background-color: #6699ff;
+  width: 90px;
+  max-width: 90px;
+  height: 30px;
+  max-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.75em; }
+
+/* line 922, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullSearch {
+  padding-left: .5em;
+  text-align: center;
+  vertical-align: middle;
+  height: 60px;
+  width: 339px;
+  min-width: 339px;
+  background-color: #336699; }
+
+/* line 931, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullSearchInner {
+  border: 1px inset grey;
+  border-radius: 5px;
+  color: #000000;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.75em;
+  height: 30px;
+  width: 250px;
+  min-width: 339px;
+  background-color: #ffffff; }
+
+/* line 944, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullSearchImage {
+  vertical-align: middle;
+  font-size: x-large;
+  min-width: 30px;
+  max-width: 30px;
+  background-color: #336699; }
+
+/* line 951, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullTopBar {
+  background-color: #336699;
+  padding-left: .5em;
+  padding-right: .5em;
+  text-align: center;
+  vertical-align: middle;
+  border-spacing: 0;
+  color: #ffffff; }
+
+/* line 960, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateLogo {
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 600;
+  width: 146px;
+  min-width: 146px;
+  max-width: 146px;
+  height: 60px;
+  border-spacing: 0;
+  background-color: #003366;
+  color: #ffffff; }
+
+/* line 972, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullMiddleBar {
+  margin-top: .75em;
+  margin-bottom: .65em;
+  vertical-align: middle;
+  text-align: center; }
+
+/* line 978, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFullBox {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  background-color: #FFFFFF;
+  border: solid 1px #dddddd;
+  text-align: center;
+  color: transparent;
+  text-shadow: 0 0 0 slategray;
+  width: 2em;
+  min-width: 2em;
+  max-width: 2em;
+  height: 2em;
+  max-height: 2em;
+  min-height: 2em; }
+
+/* line 994, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Space {
+  display: table-cell;
+  min-width: .5em;
+  max-width: .5em; }
+
+/* line 999, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Doublespace {
+  display: table-cell;
+  min-width: 1.5em;
+  max-width: 1.5em; }
+
+/* line 1004, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Inbox:before {
+  content: "\1F4E5"; }
+
+/* line 1007, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Drafts:before {
+  content: "\1F4C4"; }
+
+/* line 1010, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Sent:before {
+  content: "\1F4E9"; }
+
+/* line 1013, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Starred:before {
+  content: "\2606"; }
+
+/* line 1016, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Archive:before {
+  content: "\1F4BD"; }
+
+/* line 1019, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Spam:before {
+  content: "\29B8"; }
+
+/* line 1022, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Trash:before {
+  content: "\1F4A3"; }
+
+/* line 1025, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Folders:before {
+  content: "\1F4C2"; }
+
+/* line 1028, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Search:before {
+  content: "\1F50D"; }
+
+/* line 1031, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Settings:before {
+  content: "\2699"; }
+
+/* line 1034, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Contacts:before {
+  content: "\1F465"; }
+
+/* line 1037, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Eye:before {
+  content: "\2609"; }
+
+/* line 1040, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_EyeClosed:before {
+  content: "\26AB"; }
+
+/* line 1043, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Label:before {
+  content: "\1F4CD"; }
+
+/* line 1046, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Left:before {
+  content: "\003C"; }
+
+/* line 1049, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Right:before {
+  content: "\003E"; }
+
+/* line 1052, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Down:before {
+  content: "\2304"; }
+
+/* line 1055, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Previous:before {
+  content: "\2190"; }
+
+/* line 1058, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Back:before {
+  content: "\21e6"; }
+
+/* line 1061, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateIcon_Forward:before {
+  content: "\21e8"; }
+
+/* line 1064, ../../css/sass/sass_pageResources/customEditorStyles.scss */
+.emailTemplateFillGap {
+  width: 100%; }
