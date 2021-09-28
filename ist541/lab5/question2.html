@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<link href="css/lab5.css" rel="stylesheet" type="text/css">
+<title>question2.index</title>
+	<script  
+scr="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+	$(funtion()){ 
+	
+	$("option1").click(function()){
+	$("#feedback").html("<h2 style=color: "red">Incorrect</h2>"); 
+	$("map2_image").css("display,"none");}
+	
+	$("option3").click(function(){
+	$("#feedback").html("<h2 style=color: "green">Correct!</h2>");	
+	$("map2_image").css("display","inline");}
+					   
+	$("#option2,#option4").click(function()){
+	$("#feedback").html("<h2 style=color:red">Incorrect</h2>");
+	$("map2_image").css("display","none");}	
+	});
+	</script>
+</head>
+
+<body>
+	<div id="wrapper">
+	<h1>How many of these countries have claim another dialects?</h1>
+	<h3>Click on on of the following choices</h3>	
+	<h2 id="option1" class="choices">10</h2>
+	<h2 id="option2" class="choices">12</h2>
+	<h2 id="option3" class="choices">28</h2>
+	<h2 id="option4" class="choices">20</h2>	
+		
+   <div id="feedback"></div>
+   <img id="map2_image.png" scr="img/map2_image.png" alt="Map2"/>
+	
+	
+	</div>
+</body>
+</html>
