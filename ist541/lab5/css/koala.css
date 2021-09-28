@@ -6,7 +6,11 @@
 	margin:0 auto;
 	text-align: center;
 }
-#koala_image{
+#map1_image{
 	border:black 5px solid;
 	
+}
+#map2_image{
+	display:none;
+	border:black 5px solid;
 }
