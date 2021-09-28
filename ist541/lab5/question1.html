@@ -5,14 +5,21 @@
 <title>lab5</title>
 	<link href="css/koala.css" rel="stylesheet" type="text/css">
 	
+	<script 
+scr="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	
 	<script> 
 	$(function(){
 	 $("#map1_image").click(function){
 	  $("map2_image")("display","inline");
 		$("#map2_image").css("display"),("none");
+		 $("#answer").html("<h2>They are 28 Countries!</h2>");
 			});
+	$("#map2_image_image").mouseleave(function(){
+	 $("map1_image").css("display","inline");
+	  $("#map2_image").css("display","none");
+	   $("#answer").html("");}
 			});
-	scr= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
 	</script>
 	
 </head>
