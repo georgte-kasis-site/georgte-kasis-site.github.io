@@ -9,11 +9,11 @@
 	<script>
 	$(funtion()){ 
 	
-	$("option1").click(function()){
+	$("option1").click( function()){
 	$("#feedback").html("<h2 style='color: red'> Incorrect </h2>"); 
 	$("arabic_map1_opt.png").css("display","none");
 	};)
-	$("#option3").click(function(){
+	$("#option3").click( function(){
 	$("#feedback").html("<h2 style='color: green'> Correct! </h2>");	
 	$("arabic_map2_opt.png").css("display","inline");
 	};)
@@ -22,6 +22,7 @@
 	$("#feedback").html("<h2 style='color:red'>Incorrect </h2>");
 	$("arabic_map1_opt.png").css("display","none");	
 	});
+		});
 	</script>
 </head>
 
@@ -35,7 +36,7 @@
 	<h2 id="option4" class="choices">20</h2>	
 		
    <div id="feedback"></div>
-   <img id="map1_image.png" style="display:none" scr="img/arabic_map2_opt.png" alt="Map2" />
+   <img id="map1_image.png"  scr="img/arabic_map2_opt.png"  width="500" height="350" alt="" />
 	</div>
 	<br>
 	<br>
