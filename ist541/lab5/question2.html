@@ -4,23 +4,21 @@
 <meta charset="UTF-8">
 	<link href="css/lab5.css" rel="stylesheet" type="text/css">
 <title>Quiz</title>
-	<script  
-scr="https://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script scr="https://ajax.googleaps.com/ajax/libs/jquery/3.6.0.min.js"></script>
 	<script>
 	$(funtion()){ 
 	
 	$("option1").click(function()){
-	$("#feedback").html("<h2 style='color: red'>Incorrect</h2>"); 
+	$("#feedback").html("<h2 style='color: red'> Incorrect </h2>"); 
 	$("arabic_map1_opt.png").css("display","none");
 	};)
 	$("#option3").click(function(){
-	$("#feedback").html("<h2 style='color: green'>Correct!</h2>");	
+	$("#feedback").html("<h2 style='color: green'> Correct! </h2>");	
 	$("arabic_map2_opt.png").css("display","inline");
 	};)
 					   
 	$("#option2,#option4").click( function(){
-	$("#feedback").html("<h2 style='color:red'>Incorrect</h2>");
+	$("#feedback").html("<h2 style='color:red'>Incorrect </h2>");
 	$("arabic_map1_opt.png").css("display","none");	
 	});
 	</script>
