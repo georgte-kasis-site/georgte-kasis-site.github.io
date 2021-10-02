@@ -8,17 +8,16 @@
 scr="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0.min.js"></script>	
 	
 	<script> 
-	$(function()){
+	$(function(){
 		
-    $("#arabic_map1").mouseenter( function()){
-	$("arabic_map1_opt.png").css("display""inline");
-	$("#map2_image").css("display"),("none");
+    $("#arabic_map1").mouseenter(function(){
+	$("#arabic_map2").css("display","inline");
+	$("#arabic_map1").css("display","none");
 	$("#answer").html("<h2>They are 28 Countries!</h2>");
 			});
-	$("#arabic_map1_image").mouseleave(function(){
-	$("arabic_map2_opt.png").css("display","inline");
-	$("#map1_image").css("display","none");
-    $("#arabic_map1").css("display","none");
+	$("#arabic_map2").mouseleave(function(){
+	$("#arabic_map1").css("display","inline");
+	$("#arabic_map2").css("display","none");
 	$("#answer").html("");
 			});
 	});
