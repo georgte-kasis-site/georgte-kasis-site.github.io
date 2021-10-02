@@ -15,17 +15,17 @@ body {
     margin: 8px;
 }
 #Next{
-	font-size: 22em;
-	fontcolor:black;
+	font-size: 2em;
+	font-display:black;
 	font-display:solid bold,
 }
 #arabic_map1{
 	cursor: pointer;
-	border: black 5px solid;
+	
 }
 #arabic_map2{
 	display:none;
-	border: black 5px solid;
+
 }
 .hideme {
 	display:none;
@@ -46,6 +46,4 @@ h1 {
     margin-inline-end: 1px;
     font-weight: bold;
 }
-html{
-	display: block;
-}
+

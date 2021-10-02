@@ -7,11 +7,11 @@
 	<script scr="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0.min.js"></script>
 	<script>
 		
-	$(funtion()){ 
+	$(funtion(){ 
 	
-	$("option1").click( function(){
+	$("#option1").click( function(){
 	$("#feedback").html("<h2 style='color: red'> Incorrect </h2>"); 
-	$("#arabic_map1").css("display","inline");
+	$("#arabic_map2").css("display","none");
 	});
 	$("#option3").click( function(){
 	$("#feedback").html("<h2 style='color:green'> Correct! </h2>");
@@ -20,7 +20,7 @@
 					   
 	$("#option2,#option4").click( function(){
 	$("#feedback").html("<h2 style='color:red'>Incorrect </h2>");
-	$("#arabic_map1").css("display","none");	
+	$("#arabic_map2").css("display","none");	
 	});
 		});
 	</script>
@@ -29,7 +29,7 @@
 <body>
 	<h1> World Countries claimed Arabic Language</h1>
 	 
-    <a href="question1.html">Back</a>
+    <a id="Next" href="question1.html">Back</a>
 	   
 	<div id="wrapper">
 	<h1>How many of these countries have claim another dialects?</h1>
@@ -42,7 +42,7 @@
 	<h2 id="option4" class="choices">20</h2>	
 
    <div id="feedback"></div>
-   <img id="map1_image.png"  scr="img/arabic_map2_opt.png"  width="500" height="350" alt="" />
+   <img id="arabic_map2"  scr="img/arabic_map2_opt.png"  width="500" height="350" alt="" />
 	</div>
 	<br>
 	<br>
