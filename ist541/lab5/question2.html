@@ -9,18 +9,18 @@
 		
 	$(funtion()){ 
 	
-	$("option1").click( function()){
+	$("option1").click( function(){
 	$("#feedback").html("<h2 style='color: red'> Incorrect </h2>"); 
-	$("arabic_map1_opt.png").css("display","none");
-	};)
+	$("#arabic_map1").css("display","inline");
+	});
 	$("#option3").click( function(){
-	$("#feedback").html("<h2 style='color: green'> Correct! </h2>");	
-	$("arabic_map2_opt.png").css("display","inline");
-	};)
+	$("#feedback").html("<h2 style='color:green'> Correct! </h2>");
+	$("#arabic_map2").css("display","inline");
+	});
 					   
 	$("#option2,#option4").click( function(){
 	$("#feedback").html("<h2 style='color:red'>Incorrect </h2>");
-	$("arabic_map1_opt.png").css("display","none");	
+	$("#arabic_map1").css("display","none");	
 	});
 		});
 	</script>

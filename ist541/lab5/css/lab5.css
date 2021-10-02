@@ -19,11 +19,11 @@ body {
 	fontcolor:black;
 	font-display:solid bold,
 }
-#arabic_map1_image{
+#arabic_map1{
 	cursor: pointer;
 	border: black 5px solid;
 }
-#arabic_map2_image{
+#arabic_map2{
 	display:none;
 	border: black 5px solid;
 }
