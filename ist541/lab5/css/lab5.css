@@ -1,22 +1,51 @@
 
 /* CSS Document */
-
 #wrapper {
 	width:900px;
 	margin:0 auto;
 	text-align: center;
+background-color: #C59393;
+}
+
+body{
+	text-align: center;
+}
+body {
+    display: block;
+    margin: 8px;
+}
+#Next{
+	font-size: 22em;
+	fontcolor:black;
+	font-display:solid bold,
 }
 #arabic_map1_image{
-	border:black 5px solid;
-	
+	cursor: pointer;
+	border: black 5px solid;
 }
 #arabic_map2_image{
 	display:none;
-	border:black 5px solid;
+	border: black 5px solid;
 }
-.choices{
+.hideme {
+	display:none;
+}
+.choices {
 	cursor: pointer;
 }
 
 #footer{text-align: center;
+}
+
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.77em;
+    margin-block-end: 0.77em;
+    margin-inline-start: 1px;
+    margin-inline-end: 1px;
+    font-weight: bold;
+}
+html{
+	display: block;
 }
