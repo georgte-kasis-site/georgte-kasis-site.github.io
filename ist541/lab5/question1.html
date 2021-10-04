@@ -1,28 +1,30 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="UTF-8">
-	<title>:World Countrires Claimed Arabic Language</title>
-	<link href="css/lab5.css" rel="stylesheet" type="text/css">
-	<script  
-scr="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0.min.js"></script>	
+<meta charset="utf-8" />
+<title>World countries Claimed Arabic Language</title>
+<link href="css/lab5.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script>
+   $( function() {
+	   
+	   $("#arabic_map1").mouseenter( function(){
+		   $("#arabic_map1").css("display","none");
+		   $("#arabic_map2").css("display","inline");
+		   $("#hint").css("visibility","hidden");
+		   $("#answer").html("<h2>They are 28 countries!</h2>");
+	   });
 	
-	<script> 
-	$(function(){
-		
-    $("#arabic_map1").mouseenter(function(){
-	$("#arabic_map2").css("display","inline");
-	$("#arabic_map1").css("display","none");
-	$("#answer").html("<h2>They are 28 Countries!</h2>");
-			});
-	$("#arabic_map2").mouseleave(function(){
-	$("#arabic_map1").css("display","inline");
-	$("#arabic_map2").css("display","none");
-	$("#answer").html("");
-			});
-	});
-	});
-	</script>
+	$("#arabic_map2").mouseleave( function(){
+		   $("#arabic_map1").css("display","inline");
+		   $("#arabic_map2").css("display","none");
+		   $("#hint").css("visibility","visible");
+		   $("#answer").html("");
+	   });
+	   
+   });
+</script>
+
 </head>
    <body>
 	 
@@ -30,15 +32,18 @@ scr="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0.min.js"></script>
  <h1> World Countries claimed Arabic Language</h1>
 	 
 <a id="Next" href="question2.html">Next</a>
+	   
 	   <div id="wrapper">
-	<h2>How many countries in the world claimed the Arabic language?</h2>
-	<p></p>
-	<p><strong>Hint:</strong>Hover over the image below to learn the names of the major countries.</p>
-	<img id="arabic_map1"  src="img/arabic _map1_opt.png" alt="Map1"/>
-		<img id="arabic_map2" src="img/arabic_map2_opt.png" alt="Map2"/>
-	<div id="answer">28 countries </div>  <!-- This is a placeholder to display here the answer-->
+		   
+	<h1>How many countries in the world claimed the Arabic language?</h1>
+		   
+	<h3 id="hint">Hint: Hover over the image below to learn the names of the major countries </h3>	   
+	
+   <img id="arabic_map1" src="img/arabic _map1_opt.png" alt=""/>
+   <img id="arabic_map2" src="img/arabic_map2_opt.png" alt=""/>
+   <div id="answer"></div>   
+	 <!-- This is a placeholder to display here the answer-->
 </div>
-	  
 	    <br>
 	    <br>
 	    <br>

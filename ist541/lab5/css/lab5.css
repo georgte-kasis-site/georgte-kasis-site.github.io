@@ -24,7 +24,7 @@ body {
 	
 }
 #arabic_map2{
-	display:none;
+	display:pointer;
 
 }
 .hideme {
@@ -47,5 +47,5 @@ h1 {
     font-weight: bold;
 }
 .choices{
-	color:red;
+	color:black;
 }
