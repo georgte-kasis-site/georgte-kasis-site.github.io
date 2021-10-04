@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Quiz</title>
+<title></title>
 	<link href="css/lab5.css" rel="stylesheet" type="text/css">
 	<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script>
@@ -10,7 +10,7 @@
 	$(function(){ 
 	
 	$("#option1").click( function(){
-	$("#feedback").html("<h2 style='color: red'> Incorrect </h2>"); 
+	$("#feedback").html("<h2 style='color: red'> Try again </h2>"); 
 	$("#arabic _map2").css("display","none");
 	});
 	$("#option3").click( function(){
@@ -19,7 +19,7 @@
 	});
 					   
 	$("#option2,#option4").click( function(){
-	$("#feedback").html("<h2 style='color:red'>Incorrect </h2>");
+	$("#feedback").html("<h2 style='color:red'>Wrong choice </h2>");
 	$("#arabic_map2").css("display","none");	
 	});
 		});
@@ -34,14 +34,14 @@
 	<div id="wrapper">
 	<h1>How many of these countries have claim another dialects?</h1>
 	
-	<h3 id="hint">Click on on of the following choices</h3>	
+	<h3 id="hint">Hover on one of the following choices</h3>	
 	<h2 id="option1" class="choices">10</h2>
 	<h2 id="option2" class="choices">12</h2>
 	<h2 id="option3" class="choices">28</h2>
 	<h2 id="option4" class="choices">20</h2>	
 
    <div id="feedback"></div>
-   <img id="arabic_map2"  scr="img/arabic_map2_opt.png"  width="400" height="250" alt="" />
+   <img id="arabic_map2"  src="img/arabic_map2_opt.png"  width="400" height="250" alt="" />
 	</div>
 	<br>
 	<br>

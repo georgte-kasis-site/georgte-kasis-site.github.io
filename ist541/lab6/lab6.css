@@ -1,0 +1,24 @@
+
+/* CSS Document */
+
+body {
+      background: black;   /* background color */
+      color: black;        /* text color */
+      font-size: 12px;
+      font-family:Verdana, Geneva, sans-serif;
+	  align-items: center;
+}
+
+#wrapper {
+      width:900px;
+      margin:0 auto;      /* centers wrapper */
+      background: grey;  /* background color */
+      text-align:center;  
+	  align-content: center;/* centers wrapper content */
+}
+
+div{
+	dislpay: block;
+}
+
+
