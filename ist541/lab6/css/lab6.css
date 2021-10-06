@@ -1,20 +1,37 @@
 
 /* CSS Document */
 
+element.style {
+
+}
 body {
       background: black;   /* background color */
       color: black;        /* text color */
       font-size: 12px;
       font-family:Verdana, Geneva, sans-serif;
+	  align-items: center;
 }
 
 #wrapper {
       width:900px;
       margin:0 auto;      /* centers wrapper */
-      background: white;  /* background color */
-      text-align:center;  /* centers wrapper content */
+      background: grey;  /* background color */
+      text-align:center;  
+	  align-content: center;/* centers wrapper content */
 }
 
+div {
+    display: block;
+}
+div{
+	dislpay: block;
+}
 
-#map {align-content: center;
+#map{
+	
+	align-content: center;
+	align-vertical: middle;
+	border-color:darkslateblue;
+	padding-all:ipx;
+	box-sizing: border-box;
 }
