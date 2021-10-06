@@ -1,11 +1,10 @@
 
 /* CSS Document */
 
-element.style {
 
-}
+
 body {
-      background: black;   /* background color */
+      background: grey;   /* background color */
       color: black;        /* text color */
       font-size: 12px;
       font-family:Verdana, Geneva, sans-serif;
@@ -16,16 +15,13 @@ body {
       width:900px;
       margin:0 auto;      /* centers wrapper */
       background: grey;  /* background color */
-      text-align:center;  
-	  align-content: center;/* centers wrapper content */
+      text-align: center; 
+	 
 }
 
-div {
-    display: block;
-}
-div{
-	dislpay: block;
-}
+
+
+
 
 
 
