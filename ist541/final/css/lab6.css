@@ -14,12 +14,12 @@ body {
 #wrapper {
       width:1000px;
       margin:0 auto;      /* centers wrapper */
-      background: grey;  /* background color */
+      background-color:powderblue; /* background color */
       text-align: center; 
 	 
 }
-
-
+#map { border-color: double black;}
+      
 
 
 

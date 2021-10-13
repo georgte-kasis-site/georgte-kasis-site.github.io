@@ -2,8 +2,8 @@
 /* All comments go between the front slash and asterisk symbols */
 
 body {
-	background-color:darkgrey;   /* background color */
-	color:black;          /* text color for the entire page */
+	background-color:#d0d5cd;   /* background color */
+	color:#120C99;          /* text color for the entire page */
 	font-size: 12px;
 	font-family: Verdana, Geneva,San-Serif;
 }
@@ -25,11 +25,11 @@ font:bold;
 	padding:5px;
 	text-align:left;
 	font-size:13px; 
-	font:bold;
-	color:black;
-	background-color:powderblue;
+	font: bold;
+	color:blue;
+	background-color:mediumaquamarine;
 	border-style:double solid;
-	border-color: black ;
+	border-color: #DB8316;
     border-radius: 50px;
 	text-justify: left;
 	display: flex;
@@ -37,12 +37,13 @@ font:bold;
  }
 
 .stepContent{ 
-	background-color:lightgoldenrodyellow;
+	background-color: #F7BB57;
 	padding:7px;
 	display: flex;
     justify-content:left;
 	font-size:18px;
-	font-family:Constantia, "Lucida Bright", "DejaVu Serif", Georgia, "serif";
+	font-family:
+		Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif"
 		
 }
 
@@ -51,24 +52,23 @@ font:bold;
 	padding:12px;
     
 }
+
 .stepImage {
-	width:300px;     
-	height:170px;
+	width:100px;     
+	height:150px;
 	align-content: center;
     border-image-width:auto;
 	border-width: thick;
 	border-color: darkcyan;
-	border:double;
+	border:solid;
 
 
 }
 .warning {
 	padding: 10px;
 	border-radius: 20px;
-	border-color:black;
-	background: yellow;
-	font-weight:inherit;
-	border: double;
+	background: hotpink;
+	font-weight: inherit;
 }
 .material-icons {
 	color:black;
@@ -77,11 +77,4 @@ font:bold;
 }
 .img {
 	border-radius:50px;
-	align-content: center;
-}
-
-footer{
-	align-items: center;
-	text-align: center;
-	background-color:whitesmoke;
 }
