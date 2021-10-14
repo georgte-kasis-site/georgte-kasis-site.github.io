@@ -8,10 +8,19 @@ body {
 	font-family: Verdana, Geneva,San-Serif;
 }
 
-h1 h2{
+  #Next{
+	font-size:2em;
+	font-color:darkkblue;
+		
+	font: bold;
+  align-content: center;
+}
+h1  {
 text-align:center;
 font:bold;	
 }
+
+
 /* centers h1 and h2 #93CCC6ontent }
 
 /* styles for the "wrapper" div, notice that "wrapper" is preceded by "#" */
