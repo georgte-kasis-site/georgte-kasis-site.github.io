@@ -18,8 +18,8 @@ body {
       text-align: center; 
 	 
 }
-#map { border-color: double black;}
-      
+#map { border-color: double black;
+}
 
 #Next{
 	font-size: 1.5em;
