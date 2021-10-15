@@ -24,13 +24,22 @@ body {
 #Next{
 	font-size: 2em;
 	font-display:black;
+	font:bold;	
+}
+#Back{
+	font-size:2em;
+	font-color:black;
+	background:yellow;	
 	font:bold;
 }
-
 a {background-color:yellow;
 	font-color:solid black;
 	
 }
 
-
+#feedback{font-size: 2em;
+	
+	font-family: 
+		Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Black", "sans-serif";
+}
 

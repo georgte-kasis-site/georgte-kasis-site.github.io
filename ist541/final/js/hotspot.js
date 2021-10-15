@@ -4,17 +4,17 @@ $( function() {
 
       if ($(this).attr("id") == "LEBANON") {
          $("#feedback").css("color","red");
-         $("#feedback").html("No, LEBANON is the third one");
+         $("#feedback").html("Incorrect, LEBANON is the third largest");
       }
 
       if ($(this).attr("id") == "SYRIA") {
          $("#feedback").css("color","green");
-         $("#feedback").html("Yes, SYRIA has the largest");
+         $("#feedback").html("Great job, SYRIA is the largest");
       }
 
       if ($(this).attr("id") == "JORDAN") {
          $("#feedback").css("color","red");
-         $("#feedback").html("No,JORDAN is the second one");
+         $("#feedback").html("Try again, JORDAN is the second largest");
       }
 
   $("#feedback").css("backgroundColor","yellow");
