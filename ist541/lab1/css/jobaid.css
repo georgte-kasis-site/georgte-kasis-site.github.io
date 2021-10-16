@@ -1,37 +1,38 @@
 /* CSS Document */
 /* All comments go between the front slash and asterisk symbols */
-
 body {
 	background-color:darkgrey;   /* background color */
 	color:black;          /* text color for the entire page */
 	font-size: 12px;
 	font-family: Verdana, Geneva,San-Serif;
+	
+}
+  a {
+	padding: 15px;
+	margin: 4px;
+	font-size: 125%;
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
+	background-color:yellow;
+	font-color:solid black;
+	text-align: center;
 }
 
-  #Next{
-	font-size:2em;
-	font-color:black;
-	background:yellow;	
-	font:bold;
-}
-#Back{
-	font-size:2em;
-	font-color:black;
-	background:yellow;	
-	font:bold;
-}
 h1  {
 text-align:center;
 font:bold;	
 }
-
+h2 {
+text-align:center;
+font:bold;	
+}
 
 /* centers h1 and h2 #93CCC6ontent }
 
 /* styles for the "wrapper" div, notice that "wrapper" is preceded by "#" */
 #wrapper {
 	width:1000px;
-	margin:0 auto;    /* centers wrapper */
+	margin:0 auto;  
+	text-align: center;/* centers wrapper */
 }
 
 /* styles for the "stepTitle" class, notice that "stepTitle" is preceded by a dot */
@@ -58,6 +59,9 @@ font:bold;
 	font-size:18px;
 	font-family:Constantia, "Lucida Bright", "DejaVu Serif", Georgia, "serif";
 		
+}
+#https{background-color: lightgoldenrodyellow;
+	font-size:1em; 
 }
 
 .stepDescription {
@@ -99,3 +103,10 @@ footer{
 	text-align: center;
 	background-color:whitesmoke;
 }
+#https{
+	background-color: lightgoldenrodyellow;
+	font-size:1em; 
+}
+
+
+

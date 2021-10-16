@@ -2,14 +2,19 @@
 /* CSS Document */
 
 
-
-body {
-      background: yellow;   /* background color */
-      color: black;        /* text color */
-      font-size: 12px;
-      font-family:Verdana, Geneva, sans-serif;
-	  align-items: center;
+body{
+	text-align: center;
+	background-color:powderblue;
+	align-items: center;
 }
+
+a {
+	padding: 15px;
+	margin: 4px;
+	font-size: 125%;
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
+	background-color:yellow;
+	font-color:solid black;}
 
 #wrapper {
       width:1000px;
@@ -21,19 +26,11 @@ body {
 #map { border-color: double black;
 }
 
-#Next{
-	font-size: 2em;
-	font-display:black;
-	font:bold;	
-}
-#Back{
-	font-size:2em;
-	font-color:black;
-	background:yellow;	
-	font:bold;
-}
+
 a {background-color:yellow;
 	font-color:solid black;
 }
 
-
+#feedback{
+	font-family:Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Black", "sans-serif"
+}
