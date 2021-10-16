@@ -14,24 +14,26 @@ body {
 #wrapper {
       width:1000px;
       margin:0 auto;      /* centers wrapper */
-      background: grey;  /* background color */
+      background-color:powderblue; /* background color */
       text-align: center; 
 	 
 }
-
+#map { border-color: double black;
+}
 
 #Next{
-	font-size: 1.5em;
+	font-size: 2em;
 	font-display:black;
+	font:bold;	
+}
+#Back{
+	font-size:2em;
+	font-color:black;
+	background:yellow;	
 	font:bold;
 }
-
 a {background-color:yellow;
 	font-color:solid black;
-	
 }
-
-
-
 
 
