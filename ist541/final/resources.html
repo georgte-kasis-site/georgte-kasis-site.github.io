@@ -2,17 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> Arabic Language Overview</title>
+<title></title>
+	
 <link href="css/final.css" rel="stylesheet" type="text/css">
+	<link href="css/lab5.css" rel="stylesheet" type="text/css">
+	<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script>
+		
+	$(function(){ 
+	
+	$("#option1").click( function(){
+	$("#feedback").html("<h2 style='color: red'> Try again </h2>"); 
+	$("#arabic _map2").css("display","none");
+	});
+	$("#option3").click( function(){
+	$("#feedback").html("<h2 style='color:green'> Correct! </h2>");
+	$("#arabic_map2").css("display","inline");
+	});
+					   
+	$("#option2,#option4").click( function(){
+	$("#feedback").html("<h2 style='color:red'>Wrong choice </h2>");
+	$("#arabic_map2").css("display","none");	
+	});
+		});
+	</script>	
 </head>	
 <body>
-      <div class="wrapper">
-       <header></header>
-		<nav></nav>
-        <div class="menu">
-		 <ul></ul> 
-		   </div>
-	        </div>
 		   
 <h1> References </h1>
 	<a href="final.html"> History </a>
@@ -24,46 +39,46 @@
  
 			
 	<h2> Thanks for visiting! </h2>
-       <h4> Obtain </h4> 
+     
 	
- <img class="" src="img/Beirut Lebanon.jpeg" alt="Beirut Lebanon" width="900" height="300"/>  
+ <img class="" src="img/Beirut Lebanon.jpeg" alt="Beirut Lebanon" width="1500" height="500"/>  
 	
 	<div class="content">
 
-     <h2>Index</h2>
+     <h2>Arabic Countries Speakers</h2>
+<h2> How many countries world wide claimed the Arabic Language as their offical Language ?</h2>
+	   
+	<div id="wrapper">
+	<h2></h2>
+	
+	<h3 id="hint">Guess which one of the following choices</h3>	
+	<h2 id="option1" class="choices">10</h2>
+	<h2 id="option2" class="choices">12</h2>
+	<h2 id="option3" class="choices">25</h2>
+	<h2 id="option4" class="choices">20</h2>	
 
-    <h3>Home Page</h3>
-
-	<p>1 </p>
-
-    <h3>Countries</h3>
-
-	<p>2 </p>
-
-	<p></p>
-
-	<p></p>
-
-    <h3>Grammar</h3>
-
-	<p>3 </p>
-
-    <h3>Tutorial</h3>
-
-	<p>4 </p>
-
-    <h3>Survey</h3>
-
-	<p>5 </p>
+   <div id="feedback"></div>
+   
+		
+	<div>
+    <h2>Resources</h2>
+      <p> 
+		  <h3><li>The history of Arabic Language, November 30, 2018.</li>
+		  
+		  <li>The National Sunday, Examining the origins of Arabic ahead of Arabic Language Day, by Rym Ghazal Dec 14, 2016. </li>
+		  <li>Day Translations Blog, Five Things About the Arabic Language that Make it Unique, by Day Translation Team. March 20th,2015.</li> </h3></p>
+	      
+		  
 			
-	</div>							  
+		</div>						  
       <br/>
      <br/>
-  <div class="credits-center"> Photo Credits: 
+  <div class="credits-center"> Photo Credits: "Al Roushe/lebanon" 
+
 	 
 	 <br>
 	 <br>
-	 <a> Wikimedia Commons</a>   
+	 <a> Wikimedia Commons:</a>   
     
     </div>
   <div>

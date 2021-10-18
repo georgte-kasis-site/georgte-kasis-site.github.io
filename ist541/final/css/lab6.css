@@ -13,8 +13,9 @@ a {
 	margin: 4px;
 	font-size: 125%;
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
-	background-color:yellow;
-	font-color:solid black;}
+	background-color:whitesmoke;
+	color: black;
+}
 
 #wrapper {
       width:1000px;
@@ -23,14 +24,21 @@ a {
       text-align: center; 
 	 
 }
-#map { border-color: double black;
-}
+img {border: solid;
+	 border: triple;
+	  border-color: solid black;
+}     
 
 
-a {background-color:yellow;
+a {background-color:whitesmoke;
 	font-color:solid black;
 }
 
 #feedback{
 	font-family:Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Black", "sans-serif"
 }
+footer{
+ background-color: whitesmoke;
+}
+
+	
