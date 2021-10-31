@@ -1,7 +1,7 @@
 /* CSS Document */
 /* All comments go between the front slash and asterisk symbols */
 body {
-	background-color:powderblue;   /* background color */
+	background-color:aliceblue;   /* background color */
 	color:black;          /* text color for the entire page */
 	font-size: 12px;
 	font-family: Verdana, Geneva,San-Serif;
@@ -43,7 +43,7 @@ font:bold;
 	font-size:14px; 
 	font:bold;
 	color:black;
-	background-color:powderblue;
+	background-color:steelblue;
 	border-style:double solid;
 	border-color: black ;
     border-radius: 50px;
