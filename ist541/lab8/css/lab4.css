@@ -1,0 +1,30 @@
+
+
+
+body{
+	text-align: center;
+	background-color:steelblue;
+}
+a{
+	padding: 15px;
+	margin:3px;
+	font-size: 125%;
+	background-color: white;
+}
+a:hover{
+	font-size: 200%;
+	background-color: greenyellow;
+	
+}
+
+a img{
+	align-content: center;
+}
+
+#box1{
+	
+ border:7px solid blue;
+}
+#box{
+	border:10px solid blue;
+}
