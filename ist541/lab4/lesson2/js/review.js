@@ -94,25 +94,32 @@ function loadReviewSummary()
             var activityComponentTotal = 0;
             var activityComponentBonusTotal = 0;
             var displayActivityComponent = true;
+            var displayActivityComponent = true;
+            if (isComponentJudged(activityComponent))
+            {
+                displayActivityComponent = true;
+                displayActivityComponentCount++;
+            }
+            else
+                displayActivityComponent = false;
             for (var k = 0; k < activityComponent.prompts.length; k++)
             {
                 var prompt = activityComponent.prompts[k];
-                switch(activityComponent.componentTitle.toUpperCase())
+                if (isComponentJudged(activityComponent))
                 {
-                    case "PRESENTATION":
-                        displayActivityComponent = false;
-                        break;
-                    default:
-                        displayActivityComponentCount++;
-                        var promptValue = parseFloat($("#promptScoreSpan_" + prompt.id).text());
-                        if (!isNaN(promptValue))
-                        {
-                            var promptTotal = activityComponent.bonusPoints ? 0 : promptValue;
-                            var promptBonusTotal = activityComponent.bonusPoints ? promptValue : 0;
-                            activityComponentTotal += promptTotal;
-                            activityComponentBonusTotal += promptBonusTotal;
-                        }
-                        break;
+                    displayActivityComponentCount++;
+                }
+                else
+                {
+                    displayActivityComponent = false;
+                }
+                var promptValue = parseFloat($("#promptScoreSpan_" + prompt.id).text());
+                if (!isNaN(promptValue))
+                {
+                    var promptTotal = activityComponent.bonusPoints ? 0 : promptValue;
+                    var promptBonusTotal = activityComponent.bonusPoints ? promptValue : 0;
+                    activityComponentTotal += promptTotal;
+                    activityComponentBonusTotal += promptBonusTotal;
                 }
             }
             if (displayActivityComponent)

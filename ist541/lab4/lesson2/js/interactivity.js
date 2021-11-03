@@ -11,12 +11,11 @@
     {
         completeTriggeredActivityComponent(event.activityComponentId);
     });
-
 });
 
 function setModuleInteractivity(event)
 {
-    if (module.moduleFeatures.limitBrowserFunctionality)
+    if (typeof (studentAssignment) == "undefined" || (studentAssignment && studentAssignment.authorizationToken && studentAssignment.authorizationToken.canDo && (module.moduleFeatures.limitBrowserFunctionality)))
     {
         document.addEventListener('contextmenu',function(){event.preventDefault()});
         $("body").addClass("noselect");
@@ -25,109 +24,62 @@ function setModuleInteractivity(event)
 
 function setActivityComponentInteractivity(event)
 {
-    var activityComponent = event.activityComponent;
-    switch (activityComponent.componentTitle.toUpperCase())
+    if (typeof(studentAssignment) == "undefined" || (studentAssignment.authorizationToken && studentAssignment.authorizationToken.canDo))
     {
-        case "CATEGORIZATION":
-            var renderModeIndex = getRenderModeLayoutIndex(activityComponent)
-            switch (renderModeIndex)
-            {
-                case 1:
-                    setupCategorizationWordPoolDragAndDrop(activityComponent);
-                    break;
-                default:
-                    setupCategorizationDragAndDrop(activityComponent);
-                    break;
-            }
-            break;
-        case "FILLINTHEBLANK":
-            var renderModeLayout = getRenderModeLayoutIndex(activityComponent);
+        var activityComponent = event.activityComponent;
+        switch (activityComponent.componentTitle.toUpperCase())
+        {
+            case "CATEGORIZATION":
+                var renderModeIndex = getRenderModeLayoutIndex(activityComponent)
+                switch (renderModeIndex)
+                {
+                    case 1:
+                        setupCategorizationWordPoolDragAndDrop(activityComponent);
+                        break;
+                    default:
+                        setupCategorizationDragAndDrop(activityComponent);
+                        break;
+                }
+                break;
+            case "FILLINTHEBLANK":
+                var renderModeLayout = getRenderModeLayoutIndex(activityComponent);
 
-            switch(renderModeLayout){
-                case 1:
-                    $("#responsePool_" + activityComponent.id).children(".word").each(function (index)
-                    {
-                        $(this).draggable({
-                            revert: true,
-                            containment: $("#tabDetails_" + activityComponent.id)
+                switch (renderModeLayout)
+                {
+                    case 1:
+                        $("#responsePool_" + activityComponent.id).children(".word").each(function (index)
+                        {
+                            $(this).draggable({
+                                revert: true,
+                                containment: $("#tabDetails_" + activityComponent.id)
+                            });
                         });
-                    });
-                    setupFillInTheBlankDrop(activityComponent.id);
-    
-    
-                    $("#tabDetails_" + activityComponent.id).find(".blank").each(function ()
-                    {
-                        var responseBlank = $(this);
-                        var responseBlankIdArr = responseBlank.attr("id").split("_");
-                        var promptId = responseBlankIdArr[1];
-                        var index = responseBlankIdArr[2];
-                        var responseRTL = responseBlank.attr("dir") == "rtl";
-    
-                        var blankHtml = "<span id=\"response_" + promptId + "_" + index + "\" type=\"text\" class=\"response\" style=\"width:auto;\" data-isrtl=\"" + (responseRTL ? "true" : "false") + "\" data-promptid=\"" + promptId + "\" data-index=\"" + index + "\">";
-                        blankHtml += "  <span id=\"responseInputBox_" + promptId + "_" + index + "\" class=\"customInputBox\" dir=\"" + (responseRTL ? "rtl" : "ltr") + "\" data-promptid=\"" + promptId + "\" data-index=\"" + index + "\"></span>";
-                        blankHtml += "</span>";
-                        responseBlank.replaceWith(blankHtml);
-                        responseBlank = $("#response_" + promptId + "_" + index);
-                        //Insert Feedback Btn after the text based on the parent direction
-    
-                        var responseBlankContainer = $("<div style='display:inline-block;'></div>");
-                        responseBlank.before(responseBlankContainer);
-                        responseBlankContainer.html("<span id=\"inlineFeedbackContainer_" + promptId + "_" + index + "\" class=\"feedbackContainer inlineFeedbackContainer\"></span>");
-                        responseBlankContainer.append(responseBlank);
-    
-                        responseBlank.droppable({
-                            hoverClass: 'blankHover',
-                            accept: ".word",
-                            over: function (event, ui)
-                            {
-                                ui.draggable.addClass('hoverOver')
-                            },
-                            out: function (event, ui)
-                            {
-                                ui.draggable.removeClass('hoverOver')
-                            },
-                            drop: function (event, ui)
-                            {
-                                dropFillInTheBlankResponse(event, ui.draggable, $(this), activityComponent.id);
-                            }
-                        });
-                        responseBlank.css("text-align", "center");
-                        responseBlank.html("");
-                        responseBlank.data("fnbType", "wordPool");
-                        responseBlank.addClass("blank");
-                        responseBlank.addClass("dropTarget");
-                        responseBlank.removeAttr("type");
-                        responseBlank.css("width", "");
-                    });
-                break
+                        setupFillInTheBlankDrop(activityComponent.id);
 
-                case 2:
-                    for (var p = 0; p < activityComponent.prompts.length; p++)
-                    {
-                        var prompt = activityComponent.prompts[p];
-                        $("#responsesContainer_" + prompt.id).find(".blank").each(function ()
+
+                        $("#tabDetails_" + activityComponent.id).find(".blank").each(function ()
                         {
                             var responseBlank = $(this);
                             var responseBlankIdArr = responseBlank.attr("id").split("_");
+                            var promptId = responseBlankIdArr[1];
                             var index = responseBlankIdArr[2];
                             var responseRTL = responseBlank.attr("dir") == "rtl";
 
-
-                            var blankHtml = "<span id=\"response_" + prompt.id + "_" + index + "\" type=\"text\" class=\"response\" style=\"width:auto;\" data-isrtl=\"" + (responseRTL ? "true" : "false") + "\" data-promptid=\"" + prompt.id + "\" data-index=\"" + index + "\">";
-                            blankHtml += "  <span id=\"responseInputBox_" + prompt.id + "_" + index + "\" class=\"customInputBox\" dir=\"" + (responseRTL ? "rtl" : "ltr") + "\" data-promptid=\"" + prompt.id + "\" data-index=\"" + index + "\"></span>";
+                            var blankHtml = "<span id=\"response_" + promptId + "_" + index + "\" type=\"text\" class=\"response\" style=\"width:auto;\" data-isrtl=\"" + (responseRTL ? "true" : "false") + "\" data-promptid=\"" + promptId + "\" data-index=\"" + index + "\">";
+                            blankHtml += "  <span id=\"responseInputBox_" + promptId + "_" + index + "\" class=\"customInputBox\" dir=\"" + (responseRTL ? "rtl" : "ltr") + "\" data-promptid=\"" + promptId + "\" data-index=\"" + index + "\"></span>";
                             blankHtml += "</span>";
                             responseBlank.replaceWith(blankHtml);
-                            responseBlank = $("#response_" + prompt.id + "_" + index);
+                            responseBlank = $("#response_" + promptId + "_" + index);
                             //Insert Feedback Btn after the text based on the parent direction
 
                             var responseBlankContainer = $("<div style='display:inline-block;'></div>");
                             responseBlank.before(responseBlankContainer);
-                            responseBlankContainer.html("<span id=\"inlineFeedbackContainer_" + prompt.id + "_" + index + "\" class=\"feedbackContainer inlineFeedbackContainer\"></span>");
+                            responseBlankContainer.html("<span id=\"inlineFeedbackContainer_" + promptId + "_" + index + "\" class=\"feedbackContainer inlineFeedbackContainer\"></span>");
                             responseBlankContainer.append(responseBlank);
 
                             responseBlank.droppable({
                                 hoverClass: 'blankHover',
-                                accept: '.word[data-promptid="'+prompt.id+'"]',
+                                accept: ".word",
                                 over: function (event, ui)
                                 {
                                     ui.draggable.addClass('hoverOver')
@@ -143,798 +95,1159 @@ function setActivityComponentInteractivity(event)
                             });
                             responseBlank.css("text-align", "center");
                             responseBlank.html("");
-//                            responseBlank.data("fnbType", "wordPool");
+                            responseBlank.data("fnbType", "wordPool");
                             responseBlank.addClass("blank");
-//                            responseBlank.addClass("dropTarget");
+                            responseBlank.addClass("dropTarget");
                             responseBlank.removeAttr("type");
                             responseBlank.css("width", "");
                         });
-                        for (var r = 0; r < prompt.responses.length; r++)
+                        break
+
+                    case 2:
+                        for (var p = 0; p < activityComponent.prompts.length; p++)
                         {
-                            var response = prompt.responses[r];
-                            var blank = $("#response_" + prompt.id + "_" + (r + 1));
-                            blank.append('<span id="response_' + response.id + '" class="word draggableWord" dir="' + (response.rtl ? "rtl" : "ltr") + '" data-promptid="'+prompt.id+'" data-responseid="' + response.id + '">' + htmlDecode(response.text) + '</span>');
-                            var draggableResponse = $("#response_" + response.id);
-                            draggableResponse.draggable({
-                                revert: true,
-                                containment: $("#responsesContainer_" + prompt.id)
-                            });
-                            draggableResponse.css("width", "auto");
-                        }
-                    }
-                    break
-                default:
-                    for (var i = 0; i < activityComponent.prompts.length; i++)
-                        {
-                        var prompt = activityComponent.prompts[i];
-                        var index = -1;
-                        var shuffledResponses = shuffle(prompt.responses, true);
-                        for (var j = 0; j < prompt.responses.length; j++)
-                        {
-                            var response = prompt.responses[j];
-                            if (index != response.sortKey)
+                            var prompt = activityComponent.prompts[p];
+                            $("#responsesContainer_" + prompt.id).find(".blank").each(function ()
                             {
-                                index = response.sortKey;
-                                var indexResponseCount = 0;
-                                for (var k = 0; k < prompt.responses.length; k++)
-                                {
-                                    if (index == prompt.responses[k].sortKey)
-                                        indexResponseCount++;
-                                }
-                                var responseBlank = $("#response_" + prompt.id + "_" + index);
-                                //var responseInfo = getLanguageInfo(htmlDecode(response.text).trim());
-                                //var standardMultiplier = responseInfo.wideChar ? 1.8 : 1;
-                                //Forcing an id on the element
-                                //FIND THE RENDER MODE TO ESTABLISH CASE
-                                if (indexResponseCount > 1)
-                                    fillInTheBlankType = "dropDown";
-                                else
-                                    fillInTheBlankType = "inputBox";
-                                
-                                var blankHtml = '';
-                                if(fillInTheBlankType == "inputBox" && response.rtl)
-                                    blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>',[prompt.id, index, prompt.id, index, prompt.id, index]);
+                                var responseBlank = $(this);
+                                var responseBlankIdArr = responseBlank.attr("id").split("_");
+                                var index = responseBlankIdArr[2];
+                                var responseRTL = responseBlank.attr("dir") == "rtl";
 
-                                blankHtml += spf('<span id="response_~_~" type="text" class="response" style="width:auto;" data-isrtl="~" data-promptid="~" data-index="~">', [prompt.id, index, (response.rtl ? true : false), prompt.id, index])
-                                blankHtml += spf('<span id="responseInputBox_~_~" class="customInputBox" dir="~" data-promptid="~" data-index="~" data-activitycomponentid="~"></span>', [prompt.id, index, (response.rtl ? "rtl" : "ltr"), prompt.id, index, activityComponent.id]);                            
-                                blankHtml += '</span>'
-                                
-                                if(fillInTheBlankType == "inputBox" && !response.rtl)
-                                    blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>',[prompt.id, index, prompt.id, index, prompt.id, index]);
 
+                                var blankHtml = "<span id=\"response_" + prompt.id + "_" + index + "\" type=\"text\" class=\"response\" style=\"width:auto;\" data-isrtl=\"" + (responseRTL ? "true" : "false") + "\" data-promptid=\"" + prompt.id + "\" data-index=\"" + index + "\">";
+                                blankHtml += "  <span id=\"responseInputBox_" + prompt.id + "_" + index + "\" class=\"customInputBox\" dir=\"" + (responseRTL ? "rtl" : "ltr") + "\" data-promptid=\"" + prompt.id + "\" data-index=\"" + index + "\"></span>";
+                                blankHtml += "</span>";
                                 responseBlank.replaceWith(blankHtml);
                                 responseBlank = $("#response_" + prompt.id + "_" + index);
                                 //Insert Feedback Btn after the text based on the parent direction
 
                                 var responseBlankContainer = $("<div style='display:inline-block;'></div>");
                                 responseBlank.before(responseBlankContainer);
-                                responseBlankContainer.html('<span id="inlineFeedbackContainer_' + prompt.id + '_' + index + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                                responseBlankContainer.html("<span id=\"inlineFeedbackContainer_" + prompt.id + "_" + index + "\" class=\"feedbackContainer inlineFeedbackContainer\"></span>");
                                 responseBlankContainer.append(responseBlank);
-                                switch (fillInTheBlankType)
+
+                                responseBlank.droppable({
+                                    hoverClass: 'blankHover',
+                                    accept: '.word[data-promptid="' + prompt.id + '"]',
+                                    over: function (event, ui)
+                                    {
+                                        ui.draggable.addClass('hoverOver')
+                                    },
+                                    out: function (event, ui)
+                                    {
+                                        ui.draggable.removeClass('hoverOver')
+                                    },
+                                    drop: function (event, ui)
+                                    {
+                                        dropFillInTheBlankResponse(event, ui.draggable, $(this), activityComponent.id);
+                                    }
+                                });
+                                responseBlank.css("text-align", "center");
+                                responseBlank.html("");
+                                //                            responseBlank.data("fnbType", "wordPool");
+                                responseBlank.addClass("blank");
+                                //                            responseBlank.addClass("dropTarget");
+                                responseBlank.removeAttr("type");
+                                responseBlank.css("width", "");
+                            });
+                            for (var r = 0; r < prompt.responses.length; r++)
+                            {
+                                var response = prompt.responses[r];
+                                var blank = $("#response_" + prompt.id + "_" + (r + 1));
+                                blank.append('<span id="response_' + response.id + '" class="word draggableWord" dir="' + (response.rtl ? "rtl" : "ltr") + '" data-promptid="' + prompt.id + '" data-responseid="' + response.id + '">' + htmlDecode(response.text) + '</span>');
+                                var draggableResponse = $("#response_" + response.id);
+                                draggableResponse.draggable({
+                                    revert: true,
+                                    containment: $("#responsesContainer_" + prompt.id)
+                                });
+                                draggableResponse.css("width", "auto");
+                            }
+                        }
+                        break
+                    default:
+                        for (var i = 0; i < activityComponent.prompts.length; i++)
+                        {
+                            var prompt = activityComponent.prompts[i];
+                            var index = -1;
+                            var shuffledResponses = shuffle(prompt.responses, true);
+                            for (var j = 0; j < prompt.responses.length; j++)
+                            {
+                                var response = prompt.responses[j];
+                                if (index != response.sortKey)
                                 {
-                                    case "dropDown":
-                                        var blankHtml = spf('<a id="blankAnchor_~_~" class="blankAnchor word"></a><i id="blankAnchorCaret_~_~" class="blankAnchorCaret ~"></i>', [prompt.id, index, prompt.id, index, dropdownIndicatorIcon]);
-                                        blankHtml += spf('<span id="fnbDropDownMenu_~_~" class="fnbDropDownMenu">', [prompt.id, index]);
-                                        for (var k = 0; k < shuffledResponses.length; k++)
-                                        {
-                                            if (shuffledResponses[k].sortKey == index)
+                                    index = response.sortKey;
+                                    var indexResponseCount = 0;
+                                    for (var k = 0; k < prompt.responses.length; k++)
+                                    {
+                                        if (index == prompt.responses[k].sortKey)
+                                            indexResponseCount++;
+                                    }
+                                    var responseBlank = $("#response_" + prompt.id + "_" + index);
+                                    //var responseInfo = getLanguageInfo(htmlDecode(response.text).trim());
+                                    //var standardMultiplier = responseInfo.wideChar ? 1.8 : 1;
+                                    //Forcing an id on the element
+                                    //FIND THE RENDER MODE TO ESTABLISH CASE
+                                    if (indexResponseCount > 1)
+                                        fillInTheBlankType = "dropDown";
+                                    else
+                                        fillInTheBlankType = "inputBox";
+
+                                    var blankHtml = '';
+                                    if (fillInTheBlankType == "inputBox" && response.rtl)
+                                        blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>', [prompt.id, index, prompt.id, index, prompt.id, index]);
+
+                                    blankHtml += spf('<span id="response_~_~" type="text" class="response" style="width:auto;" data-isrtl="~" data-promptid="~" data-index="~">', [prompt.id, index, (response.rtl ? true : false), prompt.id, index])
+                                    blankHtml += spf('<span id="responseInputBox_~_~" class="customInputBox" dir="~" data-promptid="~" data-index="~" data-activitycomponentid="~"></span>', [prompt.id, index, (response.rtl ? "rtl" : "ltr"), prompt.id, index, activityComponent.id]);
+                                    blankHtml += '</span>'
+
+                                    if (fillInTheBlankType == "inputBox" && !response.rtl)
+                                        blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>', [prompt.id, index, prompt.id, index, prompt.id, index]);
+
+                                    responseBlank.replaceWith(blankHtml);
+                                    responseBlank = $("#response_" + prompt.id + "_" + index);
+                                    //Insert Feedback Btn after the text based on the parent direction
+
+                                    var responseBlankContainer = $("<div style='display:inline-block;'></div>");
+                                    responseBlank.before(responseBlankContainer);
+                                    responseBlankContainer.html('<span id="inlineFeedbackContainer_' + prompt.id + '_' + index + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                                    responseBlankContainer.append(responseBlank);
+                                    switch (fillInTheBlankType)
+                                    {
+                                        case "dropDown":
+                                            var blankHtml = spf('<a id="blankAnchor_~_~" class="blankAnchor word"></a><i id="blankAnchorCaret_~_~" class="blankAnchorCaret ~"></i>', [prompt.id, index, prompt.id, index, dropdownIndicatorIcon]);
+                                            blankHtml += spf('<span id="fnbDropDownMenu_~_~" class="fnbDropDownMenu">', [prompt.id, index]);
+                                            for (var k = 0; k < shuffledResponses.length; k++)
                                             {
-                                                blankHtml += spf('<span class="fnbDropDownMenuOption"><a class="word" dir="~">', [(shuffledResponses[k].rtl ? "rtl" : "ltr")]);
-                                                blankHtml += stripRTLDiv(htmlDecode(shuffledResponses[k].text)).text;
-                                                blankHtml += "</a></span>";
-                                            }
-                                        }
-                                        blankHtml += "</span>";
-                                        responseBlank.html(blankHtml);
-                                        responseBlank.removeAttr("type");
-                                        responseBlank.addClass("blank");
-                                        var params = [prompt.id, index];//Pass in values for each iteration
-                                        $("#fnbDropDownMenu_" + prompt.id + "_" + index).find(".word").each(function ()
-                                        {
-                                            $(this).data("params", params);
-                                            $(this).on("click", function (event)
-                                            {
-                                                selectBlankResponse($(this), activityComponent.id);
-                                            });
-                                        }, params);
-                                        $("#blankAnchor_" + prompt.id + "_" + index).click({ promptId: prompt.id, index: index }, showFillInBlankSubMenu);
-                                        $("#blankAnchorCaret_" + prompt.id + "_" + index).click({ promptId: prompt.id, index: index }, showFillInBlankSubMenu);
-                                        var submenuDiv = $("#fnbDropDownMenu_" + prompt.id + "_" + index);
-                                        submenuDiv.css("display", "none");
-                                        var dim = submenuDiv.getHiddenDimensions(true);
-                                        break;
-                                    default:
-                                        var responseInputBox = $("#responseInputBox_" + prompt.id + "_" + index);
-                                        responseInputBox.attr("spellcheck", false);
-                                        responseInputBox.attr("contenteditable", false);
-                                        responseInputBox.attr("autocomplete", "off");
-                                        $("#response_" + prompt.id + "_" + index).on("click", function (ev)
-                                        {
-                                            if(typeof submitInProgress === 'undefined'){//submitInProgress global in recordStudentACtion.js
-                                                submitInProgress = false;
-                                            }
-                                            if(!submitInProgress){
-                                                var inputBox = $(this).children("[id^='responseInputBox_']");
-                                                if (document.activeElement == this && !this.textContent)
+                                                if (shuffledResponses[k].sortKey == index)
                                                 {
-                                                    var sel = window.getSelection();
-                                                    var rng = sel.getRangeAt(0);
-                                                    if (rng.startContainer == this.parentNode)
-                                                    {
-                                                        var newRng = document.createRange();
-                                                        newRng.setStart(this, 0);
-                                                        newRng.collapse(true);
-                                                        sel.removeAllRanges();
-                                                        sel.addRange(newRng);
-                                                    }
+                                                    blankHtml += spf('<span class="fnbDropDownMenuOption"><a class="word" dir="~">', [(shuffledResponses[k].rtl ? "rtl" : "ltr")]);
+                                                    blankHtml += stripRTLDiv(htmlDecode(shuffledResponses[k].text)).text;
+                                                    blankHtml += "</a></span>";
                                                 }
-                                                inputBox.attr('contenteditable', 'true').focus();
-                                                inputBox.parent().addClass('active');
-                                                ev.preventDefault();
-                                                ev.stopPropagation();
                                             }
-                                        });
-                                        //FROM TRANSCRIPTION
-                                        responseInputBox.on("keydown", function (ev)
-                                        {
-                                            if ($(this).data("text") != $(this).text()){
-                                                //enable submit btn
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn);
-                                                submitBtnElement.removeClass("disabled");
-                                                submitBtnElement.removeClass("btnGrey");
-                                                submitBtnElement.addClass("btnBlue");
-                                                if(response.rtl)
-                                                    submitBtnElement.html('<i class="fa fa-reply"></i>')
-                                                else
-                                                    submitBtnElement.html('<i class="fa fa-share"></i>')
-                                            }
-                                            if (ev.keyCode == 13)
+                                            blankHtml += "</span>";
+                                            responseBlank.html(blankHtml);
+                                            responseBlank.removeAttr("type");
+                                            responseBlank.addClass("blank");
+                                            var params = [prompt.id, index];//Pass in values for each iteration
+                                            $("#fnbDropDownMenu_" + prompt.id + "_" + index).find(".word").each(function ()
                                             {
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn).trigger("click");
-                                                $(this).data("tabcalled", false);
-                                                ev.preventDefault();
-                                            }
-                                            if (ev.keyCode == 9)
+                                                $(this).data("params", params);
+                                                $(this).on("click", function (event)
+                                                {
+                                                    selectBlankResponse($(this), activityComponent.id);
+                                                });
+                                            }, params);
+                                            $("#blankAnchor_" + prompt.id + "_" + index).click({ promptId: prompt.id, index: index }, showFillInBlankSubMenu);
+                                            $("#blankAnchorCaret_" + prompt.id + "_" + index).click({ promptId: prompt.id, index: index }, showFillInBlankSubMenu);
+                                            var submenuDiv = $("#fnbDropDownMenu_" + prompt.id + "_" + index);
+                                            submenuDiv.css("display", "none");
+                                            var dim = submenuDiv.getHiddenDimensions(true);
+                                            break;
+                                        default:
+                                            var responseInputBox = $("#responseInputBox_" + prompt.id + "_" + index);
+                                            responseInputBox.attr("spellcheck", false);
+                                            responseInputBox.attr("contenteditable", false);
+                                            responseInputBox.attr("autocomplete", "off");
+                                            $("#response_" + prompt.id + "_" + index).on("click", function (ev)
                                             {
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn)
-                                                $(this).data("tabcalled", true);
-                                                submitBtnElement.trigger("click");
-                                                ev.preventDefault();
-                                                if(typeof submitInProgress === 'undefined'){//Respond to tab if record student action layer isnt present
-                                                    var inputBox = $(this);
-                                                    var index = parseInt(inputBox.data("index"));
-                                                    var promptId = inputBox.data("promptid");
-                                                    var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
-                                                    if (nextResponse.length)
+                                                if (typeof submitInProgress === 'undefined')
+                                                {//submitInProgress global in recordStudentACtion.js
+                                                    submitInProgress = false;
+                                                }
+                                                if (!submitInProgress)
+                                                {
+                                                    var inputBox = $(this).children("[id^='responseInputBox_']");
+                                                    if (document.activeElement == this && !this.textContent)
                                                     {
-                                                        nextResponse.click();
-                                                    }
-                                                    else
-                                                    {
-                                                        var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
-                                                        if (firstResponse.length)
+                                                        var sel = window.getSelection();
+                                                        var rng = sel.getRangeAt(0);
+                                                        if (rng.startContainer == this.parentNode)
                                                         {
-                                                            firstResponse.click();
+                                                            var newRng = document.createRange();
+                                                            newRng.setStart(this, 0);
+                                                            newRng.collapse(true);
+                                                            sel.removeAllRanges();
+                                                            sel.addRange(newRng);
+                                                        }
+                                                    }
+                                                    inputBox.attr('contenteditable', 'true').focus();
+                                                    inputBox.parent().addClass('active');
+                                                    ev.preventDefault();
+                                                    ev.stopPropagation();
+                                                }
+                                            });
+                                            //FROM TRANSCRIPTION
+                                            responseInputBox.on("keydown", function (ev)
+                                            {
+                                                if ($(this).data("text") != $(this).text())
+                                                {
+                                                    //enable submit btn
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn);
+                                                    submitBtnElement.removeClass("disabled");
+                                                    submitBtnElement.removeClass("btnGrey");
+                                                    submitBtnElement.addClass("btnBlue");
+                                                    if (response.rtl)
+                                                        submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                                    else
+                                                        submitBtnElement.html('<i class="fa fa-share"></i>')
+                                                }
+                                                if (ev.keyCode == 13)
+                                                {
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn).trigger("click");
+                                                    $(this).data("tabcalled", false);
+                                                    ev.preventDefault();
+                                                }
+                                                if (ev.keyCode == 9)
+                                                {
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn)
+                                                    $(this).data("tabcalled", true);
+                                                    submitBtnElement.trigger("click");
+                                                    ev.preventDefault();
+                                                    if (typeof submitInProgress === 'undefined')
+                                                    {//Respond to tab if record student action layer isnt present
+                                                        var inputBox = $(this);
+                                                        var index = parseInt(inputBox.data("index"));
+                                                        var promptId = inputBox.data("promptid");
+                                                        var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
+                                                        if (nextResponse.length)
+                                                        {
+                                                            nextResponse.click();
+                                                        }
+                                                        else
+                                                        {
+                                                            var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
+                                                            if (firstResponse.length)
+                                                            {
+                                                                firstResponse.click();
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                            //Revert on ESC key
-                                            if (ev.keyCode == 27){
-                                                $(this).removeClass("active");
-                                                $(this).focusout();
-                                                $(this).text($(this).data("text"));
-                                                $(this).attr('contenteditable', 'false');
-                                                
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn);
-                                                submitBtnElement.addClass("disabled");
-                                                submitBtnElement.addClass("btnGrey");
-                                                submitBtnElement.removeClass("btnBlue");
-                                                if(response.rtl)
-                                                    submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
-                                                else
-                                                    submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
-                                            }
-                                        });
-                                        responseInputBox.on("keydown", function (ev)
-                                        {
-                                            if ($(this).data("text") != $(this).text()){
-                                                //enable submit btn
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn);
-                                                submitBtnElement.removeClass("disabled");
-                                                submitBtnElement.removeClass("btnGrey");
-                                                submitBtnElement.addClass("btnBlue");
-                                                if(response.rtl)
-                                                    submitBtnElement.html('<i class="fa fa-reply"></i>')
-                                                else
-                                                    submitBtnElement.html('<i class="fa fa-share"></i>')
-                                            }
-                                            if (ev.keyCode == 13)
-                                            {
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn).trigger("click");
-                                                $(this).data("tabcalled", false);
-                                                ev.preventDefault();
-                                            }
-                                            if (ev.keyCode == 9)
-                                            {
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn)
-                                                $(this).data("tabcalled", true);
-                                                submitBtnElement.trigger("click");
-                                                ev.preventDefault();
-                                                if(submitInProgress === false){//Respond to tab if record student action layer isnt present
-                                                    var inputBox = $(this);
-                                                    var index = parseInt(inputBox.data("index"));
-                                                    var promptId = inputBox.data("promptid");
-                                                    var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
-                                                    if (nextResponse.length)
-                                                    {
-                                                        nextResponse.click();
-                                                    }
+                                                //Revert on ESC key
+                                                if (ev.keyCode == 27)
+                                                {
+                                                    $(this).removeClass("active");
+                                                    $(this).focusout();
+                                                    $(this).text($(this).data("text"));
+                                                    $(this).attr('contenteditable', 'false');
+
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn);
+                                                    submitBtnElement.addClass("disabled");
+                                                    submitBtnElement.addClass("btnGrey");
+                                                    submitBtnElement.removeClass("btnBlue");
+                                                    if (response.rtl)
+                                                        submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
                                                     else
-                                                    {
-                                                        var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
-                                                        if (firstResponse.length)
+                                                        submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                                }
+                                            });
+                                            responseInputBox.on("keydown", function (ev)
+                                            {
+                                                if ($(this).data("text") != $(this).text())
+                                                {
+                                                    //enable submit btn
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn);
+                                                    submitBtnElement.removeClass("disabled");
+                                                    submitBtnElement.removeClass("btnGrey");
+                                                    submitBtnElement.addClass("btnBlue");
+                                                    if (response.rtl)
+                                                        submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                                    else
+                                                        submitBtnElement.html('<i class="fa fa-share"></i>')
+                                                }
+                                                if (ev.keyCode == 13)
+                                                {
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn).trigger("click");
+                                                    $(this).data("tabcalled", false);
+                                                    ev.preventDefault();
+                                                }
+                                                if (ev.keyCode == 9)
+                                                {
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn)
+                                                    $(this).data("tabcalled", true);
+                                                    submitBtnElement.trigger("click");
+                                                    ev.preventDefault();
+                                                    if (submitInProgress === false)
+                                                    {//Respond to tab if record student action layer isnt present
+                                                        var inputBox = $(this);
+                                                        var index = parseInt(inputBox.data("index"));
+                                                        var promptId = inputBox.data("promptid");
+                                                        var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
+                                                        if (nextResponse.length)
                                                         {
-                                                            firstResponse.click();
+                                                            nextResponse.click();
+                                                        }
+                                                        else
+                                                        {
+                                                            var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
+                                                            if (firstResponse.length)
+                                                            {
+                                                                firstResponse.click();
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                            //Revert on ESC key
-                                            if (ev.keyCode == 27){
-                                                $(this).removeClass("active");
-                                                $(this).focusout();
-                                                $(this).text($(this).data("text"));
-                                                $(this).attr('contenteditable', 'false');
-                                                
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn);
-                                                submitBtnElement.addClass("disabled");
-                                                submitBtnElement.addClass("btnGrey");
-                                                submitBtnElement.removeClass("btnBlue");
-                                                if(response.rtl)
-                                                    submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
-                                                else
-                                                    submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
-                                            }
-                                        });
-                                        responseInputBox.on("keyup", function (ev)
-                                        {
-                                            if ($(this).data("text") != $(this).text()){
-                                                //enable submit btn
-                                                var submitBtn = $(this).attr("id")+"_submit";
-                                                var submitBtnElement = $("#"+submitBtn);
-                                                submitBtnElement.removeClass("disabled");
-                                                submitBtnElement.removeClass("btnGrey");
-                                                submitBtnElement.addClass("btnBlue");
-                                                if(response.rtl)
-                                                    submitBtnElement.html('<i class="fa fa-reply"></i>')
-                                                else
-                                                    submitBtnElement.html('<i class="fa fa-share"></i>')
-                                            }
-                                        })
+                                                //Revert on ESC key
+                                                if (ev.keyCode == 27)
+                                                {
+                                                    $(this).removeClass("active");
+                                                    $(this).focusout();
+                                                    $(this).text($(this).data("text"));
+                                                    $(this).attr('contenteditable', 'false');
 
-                                        responseInputBox.on("focusin", function ()
-                                        {
-                                            var thisBox = $(this);
-                                            thisBox.data("text", thisBox.text());
-                                            thisBox.data("tabcalled", false);
-                                        });
-                                        responseInputBox.on("focusout", function ()
-                                        {
-                                            var thisBox = $(this);
-                                            var promptId = thisBox.data("promptid");
-                                            var responseIndex = thisBox.data("index");
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn);
+                                                    submitBtnElement.addClass("disabled");
+                                                    submitBtnElement.addClass("btnGrey");
+                                                    submitBtnElement.removeClass("btnBlue");
+                                                    if (response.rtl)
+                                                        submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                                    else
+                                                        submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                                }
+                                            });
+                                            responseInputBox.on("keyup", function (ev)
+                                            {
+                                                if ($(this).data("text") != $(this).text())
+                                                {
+                                                    //enable submit btn
+                                                    var submitBtn = $(this).attr("id") + "_submit";
+                                                    var submitBtnElement = $("#" + submitBtn);
+                                                    submitBtnElement.removeClass("disabled");
+                                                    submitBtnElement.removeClass("btnGrey");
+                                                    submitBtnElement.addClass("btnBlue");
+                                                    if (response.rtl)
+                                                        submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                                    else
+                                                        submitBtnElement.html('<i class="fa fa-share"></i>')
+                                                }
+                                            })
 
-                                            $("#response_" + promptId + "_" + responseIndex).removeClass("active");
-                                            $(this).attr('contenteditable', 'false');
-                                        });
-
-                                        responseInputBox.on("paste", function (e)
-                                        {
-                                            e.preventDefault();
-                                        });
-
-                                        responseInputBox.on("contextmenu", function (e)
-                                        {
-                                            e.preventDefault();
-                                        });
-                                        responseInputBox.on("focusin", function ()
-                                        {
-                                            var thisBox = $(this);
-                                            thisBox.data("text", thisBox.text());
-                                        });
-                                        responseInputBox.on("focusout", function ()
-                                        {
-                                            var thisBox = $(this);
-                                            var promptId = thisBox.data("promptid");
-                                            var responseIndex = thisBox.data("index");
-                                            $("#response_" + promptId + "_" + responseIndex).removeClass("active");
-                                            $(this).attr('contenteditable', 'false');
-                                        });
-
-                                        var responseInputBoxSubmitBtn = $("#responseInputBox_" + prompt.id + "_" + index + "_submit");
-                                        
-                                        responseInputBoxSubmitBtn.on("click", function(){
-                                            if(typeof submitInProgress === 'undefined'){//submitInProgress global in recordStudentACtion.js
-                                                submitInProgress = false;
-                                            }
-                                            if(!submitInProgress && !$(this).hasClass("disabled")){
-                                                var thisBox = $("#"+$(this).data("responseinputbox"));
+                                            responseInputBox.on("focusin", function ()
+                                            {
+                                                var thisBox = $(this);
+                                                thisBox.data("text", thisBox.text());
+                                                thisBox.data("tabcalled", false);
+                                            });
+                                            responseInputBox.on("focusout", function ()
+                                            {
+                                                var thisBox = $(this);
                                                 var promptId = thisBox.data("promptid");
                                                 var responseIndex = thisBox.data("index");
-                                                
-                                                thisBox.removeClass("active");
-                                                thisBox.attr('contenteditable', 'false');
-                                                // $(this).hide();
-                                                $(this).html('<i class="loader" style="font-size:.8em;">&nbsp</i>')
-                                                // $(this).after('<i class="loader" style="display: inline-block; margin-left:.25em; font-size:.8em;">&nbsp</i>');
-                                                var responseInteractionEvent = $.Event("responseInteraction");
-                                                responseInteractionEvent.activityComponentId = activityComponent.id;
-                                                responseInteractionEvent.promptId = parseInt(promptId);
-                                                responseInteractionEvent.responseId = 0;
-                                                responseInteractionEvent.componentTitle = "FillInTheBlank";
-                                                responseInteractionEvent.responseIndex = parseInt(responseIndex);
-                                                responseInteractionEvent.responseText = thisBox.text();
-                                                $(document).trigger(responseInteractionEvent);
-                                            }
-                                        })
-                                        break;
+
+                                                $("#response_" + promptId + "_" + responseIndex).removeClass("active");
+                                                $(this).attr('contenteditable', 'false');
+                                            });
+
+                                            responseInputBox.on("paste", function (e)
+                                            {
+                                                e.preventDefault();
+                                            });
+
+                                            responseInputBox.on("contextmenu", function (e)
+                                            {
+                                                e.preventDefault();
+                                            });
+                                            responseInputBox.on("focusin", function ()
+                                            {
+                                                var thisBox = $(this);
+                                                thisBox.data("text", thisBox.text());
+                                            });
+                                            responseInputBox.on("focusout", function ()
+                                            {
+                                                var thisBox = $(this);
+                                                var promptId = thisBox.data("promptid");
+                                                var responseIndex = thisBox.data("index");
+                                                $("#response_" + promptId + "_" + responseIndex).removeClass("active");
+                                                $(this).attr('contenteditable', 'false');
+                                            });
+
+                                            var responseInputBoxSubmitBtn = $("#responseInputBox_" + prompt.id + "_" + index + "_submit");
+
+                                            responseInputBoxSubmitBtn.on("click", function ()
+                                            {
+                                                if (typeof submitInProgress === 'undefined')
+                                                {//submitInProgress global in recordStudentACtion.js
+                                                    submitInProgress = false;
+                                                }
+                                                if (!submitInProgress && !$(this).hasClass("disabled"))
+                                                {
+                                                    var thisBox = $("#" + $(this).data("responseinputbox"));
+                                                    var promptId = thisBox.data("promptid");
+                                                    var responseIndex = thisBox.data("index");
+
+                                                    thisBox.removeClass("active");
+                                                    thisBox.attr('contenteditable', 'false');
+                                                    // $(this).hide();
+                                                    $(this).html('<i class="loader" style="font-size:.8em;">&nbsp</i>')
+                                                    // $(this).after('<i class="loader" style="display: inline-block; margin-left:.25em; font-size:.8em;">&nbsp</i>');
+                                                    var responseInteractionEvent = $.Event("responseInteraction");
+                                                    responseInteractionEvent.activityComponentId = activityComponent.id;
+                                                    responseInteractionEvent.promptId = parseInt(promptId);
+                                                    responseInteractionEvent.responseId = 0;
+                                                    responseInteractionEvent.componentTitle = "FillInTheBlank";
+                                                    responseInteractionEvent.responseIndex = parseInt(responseIndex);
+                                                    responseInteractionEvent.responseText = thisBox.text();
+                                                    $(document).trigger(responseInteractionEvent);
+                                                }
+                                            })
+                                            break;
+                                    }
                                 }
                             }
                         }
-                    }
                     //END FNB Render Modes SWITCH
-            }
-            break;
-        case "FINDANDCLICK":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                $("#responsesContainer_" + prompt.id).children("img").on("click", {prompt : prompt}, function (e)
-                {
-                    var img = $('#responsesContainer_' + e.data.prompt.id + ' img').get(0);
-                    var imgX = img.naturalWidth;
-                    var imgY = img.naturalHeight;
-                    for (var j = 0; j < e.data.prompt.responses.length; j++)
-                    {
-                        var response = e.data.prompt.responses[j];
-                        var responseDataArr = $.parseJSON(response.text);
-                        if (responseDataArr.length == 4)
-                        {
-                            var offset = $(this).offset();
-                            var clickX = e.pageX - offset.left;
-                            var clickY = e.pageY - offset.top;
-                            if ((clickX >= Math.round(responseDataArr[0] / imgX * img.width)) && (clickX <= Math.round(responseDataArr[2] / imgX * img.width)) && (clickY >= Math.round(responseDataArr[1] / imgY * img.height)) && (clickY <= Math.round(responseDataArr[3] / imgY * img.height)))
-                            {
-                                loadResponseHotspot(activityComponent, response, true);
-                            }
-                        }
-                    }
-                });
-            }
-            break;
-        case "MATCHING":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                setupMatchingDrop(activityComponent.id, prompt.id);
-            }
-            for (var i = 0; i < activityComponent.responses.length; i++)
-            {
-                var response = activityComponent.responses[i];
-                setupMatchingDrag(response.activityComponentId, response.id);
-            }
-            break;
-        case "ORDERING":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                var renderMode = activityComponent.renderModeIndex;
-                switch (renderMode) {
-                    case 0:
-                        setupVerticalOrderingResponseSortables(prompt.id, prompt.activityComponentId);
-                        break
-                    case 1:
-                        setupHorizontalOrderingResponseSortables(prompt.id, prompt.activityComponentId);
-                        break
                 }
-
-                var responseIds = new Array();
-                for (var r = 0; r < activityComponent.prompts[i].responses.length; r++)
-                    responseIds.push(activityComponent.prompts[i].responses[r].id);
-
-            }
-            break;
-        case "SHORTANSWER":
-            for (var i = 0; i < activityComponent.prompts.length; i++) {
-                var renderMode = activityComponent.renderModeIndex;
-                switch (renderMode) {
-                    case 0:
-                        //default
-                        (function () {  // Closure function to attach functionality to each short answer component
-                            var prompt = activityComponent.prompts[i];
-                            var shortAnswerResponseContent = $(`#shortAnswerResponseContent_${prompt.id}`);
-                            var inputBox = $(`#responseInputBox_${prompt.id}`);
-                            var inputIcon = $(`#inputBoxIcon_${prompt.id}`);
-                            inputBox.on("paste", function (event) { event.preventDefault() });  // Prevents paste
-                            inputBox.on("contextmenu", function (event) { event.preventDefault() });    // Prevents right-click menu
-    
-                            var response = prompt.responses[0];
-                            var shortAnswerSubmitButton = false;
-                            if (response)
-                            {
-                                shortAnswerResponseContent.after('<span id="responseInputSubmit_' + prompt.id + '" class="submitBtn btnGrey disabled" style="text-align:center; width: 10em; margin-top:0.5em; float: ' + (response.rtl ? "right" : "left") + ';"><i class="fa fa-check" style="color:#ffffff;"></i> Submit</span>');
-                                shortAnswerSubmitButton = $(`#responseInputSubmit_${prompt.id}`);
-                            }
-    
-                            shortAnswerResponseContent.on("click", function (event) {
-                                if(!$(this).hasClass("active")){
-                                    $(this).addClass("active");
-                                    inputIcon.css("display", "none");
-                                    inputBox.attr("contenteditable", "true");
-                                    inputBox.focus();   // Give input box focus
-                                }
-                            });
-    
-    
-    
-                            inputBox.on("keydown", function (ev) { // Fires every character change of a student's answer
-                                //Revert on ESC key
-                                if (ev.keyCode == 27){
-                                    $(this).removeClass("active");
-                                    $(this).focusout();
-                                    $(this).text(htmlDecode($(this).data("text")));
-                                    $(this).attr('contenteditable', 'false');
-    
-                                    shortAnswerSubmitButton.addClass("disabled");
-                                    shortAnswerSubmitButton.addClass("btnGrey");
-                                    shortAnswerSubmitButton.removeClass("btnBlue");
-                                    if(inputBox.attr("dir") == "rtl")
-                                        shortAnswerSubmitButton.html('<i class="fa fa-check" style="color:#ffffff;"></i> Submit')
-                                    else
-                                        shortAnswerSubmitButton.html('<i class="fa fa-check" style="color:#ffffff;"></i> Submit')
-                                }
-                            })
-    
-                            inputBox.on("keyup", function (ev) { // Fires every character change of a student's answer
-                                if (shortAnswerSubmitButton.hasClass("disabled")) { // if submit button is NOT displayed, make button visible
-                                    shortAnswerSubmitButton.removeClass("disabled");
-                                    shortAnswerSubmitButton.removeClass("btnGrey");
-                                    shortAnswerSubmitButton.addClass("btnBlue");
-                                    if(inputBox.attr("dir") == "rtl")
-                                        shortAnswerSubmitButton.html('<i class="fa fa-reply"></i> Submit')
-                                    else
-                                        shortAnswerSubmitButton.html('<i class="fa fa-share"></i> Submit')
-                                }
-                            });
-    
-                            inputBox.on('blur', function (event) {  // Fires when a input box loses focus
-                                shortAnswerResponseContent.removeClass("active"); // Make shortAnswerResponseContent non-active
-                                inputIcon.css("display", "")
-                            })
-    
-                            shortAnswerSubmitButton.on("click",function (event) {
-                                if(typeof submitInProgress === 'undefined'){//submitInProgress global in recordStudentACtion.js
-                                    submitInProgress = false;
-                                }
-                                if(!submitInProgress && !$(this).hasClass("disabled")){
-                                    event.stopPropagation();    // Prevent click from bubbling to the parent click
-    
-                                    shortAnswerResponseContent.removeClass("active");
-                                    inputIcon.css("display", ""); // Render the icon
-                                    inputBox.attr("contenteditable", "false");
-                                    shortAnswerSubmitButton.addClass("disabled");
-                                    shortAnswerSubmitButton.addClass("btnGrey");
-                                    shortAnswerSubmitButton.removeClass("btnBlue");
-    
-                                    var responseInteractionEvent = $.Event("responseInteraction");  // beginning of packaging up our answer
-                                    responseInteractionEvent.activityComponentId = activityComponent.id;
-                                    responseInteractionEvent.promptId = parseInt(prompt.id);
-                                    responseInteractionEvent.responseId = 0;
-                                    responseInteractionEvent.componentTitle = "ShortAnswer";
-                                    responseInteractionEvent.responseText = inputBox.html()
-                                    $(document).trigger(responseInteractionEvent);
-                                }
-                            });    
-                        }())
-                    break
-                    case 1:
-                        var responseInteractionEvent = $.Event("responseInteraction");
-                        responseInteractionEvent.activityComponentId = activityComponent.id;
-                        responseInteractionEvent.promptId = parseInt(prompt.id);
-                        responseInteractionEvent.responseId = 0;
-                        responseInteractionEvent.componentTitle = "ShortAnswer";
-                        responseInteractionEvent.responseText = " ";
-                        $(document).trigger(responseInteractionEvent);
-                    break
-                }
-            }
-            break;
-        case "SPEAKING":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                var speakingResponseContent = $("#speakingResponseContent_" + prompt.id);
-                if (prompt.recorder && prompt.recorder.submit)
+                break;
+            case "FINDANDCLICK":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
                 {
-                    var response = prompt.responses[0];
-                    speakingResponseContent.after('<span id="responseInputSubmit_' + prompt.id + '" class="submitBtn btnGrey disabled" style="text-align:center; width: 10em; margin-top:0.5em; float: ' + (response.rtl ? "right" : "left") + ';" data-dir="' + (prompt.rtl ? "rtl" : "ltr") + '"><i class="fa fa-check" style="color:#ffffff;"></i> Submit</span>');
-                }
-            }
-            break;
-        case "TEXTSELECTOR":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                for (var j = 0; j < prompt.responses.length; j++)
-                {
-                    var response = prompt.responses[j];
-                    bindSelectableText($("#response_"+response.id), activityComponent);
-                }
-            }
-            break;
-        case "TRANSCRIPTION":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                var index = -1;
-                for (var j = 0; j < prompt.responses.length; j++)
-                {
-                    var response = prompt.responses[j];
-                    if (index != response.sortKey)
-                    {
-                        index = response.sortKey;
-                        var responseBlank = $("#response_" + prompt.id + "_" + index);
-                        var blankHtml = '';
-                        var blankHtml = '';
-                        if(response.rtl)
-                            blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>',[prompt.id, index, prompt.id, index, prompt.id, index]);
-                        
-                        blankHtml += '<span id="response_' + prompt.id + '_' + index + '" type="text" class="response" style="width:auto;" data-isrtl="' + (response.rtl ? "true" : "false") + '" data-promptid="' + prompt.id + '" data-index="' + index + '" tabindex="'+prompt.id+'-'+index+'">';
-                        blankHtml += spf('<span id="responseInputBox_~_~" class="customInputBox" dir="~" data-promptid="~" data-index="~" data-activitycomponentid="~"></span>', [prompt.id, index, (response.rtl ? "rtl" : "ltr"), prompt.id, index, activityComponent.id]);
-                        blankHtml += '</span>'
-
-                        if(!response.rtl)
-                            blankHtml += spf('<span id="responseInputBox_~_~_submit" _submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>',[prompt.id, index, prompt.id, index, prompt.id, index]);
-                        
-                        responseBlank.replaceWith(blankHtml);
-                        responseBlank = $("#response_" + prompt.id + "_" + index);
-                        //Insert Feedback Btn after the text based on the parent direction
-
-                        var responseBlankContainer = $("<div style='display:inline-block;'></div>");
-                        responseBlank.before(responseBlankContainer);
-                        responseBlankContainer.html('<span id="inlineFeedbackContainer_' + prompt.id + '_' + index + '" class="feedbackContainer inlineFeedbackContainer"></span>');
-                        responseBlankContainer.append(responseBlank);
-                        var responseInputBox = $("#responseInputBox_" + prompt.id + "_" + index);
-                        $("#customInputBoxIcon_" + prompt.id + "_" + index).show();
-                        responseInputBox.attr("spellcheck", false);
-                        responseInputBox.attr("contenteditable", false);
-                        responseInputBox.attr("autocomplete", "off");
-                        responseInputBox.on("click", function (ev) 
-                        {
-                            if(typeof submitInProgress === 'undefined'){//submitInProgress global in recordStudentACtion.js
-                                submitInProgress = false;
-                            }
-                            if(!submitInProgress){
-                                if (document.activeElement == this && !this.textContent) 
-                                {
-                                    var sel = window.getSelection();
-                                    var rng = sel.getRangeAt(0);
-                                    if (rng.startContainer == this.parentNode) 
-                                    {
-                                        var newRng = document.createRange();
-                                        newRng.setStart(this, 0);
-                                        newRng.collapse(true);
-                                        sel.removeAllRanges();
-                                        sel.addRange(newRng);
-                                    }
-                                }
-                                else 
-                                {
-                                    $(this).attr('contenteditable', 'true').focus();
-                                }
-                                $(this).parent().addClass('active');
-                                ev.preventDefault();
-                                ev.stopPropagation();
-                            }
-                        });
-
-                        responseInputBox.on("keydown", function (ev)
-                        {
-                            if ($(this).data("text") != $(this).text()){
-                                //enable submit btn
-                                var submitBtn = $(this).attr("id")+"_submit";
-                                var submitBtnElement = $("#"+submitBtn);
-                                submitBtnElement.removeClass("disabled");
-                                submitBtnElement.removeClass("btnGrey");
-                                submitBtnElement.addClass("btnBlue");
-                                if(response.rtl)
-                                    submitBtnElement.html('<i class="fa fa-reply"></i>')
-                                else
-                                    submitBtnElement.html('<i class="fa fa-share"></i>')
-                            }
-                            if (ev.keyCode == 13)
-                            {
-                                var submitBtn = $(this).attr("id")+"_submit";
-                                var submitBtnElement = $("#"+submitBtn).trigger("click");
-                                $(this).data("tabcalled", false);
-                                ev.preventDefault();
-                            }
-                            if (ev.keyCode == 9)
-                            {
-                                var submitBtn = $(this).attr("id")+"_submit";
-                                var submitBtnElement = $("#"+submitBtn)
-                                $(this).data("tabcalled", true);
-                                submitBtnElement.trigger("click");
-                                ev.preventDefault();
-                                if(submitInProgress === false){//Respond to tab if record student action layer isnt present
-                                    var inputBox = $(this);
-                                    var index = parseInt(inputBox.data("index"));
-                                    var promptId = inputBox.data("promptid");
-                                    var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
-                                    if (nextResponse.length)
-                                    {
-                                        nextResponse.click();
-                                    }
-                                    else
-                                    {
-                                        var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
-                                        if (firstResponse.length)
-                                        {
-                                            firstResponse.click();
-                                        }
-                                    }
-                                }
-                            }
-                            //Revert on ESC key
-                            if (ev.keyCode == 27){
-                                $(this).removeClass("active");
-                                $(this).focusout();
-                                $(this).text($(this).data("text"));
-                                $(this).attr('contenteditable', 'false');
-                                
-                                var submitBtn = $(this).attr("id")+"_submit";
-                                var submitBtnElement = $("#"+submitBtn);
-                                submitBtnElement.addClass("disabled");
-                                submitBtnElement.addClass("btnGrey");
-                                submitBtnElement.removeClass("btnBlue");
-                                if(response.rtl)
-                                    submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
-                                else
-                                    submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
-                            }
-                        });
-
-                        responseInputBox.on("keyup", function (ev)
-                        {
-                            if ($(this).data("text") != $(this).text()){
-                                //enable submit btn
-                                var submitBtn = $(this).attr("id")+"_submit";
-                                var submitBtnElement = $("#"+submitBtn);
-                                submitBtnElement.removeClass("disabled");
-                                submitBtnElement.removeClass("btnGrey");
-                                submitBtnElement.addClass("btnBlue");
-                                if(response.rtl)
-                                    submitBtnElement.html('<i class="fa fa-reply"></i>')
-                                else
-                                    submitBtnElement.html('<i class="fa fa-share"></i>')
-                            }
-                        })
-
-                        responseInputBox.on("focusin", function ()
-                        {
-                            var thisBox = $(this);
-                            thisBox.data("text", thisBox.text());
-                            thisBox.data("tabcalled", false);
-                        });
-                        responseInputBox.on("focusout", function ()
-                        {
-                            var thisBox = $(this);
-                            var promptId = thisBox.data("promptid");
-                            var responseIndex = thisBox.data("index");
-
-                            $("#response_" + promptId + "_" + responseIndex).removeClass("active");
-                            $(this).attr('contenteditable', 'false');
-                        });
-
-                        var responseInputBoxSubmitBtn = $("#responseInputBox_" + prompt.id + "_" + index + "_submit");
-                        responseInputBoxSubmitBtn.on("click", function(){
-                            if(typeof submitInProgress === 'undefined'){//submitInProgress global in recordStudentACtion.js
-                                submitInProgress = false;
-                            }
-                            if(!submitInProgress && !$(this).hasClass("disabled")){
-                                var thisBox = $("#"+$(this).data("responseinputbox"));
-                                var promptId = thisBox.data("promptid");
-                                var responseIndex = thisBox.data("index");
-                                
-                                thisBox.removeClass("active");
-                                thisBox.attr('contenteditable', 'false');
-
-                                // $(this).hide();
-                                // $(this).after('<i class="loader" style="display: inline-block; margin-left:.25em; font-size:.8em;">&nbsp</i>');
-                                $(this).html('<i class="loader" style="font-size:.8em;">&nbsp</i>')
-                                var responseInteractionEvent = $.Event("responseInteraction");
-                                responseInteractionEvent.activityComponentId = activityComponent.id;
-                                responseInteractionEvent.promptId = parseInt(promptId);
-                                responseInteractionEvent.responseId = 0;
-                                responseInteractionEvent.componentTitle = "Transcription";
-                                responseInteractionEvent.responseIndex = parseInt(responseIndex);
-                                responseInteractionEvent.responseText = thisBox.text();
-                                $(document).trigger(responseInteractionEvent);
-                            }
-                        })
-
-
-                        responseInputBox.on("paste", function (e)
-                        {
-                            e.preventDefault();
-                        });
-                        responseInputBox.on("contextmenu", function (e)
-                        {
-                            e.preventDefault();
-                        });
-                        if (response.feedback)
-                        {
-                            var responseHintArray = new Array();
-                            for (var f = 0; f < response.feedback.length; f++)
-                            {
-                                if (response.feedback[f].feedbackTypeId == 2)
-                                    responseHintArray.push(response.feedback[f]);
-                            }
-                            loadResponseHints(responseBlank, response, responseHintArray);
-                        }
-                    }
-                }
-            }
-            break;
-        case "TRUEFALSE":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                for (var j = 0; j < prompt.responses.length; j++)
-                {
-                    var response = prompt.responses[j];
-                    $("#response_" + response.id).attr("onclick", "toggleGenericResponseInput('"+activityComponent.id+"', '" + prompt.id + "', '" + response.id + "', " + prompt.radioButton + ", '" + activityComponent.renderModeLayout + "', '" + activityComponent.componentTitle + "')");
-                }
-            }
-            break;
-        case "WRITING":
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                var writingResponseContent = $(`#writingResponseContent_${prompt.id}`);
-                var response = prompt.responses[0];
-                var writingSubmitButton = false;
-                if (prompt.sketchpad && prompt.sketchpad.submit)
-                {
-                    writingResponseContent.after('<span id="responseInputSubmit_' + prompt.id + '" class="submitBtn btnGrey disabled" style="text-align:center; width: 10em; margin-top:0.5em; float: ' + (response.rtl ? "right" : "left") + ';"><i class="fa fa-check" style="color:#ffffff;"></i> Submit</span>');
-                }
-            }
-            break;
-        default:
-            for (var i = 0; i < activityComponent.prompts.length; i++)
-            {
-                var prompt = activityComponent.prompts[i];
-                if (typeof (prompt.responses) != "undefined")
-                {
+                    var prompt = activityComponent.prompts[i];
                     for (var j = 0; j < prompt.responses.length; j++)
                     {
                         var response = prompt.responses[j];
-                        var responseElement = $("#response_" + response.id);
-                        $("#responseContainer_" + response.id).attr("onclick", "toggleGenericResponseInput('" + activityComponent.id + "', '" + prompt.id + "', '" + response.id + "', " + prompt.radioButton + ", '" + activityComponent.renderModeLayout + "', '" + activityComponent.componentTitle + "')");
-                        $("#responseLabel_" + response.id).attr("onclick", "toggleGenericResponseInput('" + activityComponent.id + "', '" + prompt.id + "', '" + response.id + "', " + prompt.radioButton + ", '" + activityComponent.renderModeLayout + "', '" + activityComponent.componentTitle + "')");
+                        if (activityComponent.renderModeIndex != 1)
+                            bindResponseHotspotClick(activityComponent, prompt, response);
                     }
                 }
-            }
-            break;
+                break;
+            case "MATCHING":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    setupMatchingDrop(activityComponent.id, prompt.id);
+                }
+                for (var i = 0; i < activityComponent.responses.length; i++)
+                {
+                    var response = activityComponent.responses[i];
+                    setupMatchingDrag(response.activityComponentId, response.id);
+                }
+                break;
+            case "ORDERING":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    var renderMode = activityComponent.renderModeIndex;
+                    switch (renderMode)
+                    {
+                        case 0:
+                            setupVerticalOrderingResponseSortables(prompt.id, prompt.activityComponentId);
+                            break
+                        case 1:
+                            setupHorizontalOrderingResponseSortables(prompt.id, prompt.activityComponentId);
+                            break
+                    }
+
+                    var responseIds = new Array();
+                    for (var r = 0; r < activityComponent.prompts[i].responses.length; r++)
+                        responseIds.push(activityComponent.prompts[i].responses[r].id);
+
+                }
+                break;
+            case "SHORTANSWER":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var renderMode = activityComponent.renderModeIndex;
+                    switch (renderMode)
+                    {
+                        case 0:
+                            //default
+                            (function ()
+                            {  // Closure function to attach functionality to each short answer component
+                                var prompt = activityComponent.prompts[i];
+                                var shortAnswerResponseContent = $(`#shortAnswerResponseContent_${prompt.id}`);
+                                var inputBox = $(`#responseInputBox_${prompt.id}`);
+                                var inputIcon = $(`#inputBoxIcon_${prompt.id}`);
+                                inputBox.on("paste", function (event) { event.preventDefault() });  // Prevents paste
+                                inputBox.on("contextmenu", function (event) { event.preventDefault() });    // Prevents right-click menu
+
+                                var response = prompt.responses[0];
+                                var shortAnswerSubmitButton = false;
+                                if (response)
+                                {
+                                    shortAnswerResponseContent.after('<span id="responseInputSubmit_' + prompt.id + '" class="submitBtn btnGrey disabled" style="text-align:center; width: 10em; margin-top:0.5em; float: ' + (response.rtl ? "right" : "left") + ';"><i class="fa fa-check" style="color:#ffffff;"></i> Submit</span>');
+                                    shortAnswerSubmitButton = $(`#responseInputSubmit_${prompt.id}`);
+                                }
+
+                                shortAnswerResponseContent.on("click", function (event)
+                                {
+                                    if (!$(this).hasClass("active"))
+                                    {
+                                        $(this).addClass("active");
+                                        inputIcon.css("display", "none");
+                                        inputBox.attr("contenteditable", "true");
+                                        inputBox.focus();   // Give input box focus
+                                    }
+                                });
+
+
+
+                                inputBox.on("keydown", function (ev)
+                                { // Fires every character change of a student's answer
+                                    //Revert on ESC key
+                                    if (ev.keyCode == 27)
+                                    {
+                                        $(this).removeClass("active");
+                                        $(this).focusout();
+                                        $(this).text(htmlDecode($(this).data("text")));
+                                        $(this).attr('contenteditable', 'false');
+
+                                        shortAnswerSubmitButton.addClass("disabled");
+                                        shortAnswerSubmitButton.addClass("btnGrey");
+                                        shortAnswerSubmitButton.removeClass("btnBlue");
+                                        if (inputBox.attr("dir") == "rtl")
+                                            shortAnswerSubmitButton.html('<i class="fa fa-check" style="color:#ffffff;"></i> Submit')
+                                        else
+                                            shortAnswerSubmitButton.html('<i class="fa fa-check" style="color:#ffffff;"></i> Submit')
+                                    }
+                                })
+
+                                inputBox.on("keyup", function (ev)
+                                { // Fires every character change of a student's answer
+                                    if (shortAnswerSubmitButton.hasClass("disabled"))
+                                    { // if submit button is NOT displayed, make button visible
+                                        shortAnswerSubmitButton.removeClass("disabled");
+                                        shortAnswerSubmitButton.removeClass("btnGrey");
+                                        shortAnswerSubmitButton.addClass("btnBlue");
+                                        if (inputBox.attr("dir") == "rtl")
+                                            shortAnswerSubmitButton.html('<i class="fa fa-reply"></i> Submit')
+                                        else
+                                            shortAnswerSubmitButton.html('<i class="fa fa-share"></i> Submit')
+                                    }
+                                });
+
+                                inputBox.on('blur', function (event)
+                                {  // Fires when a input box loses focus
+                                    shortAnswerResponseContent.removeClass("active"); // Make shortAnswerResponseContent non-active
+                                    inputIcon.css("display", "")
+                                })
+
+                                shortAnswerSubmitButton.on("click", function (event)
+                                {
+                                    if (typeof submitInProgress === 'undefined')
+                                    {//submitInProgress global in recordStudentACtion.js
+                                        submitInProgress = false;
+                                    }
+                                    if (!submitInProgress && !$(this).hasClass("disabled"))
+                                    {
+                                        event.stopPropagation();    // Prevent click from bubbling to the parent click
+
+                                        shortAnswerResponseContent.removeClass("active");
+                                        inputIcon.css("display", ""); // Render the icon
+                                        inputBox.attr("contenteditable", "false");
+                                        shortAnswerSubmitButton.addClass("disabled");
+                                        shortAnswerSubmitButton.addClass("btnGrey");
+                                        shortAnswerSubmitButton.removeClass("btnBlue");
+
+                                        var responseInteractionEvent = $.Event("responseInteraction");  // beginning of packaging up our answer
+                                        responseInteractionEvent.activityComponentId = activityComponent.id;
+                                        responseInteractionEvent.promptId = parseInt(prompt.id);
+                                        responseInteractionEvent.responseId = 0;
+                                        responseInteractionEvent.componentTitle = "ShortAnswer";
+                                        responseInteractionEvent.responseText = inputBox.html()
+                                        $(document).trigger(responseInteractionEvent);
+                                    }
+                                });
+                            }())
+                            break
+                        case 1:
+                            var responseInteractionEvent = $.Event("responseInteraction");
+                            responseInteractionEvent.activityComponentId = activityComponent.id;
+                            responseInteractionEvent.promptId = parseInt(prompt.id);
+                            responseInteractionEvent.responseId = 0;
+                            responseInteractionEvent.componentTitle = "ShortAnswer";
+                            responseInteractionEvent.responseText = " ";
+                            $(document).trigger(responseInteractionEvent);
+                            break
+                    }
+                }
+                break;
+            case "RESOURCETRANSCRIPT":
+                if (isComponentJudged(activityComponent))
+                {
+                    for (var i = 0; i < activityComponent.prompts.length; i++)
+                    {
+                        var prompt = activityComponent.prompts[i];
+                        var resource = prompt.resources.length == 1 ? getResource(prompt.resources[0].id) : false;
+                        if (resource && typeof (resource.transcriptText) != "undefined" && typeof (resource.transcriptText.paragraphs) != "undefined" && resource.transcriptText.paragraphs.length > 0)
+                        {
+                            var paragraphs = resource.transcriptText.paragraphs;                           
+                            var promptDiv = $("#promptDiv_" + prompt.id);
+                            promptDiv.find(".blank").each(function ()
+                            {
+                                var responseBlank = $(this);
+                                var responseRTL = responseBlank.data("rtl");
+                                var index = responseBlank.data("index");
+                                var responseTranscript = responseBlank.data("transcript");
+                                var responseTranslation = responseBlank.data("translation");
+                                var blankHtml = '';
+                                if (responseRTL)
+                                    blankHtml += '<span id="responseInputBox_'+prompt.id+'_'+index+'_submit" data-responseinputbox="responseInputBox_'+prompt.id+'_'+index+'" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>';
+                                blankHtml += '<div id="response_' + prompt.id + '_' + index + '" type="text" class="response" style="width:100%; border:none;" data-isrtl="' + (responseRTL ? "true" : "false") + '" data-promptid="' + prompt.id + '" data-index="' + index + '" tabindex="' + prompt.id + '-' + index + '">';
+//                                blankHtml += '<span id="responseInputBox_'+prompt.id+'_'+index+'" class="customInputBox" dir="'+(responseRTL ? "rtl" : "ltr")+'" data-promptid="'+prompt.id+'" data-index="'+index+'" data-activitycomponentid="'+activityComponent.id+'"></span>';
+                                blankHtml += '<textarea id="responseInputBox_'+prompt.id+'_'+index+'" rows="3" style="width:100%;" dir="'+(responseRTL ? "rtl" : "ltr")+'" data-promptid="'+prompt.id+'" data-index="'+index+'" data-activitycomponentid="'+activityComponent.id+'"></textarea>';
+                                blankHtml += '</div>'
+
+                                if (!responseRTL)
+                                    blankHtml += '<span id="responseInputBox_'+prompt.id+'_'+index+'_submit" data-responseinputbox="responseInputBox_'+prompt.id+'_'+index+'" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>';
+                                responseBlank.replaceWith(blankHtml);
+                                responseBlank = $("#response_" + prompt.id + "_" + index);
+                                //Insert Feedback Btn after the text based on the parent direction
+
+                                var responseBlankContainer = $("<div></div>");
+                                responseBlank.before(responseBlankContainer);
+                                responseBlankContainer.html('<span id="inlineFeedbackContainer_' + prompt.id + '_' + index + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                                responseBlankContainer.append(responseBlank);
+                                var responseInputBox = $("#responseInputBox_" + prompt.id + "_" + index);
+                                $("#customInputBoxIcon_" + prompt.id + "_" + index).show();
+                                responseInputBox.attr("spellcheck", false);
+                                responseInputBox.attr("contenteditable", false);
+                                responseInputBox.attr("autocomplete", "off");
+                                responseInputBox.on("click", function (ev) 
+                                {
+                                    if (typeof submitInProgress === 'undefined')
+                                    {//submitInProgress global in recordStudentACtion.js
+                                        submitInProgress = false;
+                                    }
+                                    if (!submitInProgress)
+                                    {
+/*
+                                        if (document.activeElement == this && !this.textContent) 
+                                        {
+                                            var sel = window.getSelection();
+                                            var rng = sel.getRangeAt(0);
+                                            if (rng.startContainer == this.parentNode) 
+                                            {
+                                                var newRng = document.createRange();
+                                                newRng.setStart(this, 0);
+                                                newRng.collapse(true);
+                                                sel.removeAllRanges();
+                                                sel.addRange(newRng);
+                                            }
+                                        }
+                                        else 
+                                        {
+                                            $(this).attr('contenteditable', 'true').focus();
+                                        }
+*/
+                                        $(this).parent().addClass('active');
+                                        ev.preventDefault();
+                                        ev.stopPropagation();
+                                    }
+                                });
+
+                                responseInputBox.on("keydown", function (ev)
+                                {
+                                    if ($(this).data("text") != $(this).val())
+                                    {
+                                        //enable submit btn
+                                        var submitBtn = $(this).attr("id") + "_submit";
+                                        var submitBtnElement = $("#" + submitBtn);
+                                        submitBtnElement.removeClass("disabled");
+                                        submitBtnElement.removeClass("btnGrey");
+                                        submitBtnElement.addClass("btnBlue");
+                                        if (responseRTL)
+                                            submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                        else
+                                            submitBtnElement.html('<i class="fa fa-share"></i>')
+                                    }
+                                    if (ev.keyCode == 13)
+                                    {
+/*
+                                        var submitBtn = $(this).attr("id") + "_submit";
+                                        var submitBtnElement = $("#" + submitBtn).trigger("click");
+                                        $(this).data("tabcalled", false);
+                                        ev.preventDefault();
+*/
+                                    }
+                                    if (ev.keyCode == 9)
+                                    {
+                                        var submitBtn = $(this).attr("id") + "_submit";
+                                        var submitBtnElement = $("#" + submitBtn)
+                                        $(this).data("tabcalled", true);
+                                        submitBtnElement.trigger("click");
+                                        ev.preventDefault();
+                                        if (submitInProgress === false)
+                                        {//Respond to tab if record student action layer isnt present
+                                            var inputBox = $(this);
+                                            var index = parseInt(inputBox.data("index"));
+                                            var promptId = inputBox.data("promptid");
+                                            var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
+                                            if (nextResponse.length)
+                                            {
+                                                nextResponse.click();
+                                            }
+                                            else
+                                            {
+                                                var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
+                                                if (firstResponse.length)
+                                                {
+                                                    firstResponse.click();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Revert on ESC key
+                                    if (ev.keyCode == 27)
+                                    {
+                                        $(this).removeClass("active");
+                                        $(this).focusout();
+                                        $(this).val($(this).data("text"));
+/*
+                                        $(this).attr('contenteditable', 'false');
+*/
+                                        var submitBtn = $(this).attr("id") + "_submit";
+                                        var submitBtnElement = $("#" + submitBtn);
+                                        submitBtnElement.addClass("disabled");
+                                        submitBtnElement.addClass("btnGrey");
+                                        submitBtnElement.removeClass("btnBlue");
+                                        if (responseRTL)
+                                            submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                        else
+                                            submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                    }
+                                });
+
+                                responseInputBox.on("keyup", function (ev)
+                                {
+                                    if ($(this).data("text") != $(this).text())
+                                    {
+                                        //enable submit btn
+                                        var submitBtn = $(this).attr("id") + "_submit";
+                                        var submitBtnElement = $("#" + submitBtn);
+                                        submitBtnElement.removeClass("disabled");
+                                        submitBtnElement.removeClass("btnGrey");
+                                        submitBtnElement.addClass("btnBlue");
+                                        if (responseRTL)
+                                            submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                        else
+                                            submitBtnElement.html('<i class="fa fa-share"></i>')
+                                    }
+                                })
+
+                                responseInputBox.on("focusin", function ()
+                                {
+                                    var thisBox = $(this);
+                                    thisBox.data("text", thisBox.val());
+                                    thisBox.data("tabcalled", false);
+                                });
+                                responseInputBox.on("focusout", function ()
+                                {
+                                    var thisBox = $(this);
+                                    var promptId = thisBox.data("promptid");
+                                    var responseIndex = thisBox.data("index");
+
+                                    $("#response_" + promptId + "_" + responseIndex).removeClass("active");
+//                                    $(this).attr('contenteditable', 'false');
+                                });
+
+                                var responseInputBoxSubmitBtn = $("#responseInputBox_" + prompt.id + "_" + index + "_submit");
+                                responseInputBoxSubmitBtn.on("click", function ()
+                                {
+                                    if (typeof submitInProgress === 'undefined')
+                                    {//submitInProgress global in recordStudentACtion.js
+                                        submitInProgress = false;
+                                    }
+                                    if (!submitInProgress && !$(this).hasClass("disabled"))
+                                    {
+                                        var thisBox = $("#" + $(this).data("responseinputbox"));
+                                        var promptId = thisBox.data("promptid");
+                                        var responseIndex = thisBox.data("index");
+
+                                        thisBox.removeClass("active");
+//                                        thisBox.attr('contenteditable', 'false');
+
+                                        // $(this).hide();
+                                        // $(this).after('<i class="loader" style="display: inline-block; margin-left:.25em; font-size:.8em;">&nbsp</i>');
+                                        $(this).html('<i class="loader" style="font-size:.8em;">&nbsp</i>')
+
+                                        var responseInteractionEvent = $.Event("responseInteraction");
+                                        responseInteractionEvent.activityComponentId = activityComponent.id;
+                                        responseInteractionEvent.promptId = parseInt(promptId);
+                                        responseInteractionEvent.responseId = 0;
+                                        responseInteractionEvent.componentTitle = "ResourceTranscript";
+                                        responseInteractionEvent.responseIndex = parseInt(responseIndex);
+                                        responseInteractionEvent.responseText = thisBox.val();
+                                        $(document).trigger(responseInteractionEvent);
+                                    }
+                                })
+
+
+                                responseInputBox.on("paste", function (e)
+                                {
+                                    e.preventDefault();
+                                });
+                                responseInputBox.on("contextmenu", function (e)
+                                {
+                                    e.preventDefault();
+                                });
+                            });
+                        }
+                    }
+                }
+                break;
+            case "SPEAKING":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    var speakingResponseContent = $("#speakingResponseContent_" + prompt.id);
+                    if (prompt.recorder && prompt.recorder.submit)
+                    {
+                        var response = prompt.responses[0];
+                        speakingResponseContent.after('<span id="responseInputSubmit_' + prompt.id + '" class="submitBtn btnGrey disabled" style="text-align:center; width: 10em; margin-top:0.5em; float: ' + (response.rtl ? "right" : "left") + ';" data-dir="' + (prompt.rtl ? "rtl" : "ltr") + '"><i class="fa fa-check" style="color:#ffffff;"></i> Submit</span>');
+                    }
+                }
+                break;
+            case "TEXTSELECTOR":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    for (var j = 0; j < prompt.responses.length; j++)
+                    {
+                        var response = prompt.responses[j];
+                        bindSelectableText($("#response_" + response.id), activityComponent);
+                    }
+                }
+                break;
+            case "TIMELINE":
+                if (isComponentJudged(activityComponent))
+                {
+                    var responsePool = $("#responsePool_" + activityComponent.id);
+                    responsePool.on("dragover", function (event)
+                    {
+                        allowTimelineDrop(event);
+                    });
+                    responsePool.on("drop", function (event)
+                    {
+                        timelineDrop(event);
+                    });
+                    var responsesContainer = $("#responsesContainer_" + activityComponent.id);
+                    for (var p = 0; p < activityComponent.prompts.length; p++)
+                    {
+                        var timelineAnswerContainer = $("#timelineAnswerContainer_" + activityComponent.prompts[p].id);
+                        timelineAnswerContainer.on("dragover", function (event)
+                        {
+                            allowTimelineDrop(event);
+                        });
+                        timelineAnswerContainer.on("drop", function (event)
+                        {
+                            timelineDrop(event);
+                        });
+                    }
+                    if (typeof (activityComponent.responses) != "undefined")
+                    {
+                        for (var r = 0; r < activityComponent.responses.length; r++)
+                        {
+                            var responseDraggable = $("#response_" + activityComponent.responses[r].id);
+                            responseDraggable.attr("draggable", true);
+                            responseDraggable.on('dragstart', function (event)
+                            {
+                                timelineDrag(event);
+                                responsesContainer.find(`[id^=timelineAnswerContainer_]`).each(function ()
+                                {
+                                    $(this).addClass('dropzone');
+                                });
+                                responsePool.addClass('dropzone');
+                            });
+                            responseDraggable.on('dragend', function (event)
+                            {
+                                stopDraggingScroll = true;
+                                responsesContainer.find(`[id^=timelineAnswerContainer_]`).each(function ()
+                                {
+                                    $(this).removeClass('dropzone');
+                                });
+                                responsePool.removeClass('dropzone');
+                            });
+                            responseDraggable.on("drag", function (event)
+                            {
+                                stopDraggingScroll = true;
+                                if (event.originalEvent.clientY < 150)
+                                {
+                                    stopDraggingScroll = false;
+                                    draggingScroll(-.75);
+                                }
+                                if (event.originalEvent.clientY > ($(window).height() - 150))
+                                {
+                                    stopDraggingScroll = false;
+                                    draggingScroll(.75);
+                                }
+                            });
+                        }
+                    }
+                }
+                break;
+            case "TRANSCRIPTION":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    var index = -1;
+                    for (var j = 0; j < prompt.responses.length; j++)
+                    {
+                        var response = prompt.responses[j];
+                        if (index != response.sortKey)
+                        {
+                            index = response.sortKey;
+                            var responseBlank = $("#response_" + prompt.id + "_" + index);
+                            var blankHtml = '';
+                            if (response.rtl)
+                                blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>', [prompt.id, index, prompt.id, index, prompt.id, index]);
+
+                            blankHtml += '<span id="response_' + prompt.id + '_' + index + '" type="text" class="response" style="width:auto;" data-isrtl="' + (response.rtl ? "true" : "false") + '" data-promptid="' + prompt.id + '" data-index="' + index + '" tabindex="' + prompt.id + '-' + index + '">';
+                            blankHtml += spf('<span id="responseInputBox_~_~" class="customInputBox" dir="~" data-promptid="~" data-index="~" data-activitycomponentid="~"></span>', [prompt.id, index, (response.rtl ? "rtl" : "ltr"), prompt.id, index, activityComponent.id]);
+                            blankHtml += '</span>'
+
+                            if (!response.rtl)
+                                blankHtml += spf('<span id="responseInputBox_~_~_submit" data-responseinputbox="responseInputBox_~_~" class="submitBtn btnGrey disabled" style="display:inline; margin-left:.25em; font-size:.8em; box-shadow:none;-webkit-box-shadow:none"><i class="fa fa-check" style="color:#ffffff;"></i></span>', [prompt.id, index, prompt.id, index, prompt.id, index]);
+
+                            responseBlank.replaceWith(blankHtml);
+                            responseBlank = $("#response_" + prompt.id + "_" + index);
+                            //Insert Feedback Btn after the text based on the parent direction
+
+                            var responseBlankContainer = $("<div style='display:inline-block;'></div>");
+                            responseBlank.before(responseBlankContainer);
+                            responseBlankContainer.html('<span id="inlineFeedbackContainer_' + prompt.id + '_' + index + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                            responseBlankContainer.append(responseBlank);
+                            var responseInputBox = $("#responseInputBox_" + prompt.id + "_" + index);
+                            $("#customInputBoxIcon_" + prompt.id + "_" + index).show();
+                            responseInputBox.attr("spellcheck", false);
+                            responseInputBox.attr("contenteditable", false);
+                            responseInputBox.attr("autocomplete", "off");
+                            responseInputBox.on("click", function (ev) 
+                            {
+                                if (typeof submitInProgress === 'undefined')
+                                {//submitInProgress global in recordStudentACtion.js
+                                    submitInProgress = false;
+                                }
+                                if (!submitInProgress)
+                                {
+                                    if (document.activeElement == this && !this.textContent) 
+                                    {
+                                        var sel = window.getSelection();
+                                        var rng = sel.getRangeAt(0);
+                                        if (rng.startContainer == this.parentNode) 
+                                        {
+                                            var newRng = document.createRange();
+                                            newRng.setStart(this, 0);
+                                            newRng.collapse(true);
+                                            sel.removeAllRanges();
+                                            sel.addRange(newRng);
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        $(this).attr('contenteditable', 'true').focus();
+                                    }
+                                    $(this).parent().addClass('active');
+                                    ev.preventDefault();
+                                    ev.stopPropagation();
+                                }
+                            });
+
+                            responseInputBox.on("keydown", function (ev)
+                            {
+                                if ($(this).data("text") != $(this).text())
+                                {
+                                    //enable submit btn
+                                    var submitBtn = $(this).attr("id") + "_submit";
+                                    var submitBtnElement = $("#" + submitBtn);
+                                    submitBtnElement.removeClass("disabled");
+                                    submitBtnElement.removeClass("btnGrey");
+                                    submitBtnElement.addClass("btnBlue");
+                                    if (response.rtl)
+                                        submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                    else
+                                        submitBtnElement.html('<i class="fa fa-share"></i>')
+                                }
+                                if (ev.keyCode == 13)
+                                {
+                                    var submitBtn = $(this).attr("id") + "_submit";
+                                    var submitBtnElement = $("#" + submitBtn).trigger("click");
+                                    $(this).data("tabcalled", false);
+                                    ev.preventDefault();
+                                }
+                                if (ev.keyCode == 9)
+                                {
+                                    var submitBtn = $(this).attr("id") + "_submit";
+                                    var submitBtnElement = $("#" + submitBtn)
+                                    $(this).data("tabcalled", true);
+                                    submitBtnElement.trigger("click");
+                                    ev.preventDefault();
+                                    if (submitInProgress === false)
+                                    {//Respond to tab if record student action layer isnt present
+                                        var inputBox = $(this);
+                                        var index = parseInt(inputBox.data("index"));
+                                        var promptId = inputBox.data("promptid");
+                                        var nextResponse = $("#responseInputBox_" + promptId + "_" + (index + 1));
+                                        if (nextResponse.length)
+                                        {
+                                            nextResponse.click();
+                                        }
+                                        else
+                                        {
+                                            var firstResponse = $("#responsesContainer_" + promptId).find("[id^='responseInputBox_" + promptId + "_']").first();
+                                            if (firstResponse.length)
+                                            {
+                                                firstResponse.click();
+                                            }
+                                        }
+                                    }
+                                }
+                                //Revert on ESC key
+                                if (ev.keyCode == 27)
+                                {
+                                    $(this).removeClass("active");
+                                    $(this).focusout();
+                                    $(this).text($(this).data("text"));
+                                    $(this).attr('contenteditable', 'false');
+
+                                    var submitBtn = $(this).attr("id") + "_submit";
+                                    var submitBtnElement = $("#" + submitBtn);
+                                    submitBtnElement.addClass("disabled");
+                                    submitBtnElement.addClass("btnGrey");
+                                    submitBtnElement.removeClass("btnBlue");
+                                    if (response.rtl)
+                                        submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                    else
+                                        submitBtnElement.html('<i class="fa fa-check" style="color:#ffffff;"></i>')
+                                }
+                            });
+
+                            responseInputBox.on("keyup", function (ev)
+                            {
+                                if ($(this).data("text") != $(this).text())
+                                {
+                                    //enable submit btn
+                                    var submitBtn = $(this).attr("id") + "_submit";
+                                    var submitBtnElement = $("#" + submitBtn);
+                                    submitBtnElement.removeClass("disabled");
+                                    submitBtnElement.removeClass("btnGrey");
+                                    submitBtnElement.addClass("btnBlue");
+                                    if (response.rtl)
+                                        submitBtnElement.html('<i class="fa fa-reply"></i>')
+                                    else
+                                        submitBtnElement.html('<i class="fa fa-share"></i>')
+                                }
+                            })
+
+                            responseInputBox.on("focusin", function ()
+                            {
+                                var thisBox = $(this);
+                                thisBox.data("text", thisBox.text());
+                                thisBox.data("tabcalled", false);
+                            });
+                            responseInputBox.on("focusout", function ()
+                            {
+                                var thisBox = $(this);
+                                var promptId = thisBox.data("promptid");
+                                var responseIndex = thisBox.data("index");
+
+                                $("#response_" + promptId + "_" + responseIndex).removeClass("active");
+                                $(this).attr('contenteditable', 'false');
+                            });
+
+                            var responseInputBoxSubmitBtn = $("#responseInputBox_" + prompt.id + "_" + index + "_submit");
+                            responseInputBoxSubmitBtn.on("click", function ()
+                            {
+                                if (typeof submitInProgress === 'undefined')
+                                {//submitInProgress global in recordStudentACtion.js
+                                    submitInProgress = false;
+                                }
+                                if (!submitInProgress && !$(this).hasClass("disabled"))
+                                {
+                                    var thisBox = $("#" + $(this).data("responseinputbox"));
+                                    var promptId = thisBox.data("promptid");
+                                    var responseIndex = thisBox.data("index");
+
+                                    thisBox.removeClass("active");
+                                    thisBox.attr('contenteditable', 'false');
+
+                                    // $(this).hide();
+                                    // $(this).after('<i class="loader" style="display: inline-block; margin-left:.25em; font-size:.8em;">&nbsp</i>');
+                                    $(this).html('<i class="loader" style="font-size:.8em;">&nbsp</i>')
+                                    var responseInteractionEvent = $.Event("responseInteraction");
+                                    responseInteractionEvent.activityComponentId = activityComponent.id;
+                                    responseInteractionEvent.promptId = parseInt(promptId);
+                                    responseInteractionEvent.responseId = 0;
+                                    responseInteractionEvent.componentTitle = "Transcription";
+                                    responseInteractionEvent.responseIndex = parseInt(responseIndex);
+                                    responseInteractionEvent.responseText = thisBox.text();
+                                    $(document).trigger(responseInteractionEvent);
+                                }
+                            })
+
+
+                            responseInputBox.on("paste", function (e)
+                            {
+                                e.preventDefault();
+                            });
+                            responseInputBox.on("contextmenu", function (e)
+                            {
+                                e.preventDefault();
+                            });
+                            if (response.feedback)
+                            {
+                                var responseHintArray = new Array();
+                                for (var f = 0; f < response.feedback.length; f++)
+                                {
+                                    if (response.feedback[f].feedbackTypeId == 2)
+                                        responseHintArray.push(response.feedback[f]);
+                                }
+                                loadResponseHints(responseBlank, response, responseHintArray);
+                            }
+                        }
+                    }
+                }
+                break;
+            case "TRUEFALSE":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    for (var j = 0; j < prompt.responses.length; j++)
+                    {
+                        var response = prompt.responses[j];
+                        $("#response_" + response.id).attr("onclick", "toggleGenericResponseInput('" + activityComponent.id + "', '" + prompt.id + "', '" + response.id + "', " + prompt.radioButton + ", '" + activityComponent.renderModeLayout + "', '" + activityComponent.componentTitle + "')");
+                    }
+                }
+                break;
+            case "WRITING":
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    var writingResponseContent = $(`#writingResponseContent_${prompt.id}`);
+                    var response = prompt.responses[0];
+                    var writingSubmitButton = false;
+                    if (prompt.sketchpad && prompt.sketchpad.submit)
+                    {
+                        writingResponseContent.after('<span id="responseInputSubmit_' + prompt.id + '" class="submitBtn btnGrey disabled" style="text-align:center; width: 10em; margin-top:0.5em; float: ' + (response.rtl ? "right" : "left") + ';"><i class="fa fa-check" style="color:#ffffff;"></i> Submit</span>');
+                    }
+                }
+                break;
+            default:
+                for (var i = 0; i < activityComponent.prompts.length; i++)
+                {
+                    var prompt = activityComponent.prompts[i];
+                    if (typeof (prompt.responses) != "undefined")
+                    {
+                        for (var j = 0; j < prompt.responses.length; j++)
+                        {
+                            var response = prompt.responses[j];
+                            var responseElement = $("#response_" + response.id);
+                            $("#responseContainer_" + response.id).attr("onclick", "toggleGenericResponseInput('" + activityComponent.id + "', '" + prompt.id + "', '" + response.id + "', " + prompt.radioButton + ", '" + activityComponent.renderModeLayout + "', '" + activityComponent.componentTitle + "')");
+                            $("#responseLabel_" + response.id).attr("onclick", "toggleGenericResponseInput('" + activityComponent.id + "', '" + prompt.id + "', '" + response.id + "', " + prompt.radioButton + ", '" + activityComponent.renderModeLayout + "', '" + activityComponent.componentTitle + "')");
+                        }
+                    }
+                }
+                break;
+        }
     }
 }
 
@@ -1312,27 +1625,39 @@ function selectBlankResponse(element, activityComponentId)
 //***********************************FIND AND CLICK***********************************//
 function setupHotspotInteractivity(event)
 {
-    var hotspot = $("#responseHotspot_" + event.responseId);
-    if (hotspot.length > 0)
+    if (typeof(studentAssignment) == "undefined" || (studentAssignment.authorizationToken && studentAssignment.authorizationToken.canDo))
     {
-        hotspot.click(function ()
+        var hotspot = $("#responseHotspot_" + event.response.id);
+        if (hotspot.length > 0)
         {
-            if(typeof submitInProgress === 'undefined'){//submitInProgress global in recordStudentACtion.js
-                submitInProgress = false;
-            }
-            if(!submitInProgress){
-                hotspot.remove();
-                var responseInteractionEvent = $.Event("responseInteraction");
-                responseInteractionEvent.action = "remove";
-                responseInteractionEvent.activityComponentId = parseInt(event.activityComponentId);
-                responseInteractionEvent.promptId = parseInt(hotspot.data("promptid"));
-                responseInteractionEvent.responseId = parseInt(hotspot.data("responseid"));
-                responseInteractionEvent.responseIndex = parseInt(hotspot.data("index"));
-                responseInteractionEvent.componentTitle = "FindAndClick";
-                responseInteractionEvent.responseText = "";
-                $(document).trigger(responseInteractionEvent);
-            }
-        });
+            hotspot.click(function ()
+            {
+                switch (event.activityComponent.renderModeIndex)
+                {
+                    case 1:
+                        break;
+                    default:
+                        if (typeof submitInProgress === 'undefined')
+                        {//submitInProgress global in recordStudentACtion.js
+                            submitInProgress = false;
+                        }
+                        if (!submitInProgress)
+                        {
+                            hotspot.remove();
+                            var responseInteractionEvent = $.Event("responseInteraction");
+                            responseInteractionEvent.action = "remove";
+                            responseInteractionEvent.activityComponentId = parseInt(event.activityComponent.id);
+                            responseInteractionEvent.promptId = parseInt(hotspot.data("promptid"));
+                            responseInteractionEvent.responseId = parseInt(hotspot.data("responseid"));
+                            responseInteractionEvent.responseIndex = parseInt(hotspot.data("index"));
+                            responseInteractionEvent.componentTitle = "FindAndClick";
+                            responseInteractionEvent.responseText = "";
+                            $(document).trigger(responseInteractionEvent);
+                        }
+                        break;
+                }
+            });
+        }
     }
 }
 
@@ -1780,93 +2105,102 @@ function navigateResponseHintDialog(hintIndex, hintCount)
 
 function setupSubmitStudentSpeakingButton(containerElement, file)
 {
-    var componentTitle = containerElement.attr("data-componenttitle");
-    var activityComponentId = containerElement.attr("data-activitycomponentid");
-    var promptId = containerElement.attr("data-promptid");
-    var responseInputSubmit = $("#responseInputSubmit_" + promptId);
-
-    responseInputSubmit.removeClass("disabled");
-    responseInputSubmit.removeClass("btnGrey");
-    responseInputSubmit.addClass("btnBlue");
-    if (responseInputSubmit.attr("data-dir") == "rtl")
-        responseInputSubmit.html('<i class="fa fa-reply"></i> Submit')
-    else
-        responseInputSubmit.html('<i class="fa fa-share"></i> Submit')
-
-    responseInputSubmit.unbind("click");
-    responseInputSubmit.on("click", function (event)
+    if (typeof (studentAssignment) == "undefined" || (studentAssignment.authorizationToken && studentAssignment.authorizationToken.canDo))
     {
-        if (typeof submitInProgress === 'undefined')
-        {//submitInProgress global in recordStudentACtion.js
-            submitInProgress = false;
-        }
-        if (!submitInProgress && !$(this).hasClass("disabled"))
+        var componentTitle = containerElement.attr("data-componenttitle");
+        var activityComponentId = containerElement.attr("data-activitycomponentid");
+        var promptId = containerElement.attr("data-promptid");
+        var responseInputSubmit = $("#responseInputSubmit_" + promptId);
+
+        responseInputSubmit.removeClass("disabled");
+        responseInputSubmit.removeClass("btnGrey");
+        responseInputSubmit.addClass("btnBlue");
+        if (responseInputSubmit.attr("data-dir") == "rtl")
+            responseInputSubmit.html('<i class="fa fa-reply"></i> Submit')
+        else
+            responseInputSubmit.html('<i class="fa fa-share"></i> Submit')
+
+        responseInputSubmit.unbind("click");
+        responseInputSubmit.on("click", function (event)
         {
-            event.stopPropagation();    // Prevent click from bubbling to the parent click
+            if (typeof submitInProgress === 'undefined')
+            {//submitInProgress global in recordStudentACtion.js
+                submitInProgress = false;
+            }
+            if (!submitInProgress && !$(this).hasClass("disabled"))
+            {
+                event.stopPropagation();    // Prevent click from bubbling to the parent click
 
-            containerElement.removeClass("active");
-            responseInputSubmit.addClass("disabled");
-            responseInputSubmit.addClass("btnGrey");
-            responseInputSubmit.removeClass("btnBlue");
+                containerElement.removeClass("active");
+                responseInputSubmit.addClass("disabled");
+                responseInputSubmit.addClass("btnGrey");
+                responseInputSubmit.removeClass("btnBlue");
 
-            var speakingSubmitButtonClickEvent = $.Event("speakingSubmitButtonClick");
-            speakingSubmitButtonClickEvent.activityComponentId = activityComponentId;
-            speakingSubmitButtonClickEvent.containerElement = containerElement;
-            speakingSubmitButtonClickEvent.file = file;
-            $(document).trigger(speakingSubmitButtonClickEvent);
-        }
-    });
+                var speakingSubmitButtonClickEvent = $.Event("speakingSubmitButtonClick");
+                speakingSubmitButtonClickEvent.activityComponentId = activityComponentId;
+                speakingSubmitButtonClickEvent.containerElement = containerElement;
+                speakingSubmitButtonClickEvent.file = file;
+                $(document).trigger(speakingSubmitButtonClickEvent);
+            }
+        });
+    }
 }
 
 function setupSubmitStudentWritingButton(containerElement, sketchPad)
 {
-    var componentTitle = containerElement.attr("data-componenttitle");
-    var activityComponentId = containerElement.attr("data-activitycomponentid");
-    var promptId = containerElement.attr("data-promptid");
-    var responseId = containerElement.attr("data-responseid");
-    var responseInputSubmit = $("#responseInputSubmit_" + promptId);
-
-    responseInputSubmit.removeClass("disabled");
-    responseInputSubmit.removeClass("btnGrey");
-    responseInputSubmit.addClass("btnBlue");
-    if (responseInputSubmit.attr("data-dir") == "rtl")
-        responseInputSubmit.html('<i class="fa fa-reply"></i> Submit')
-    else
-        responseInputSubmit.html('<i class="fa fa-share"></i> Submit')
-
-    responseInputSubmit.unbind("click");
-    responseInputSubmit.on("click", function (event)
+    if (typeof (studentAssignment) == "undefined" || (studentAssignment.authorizationToken && studentAssignment.authorizationToken.canDo))
     {
-        if (typeof submitInProgress === 'undefined')
-        {//submitInProgress global in recordStudentACtion.js
-            submitInProgress = false;
-        }
-        if (!submitInProgress && !$(this).hasClass("disabled"))
-        {
-            event.stopPropagation();    // Prevent click from bubbling to the parent click
+        var componentTitle = containerElement.attr("data-componenttitle");
+        var activityComponentId = containerElement.attr("data-activitycomponentid");
+        var promptId = containerElement.attr("data-promptid");
+        var responseId = containerElement.attr("data-responseid");
+        var responseInputSubmit = $("#responseInputSubmit_" + promptId);
 
-            containerElement.removeClass("active");
-            responseInputSubmit.addClass("disabled");
-            responseInputSubmit.addClass("btnGrey");
-            responseInputSubmit.removeClass("btnBlue");
-            var writingSubmitButtonClickEvent = $.Event("writingSubmitButtonClick");
-            writingSubmitButtonClickEvent.activityComponentId = activityComponentId;
-            writingSubmitButtonClickEvent.containerElement = containerElement;
-            writingSubmitButtonClickEvent.sketchPad = sketchPad;
-            $(document).trigger(writingSubmitButtonClickEvent);
-        }
-    });
+        responseInputSubmit.removeClass("disabled");
+        responseInputSubmit.removeClass("btnGrey");
+        responseInputSubmit.addClass("btnBlue");
+        if (responseInputSubmit.attr("data-dir") == "rtl")
+            responseInputSubmit.html('<i class="fa fa-reply"></i> Submit')
+        else
+            responseInputSubmit.html('<i class="fa fa-share"></i> Submit')
+
+        responseInputSubmit.unbind("click");
+        responseInputSubmit.on("click", function (event)
+        {
+            if (typeof submitInProgress === 'undefined')
+            {//submitInProgress global in recordStudentACtion.js
+                submitInProgress = false;
+            }
+            if (!submitInProgress && !$(this).hasClass("disabled"))
+            {
+                event.stopPropagation();    // Prevent click from bubbling to the parent click
+
+                containerElement.removeClass("active");
+                responseInputSubmit.addClass("disabled");
+                responseInputSubmit.addClass("btnGrey");
+                responseInputSubmit.removeClass("btnBlue");
+                var writingSubmitButtonClickEvent = $.Event("writingSubmitButtonClick");
+                writingSubmitButtonClickEvent.activityComponentId = activityComponentId;
+                writingSubmitButtonClickEvent.containerElement = containerElement;
+                writingSubmitButtonClickEvent.sketchPad = sketchPad;
+                $(document).trigger(writingSubmitButtonClickEvent);
+            }
+        });
+    }
 }
 
 function setActivityTriggers()
 {
-    if (module.hiddenActivities)
+    if (typeof (studentAssignment) == "undefined" || (studentAssignment.authorizationToken && studentAssignment.authorizationToken.canDo))
     {
-        for (var ha = 0; ha < module.hiddenActivities.length; ha++)
+        if (typeof (module.hiddenActivities) != "undefined")
         {
-            var activity = module.hiddenActivities[ha];
-            if ((typeof (activity.behaviorType) != "undefined") && activity.behaviorType > 0)
-                window[resolveActivityComponentFunctionName("setup" + cleanString(behaviorTypes[activity.behaviorType].type) + "ActivityTriggers", "setupActivityTriggers")](activity, behaviorTypes[activity.behaviorType]);
+            for (var ha = 0; ha < module.hiddenActivities.length; ha++)
+            {
+                var activity = module.hiddenActivities[ha];
+                if ((typeof (activity.behaviorType) != "undefined") && activity.behaviorType > 0)
+                    window[resolveActivityComponentFunctionName("setup" + cleanString(behaviorTypes[activity.behaviorType].type) + "ActivityTriggers", "setupActivityTriggers")](activity, behaviorTypes[activity.behaviorType]);
+            }
         }
     }
 }
@@ -2017,4 +2351,89 @@ function showActivityCompletionButton(activity)
     {
         completeTriggeredActivity(event.data.activity);
     });
+}
+
+function draggingScroll(draggingScrollSpeed)
+{
+    var draggingScrollY = $(window).scrollTop();
+    $(window).scrollTop(draggingScrollY + draggingScrollSpeed);
+    if (!stopDraggingScroll)
+    {
+        setTimeout(function ()
+        {
+            draggingScroll(draggingScrollSpeed);
+        }, 20);
+    }
+}
+
+function timelineDrag(event)
+{
+    event.originalEvent.dataTransfer.setData('text/plain', JSON.stringify(event.currentTarget.dataset));
+}
+
+function timelineDrop(event)
+{
+    var responseDataObj = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
+    var responseId = responseDataObj.responseid;
+    var response = getResponseById(responseId);
+    var timelineResponseItem = $(`#response_${responseId}`);
+    var timelineAnswerContainer = $(`#${event.currentTarget.id}`);
+    var promptId = timelineAnswerContainer.data("promptid");
+    var prompt = getPromptById(promptId);
+
+    if (String(event.currentTarget.id).includes('responsePool'))
+    {  // Dropping element into word pool container
+        $(`#${event.currentTarget.id}`).append(timelineResponseItem);
+        timelineResponseItem.removeAttr("style");
+        var responseInteractionEvent = $.Event("responseInteraction");
+        responseInteractionEvent.action = "remove";
+        responseInteractionEvent.activityComponentId = parseInt(event.id);
+        responseInteractionEvent.promptId = parseInt(promptId);
+        responseInteractionEvent.responseId = parseInt(responseId);
+        responseInteractionEvent.componentTitle = "Timeline";
+        responseInteractionEvent.responseText = timelineResponseItem.text();
+        $(document).trigger(responseInteractionEvent);
+    }
+    else
+    {
+        if (event.currentTarget.firstElementChild)
+        {  // Swap elements if response item is already present
+            var beingSwappedResponseItem = event.currentTarget.firstElementChild;
+            beingSwappedResponseItem.removeAttribute('style');
+            timelineResponseItem.parent().append(beingSwappedResponseItem);
+            timelineAnswerContainer.html(timelineResponseItem);
+            timelineResponseItem.css({ "max-width": "none" });
+            timelineAnswerContainer.css({ "border-color": "transparent" });
+        }
+        else
+        {
+            timelineAnswerContainer.html(timelineResponseItem);
+            timelineResponseItem.css({ "max-width": "none" });
+            timelineAnswerContainer.css({ "border-color": "transparent" });
+        }
+
+        var responseInteractionEvent = $.Event("responseInteraction");
+        responseInteractionEvent.activityComponentId = parseInt(prompt.activityComponentId);
+        responseInteractionEvent.promptId = parseInt(promptId);
+        responseInteractionEvent.responseId = parseInt(responseId);
+        responseInteractionEvent.componentTitle = "Timeline";
+        responseInteractionEvent.responseText = timelineResponseItem.text();
+        $(document).trigger(responseInteractionEvent);
+    }
+
+    //restore the border color on the timelineAnswerContainer if no child response
+    $(".timelineAnswerContainer").each(function ()
+    {
+        if ($(this).children().length == 0)
+        {
+            // do something
+            $(this).removeAttr('style');
+        }
+    });
+
+}
+
+function allowTimelineDrop(event)
+{
+    event.preventDefault();
 }

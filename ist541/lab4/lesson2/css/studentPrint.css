@@ -846,6 +846,7 @@ span.blankCorrect {
   padding: 0 1em; }
 
 /* line 883, ../../css/sass/sass_productStyle/studentPrint.scss */
+.cuePointsContainer .shortAnswerResponseContent,
 .shortAnswerDetails .shortAnswerResponseContent {
   border: 1px solid #333333;
   -webkit-border-radius: 4px;
@@ -853,30 +854,30 @@ span.blankCorrect {
   border-radius: 4px;
   padding: .5em; }
 
-/* line 891, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 892, ../../css/sass/sass_productStyle/studentPrint.scss */
 .shortAnswerDetails .rationalFeedbackBtn {
   display: none !important; }
 
 /*  ========== MC, T/F & Text Selector Component ============== */
-/* line 896, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 897, ../../css/sass/sass_productStyle/studentPrint.scss */
 .multipleChoiceDetails .floatLeft,
 .orderingDetails .floatLeft,
 .textSelectorDetails .floatLeft,
 .trueFalseDetails .floatLeft {
   float: left; }
 
-/* line 903, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 904, ../../css/sass/sass_productStyle/studentPrint.scss */
 .multipleChoiceDetails .floatRight,
 .orderingDetails .floatRight,
 .textSelectorDetails .floatRight,
 .trueFalseDetails .floatRight {
   float: right; }
 
-/* line 910, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 911, ../../css/sass/sass_productStyle/studentPrint.scss */
 .genericDetails .response {
   padding: 0.25em 0.25em 0.4em; }
 
-/* line 914, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 915, ../../css/sass/sass_productStyle/studentPrint.scss */
 .trueFalseDetails .customRadio,
 .trueFalseDetails .customCheckbox,
 .genericDetails .customRadio,
@@ -887,22 +888,22 @@ span.blankCorrect {
   text-align: center;
   color: #5e5e5e; }
 
-/* line 925, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 926, ../../css/sass/sass_productStyle/studentPrint.scss */
 .genericDetails .customInputWrapper .customRadio i,
 .genericDetails .customInputWrapper .customCheckbox i {
   /*margin: .5em;*/ }
 
-/* line 930, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 931, ../../css/sass/sass_productStyle/studentPrint.scss */
 .trueFalseDetails .responseTrueFalse .customCheckBox {
   /*display: inline !important;*/ }
 
-/* line 934, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 935, ../../css/sass/sass_productStyle/studentPrint.scss */
 input[type="radio"],
 input[type="checkbox"] {
   width: 1.250em;
   height: 1.250em; }
 
-/* line 940, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 941, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customRadio, .customCheckbox {
   font-size: 1.5em;
   /*margin: 0 .125em;*/
@@ -912,41 +913,41 @@ input[type="checkbox"] {
   color: #5e5e5e;
   cursor: pointer; }
 
-/* line 950, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 951, ../../css/sass/sass_productStyle/studentPrint.scss */
 .fa-stack {
   height: 1em; }
 
-/* line 954, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 955, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customRadio.fa-stack,
 .customCheckbox.fa-stack {
   width: 1em;
   /*height: 1em;*/
   line-height: 1em; }
 
-/* line 961, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 962, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customRadio .fa-stack-2x,
 .customCheckbox .fa-stack-2x {
   font-size: 1em; }
 
-/* line 966, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 967, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customRadio .fa-stack-1x {
   font-size: 0.4em; }
 
-/* line 970, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 971, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customCheckbox .fa-stack-1x {
   font-size: 0.4em;
   top: -1px; }
 
-/* line 975, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 976, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customInputWrapper {
   padding: 0 .5em;
   vertical-align: middle; }
 
-/* line 980, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 981, ../../css/sass/sass_productStyle/studentPrint.scss */
 .customInputWrapperLabel {
   cursor: pointer; }
 
-/* line 984, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 985, ../../css/sass/sass_productStyle/studentPrint.scss */
 .genericDetails .prompt {
   vertical-align: middle;
   border-bottom: 1px solid #cccccc;
@@ -956,16 +957,16 @@ input[type="checkbox"] {
   -moz-border-radius: 4px;
   border-radius: 4px; }
 
-/* line 994, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 995, ../../css/sass/sass_productStyle/studentPrint.scss */
 .genericDetails .response {
   border-bottom: 1px solid #ecf2ff;
   width: auto; }
 
-/* line 999, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1000, ../../css/sass/sass_productStyle/studentPrint.scss */
 .genericDetails .responseContainer {
   padding: .25em 1em; }
 
-/* line 1003, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1004, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .response.correct {
   border: 1px solid #FF0000;
   color: #000000;
@@ -977,7 +978,7 @@ input[type="checkbox"] {
   background: #E3F9E7;
   cursor: default !important; }
 
-/* line 1015, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1016, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .selectable.incorrect {
   border: 1px solid #e50000;
   color: #000000;
@@ -987,16 +988,16 @@ input[type="checkbox"] {
   border-radius: 4px;
   background: #FFE0DF; }
 
-/* line 1025, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1026, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .selectable.incorrect.notSelected {
   border: 1px dashed #e50000;
   background: transparent; }
 
-/* line 1030, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1031, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .totalsContainer {
   text-align: center; }
 
-/* line 1034, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1035, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .totalsContainer .totals {
   white-space: nowrap;
   border-radius: 1em;
@@ -1005,13 +1006,13 @@ input[type="checkbox"] {
   padding: 0 .5em;
   display: inline-block; }
 
-/* line 1044, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1045, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .totalsContainer {
   width: 4.750em;
   /*background:GreenYellow;*/
   text-align: center; }
 
-/* line 1051, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1052, ../../css/sass/sass_productStyle/studentPrint.scss */
 .genericDetails .feedbackContainer,
 .trueFalseDetails .feedbackContainer,
 .textSelectorDetails .prompt .feedbackContainer {
@@ -1019,71 +1020,71 @@ input[type="checkbox"] {
   min-width: 2em;
   text-align: center; }
 
-/* line 1059, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1060, ../../css/sass/sass_productStyle/studentPrint.scss */
 .RTLTable {
   direction: rtl; }
 
 /*  ========== Multiple Choice Component ============== */
-/* line 1064, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1065, ../../css/sass/sass_productStyle/studentPrint.scss */
 .multipleChoiceDetails .RTLTable {
   direction: rtl; }
 
 /*  ========== True/False Component ============== */
-/* line 1070, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1071, ../../css/sass/sass_productStyle/studentPrint.scss */
 .tabDetail.trueFalseDetails {
   display: table-row !important; }
 
-/* line 1074, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1075, ../../css/sass/sass_productStyle/studentPrint.scss */
 .trueFalseDetails > div {
   padding-top: 10px;
   padding-bottom: 5px;
   border-bottom: 1px solid #ecf2ff; }
 
-/* line 1080, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1081, ../../css/sass/sass_productStyle/studentPrint.scss */
 .trueFalseDetails .promptTextContainer {
   width: 100%; }
 
-/* line 1084, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1085, ../../css/sass/sass_productStyle/studentPrint.scss */
 table.actyTableHdr {
   width: 100%; }
 
-/* line 1088, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1089, ../../css/sass/sass_productStyle/studentPrint.scss */
 table.actyTableHdr .actyTableHeader {
   display: inline-block;
   text-align: center; }
 
-/* line 1093, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1094, ../../css/sass/sass_productStyle/studentPrint.scss */
 table.actyTableHdr .actyTablePromptHdr,
 table.actyTableHdr .actyTableNoteHdr {
   width: 70%; }
 
-/* line 1098, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1099, ../../css/sass/sass_productStyle/studentPrint.scss */
 table.actyTableHdr .actyTableResponseHeader,
 .trueFalseDetails table tr:nth-child(2) {
   width: 30%; }
 
-/* line 1103, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1104, ../../css/sass/sass_productStyle/studentPrint.scss */
 .promptDragAndDropWordPool,
 .trueFalseDetails table {
   width: 100%; }
 
-/* line 1108, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1109, ../../css/sass/sass_productStyle/studentPrint.scss */
 .responseTrueFalse {
   display: inline-block;
   width: 50%;
   text-align: center; }
 
-/* line 1114, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1115, ../../css/sass/sass_productStyle/studentPrint.scss */
 .trueFalseHeader p[dir="rtl"] {
   text-align: center; }
 
 /*  ========== Text Selector Component ============== */
-/* line 1119, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1120, ../../css/sass/sass_productStyle/studentPrint.scss */
 .showSelectableTxt {
   background: #ffff00;
   /*yellow*/ }
 
-/* line 1123, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1124, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .selectableHighlight {
   background: #E7EEFF;
   color: #000000;
@@ -1093,7 +1094,7 @@ table.actyTableHdr .actyTableResponseHeader,
   border-radius: 4px;
   border: 1px solid #6495ff; }
 
-/* line 1133, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1134, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .selectableCorrect,
 .textSelectorDetails .selectableIncorrect {
   border: 1px solid;
@@ -1101,29 +1102,29 @@ table.actyTableHdr .actyTableResponseHeader,
   -moz-border-radius: 4px;
   border-radius: 4px; }
 
-/* line 1141, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1142, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .selectableIncorrect {
   border-color: #FF3B30;
   background: #dedede; }
 
-/* line 1146, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1147, ../../css/sass/sass_productStyle/studentPrint.scss */
 .textSelectorDetails .selectableCorrect {
   border-color: #4CD964; }
 
-/* line 1150, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1151, ../../css/sass/sass_productStyle/studentPrint.scss */
 .txtSelectTotals {
   white-space: nowrap; }
 
-/* line 1154, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1155, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageHeader {
   display: block; }
 
-/* line 1158, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1159, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageControls,
 #id_printPageInfo {
   margin: 5mm 15mm; }
 
-/* line 1163, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1164, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageControls .buttonCellLeft,
 #id_printPageControls .buttonCellRight,
 #id_printPageControls .messageCell,
@@ -1131,109 +1132,109 @@ table.actyTableHdr .actyTableResponseHeader,
 #id_printPageInfo #id_printDate {
   display: table-cell; }
 
-/* line 1170, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1171, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageControls .buttonCell {
   width: 15%; }
 
-/* line 1174, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1175, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageControls .messageCell {
   font-style: italic;
   padding: 0 10px;
   width: 90%;
   vertical-align: top; }
 
-/* line 1181, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1182, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageControls .buttonCellRight {
   text-align: right; }
 
-/* line 1186, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1187, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageControls button {
   width: 100px;
   height: 40px;
   font-size: 1.5em; }
 
-/* line 1192, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1193, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo input {
   width: 2.5in;
   color: red;
   padding: 0 .25em;
   line-height: 2.5; }
 
-/* line 1199, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1200, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo #id_printTitle {
   width: 100%;
   text-align: center;
   font-size: 12pt;
   margin: 5mm auto 0; }
 
-/* line 1207, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1208, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo #id_printTitle div {
   font-size: 1.5em;
   font-weight: bolder;
   text-align: center; }
 
-/* line 1213, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1214, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo #id_printTitle div[dir=rtl] {
   font-size: 1.75em; }
 
-/* line 1217, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1218, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo #id_printName {
   width: 10%; }
 
-/* line 1221, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1222, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo #id_printDate {
   width: 25%;
   text-align: right; }
 
 /* Assessment Summary Override*/
-/* line 1227, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1228, ../../css/sass/sass_productStyle/studentPrint.scss */
 #id_printPageInfo #id_assessmentSummaryPrintDate {
   width: 100%;
   text-align: left; }
 
 @media print {
-  /* line 1234, ../../css/sass/sass_productStyle/studentPrint.scss */
+  /* line 1235, ../../css/sass/sass_productStyle/studentPrint.scss */
   body {
     background-color: #ffffff; }
 
-  /* line 1237, ../../css/sass/sass_productStyle/studentPrint.scss */
+  /* line 1238, ../../css/sass/sass_productStyle/studentPrint.scss */
   .activityPage {
     page-break-after: always; }
 
-  /* line 1240, ../../css/sass/sass_productStyle/studentPrint.scss */
+  /* line 1241, ../../css/sass/sass_productStyle/studentPrint.scss */
   .categorizationTable,
   .activityComponentInstructionDiv {
     page-break-inside: avoid; }
 
   @page {
     margin: 20mm 5mm; }
-  /* line 1247, ../../css/sass/sass_productStyle/studentPrint.scss */
+  /* line 1248, ../../css/sass/sass_productStyle/studentPrint.scss */
   #id_printPageControls {
     display: none; }
 
-  /* line 1250, ../../css/sass/sass_productStyle/studentPrint.scss */
+  /* line 1251, ../../css/sass/sass_productStyle/studentPrint.scss */
   #id_printPageInfo input {
     width: 2.5in;
     color: #5B657F;
     border: none;
     border-bottom: 1px solid #5B657F; } }
 /* Assessment Summary Links Disabled*/
-/* line 1259, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1260, ../../css/sass/sass_productStyle/studentPrint.scss */
 .activityComponentSummaryRowTitle:hover {
   text-decoration: none !important; }
 
 /* Language Specific Treatments */
-/* line 1264, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1265, ../../css/sass/sass_productStyle/studentPrint.scss */
 .urdu, *[dir=rtl] *[lang="ur"] {
   font-family: "Jameel Noori Nastaleeq", Nastaliq;
   line-height: 1.4; }
 
-/* line 1269, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1270, ../../css/sass/sass_productStyle/studentPrint.scss */
 .persian-farsi, *[dir=rtl] *[lang="fa"] {
   font-family: "IRLotus", IRLotus; }
 
 /* ASSESSMENT ADD ONS*/
-/* line 1275, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1276, ../../css/sass/sass_productStyle/studentPrint.scss */
 .score {
   display: inline-block;
   color: #ffffff;
@@ -1245,15 +1246,15 @@ table.actyTableHdr .actyTableResponseHeader,
   line-height: 1.185em;
   font-size: .8em; }
 
-/* line 1286, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1287, ../../css/sass/sass_productStyle/studentPrint.scss */
 .score::before {
   content: "Points:"; }
 
-/* line 1289, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1290, ../../css/sass/sass_productStyle/studentPrint.scss */
 .moduleScoreTotalSpan {
   font-size: 1em !important; }
 
-/* line 1293, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1294, ../../css/sass/sass_productStyle/studentPrint.scss */
 .scoreCorrect {
   color: #ffffff;
   padding: 2px 6px;
@@ -1265,7 +1266,7 @@ table.actyTableHdr .actyTableResponseHeader,
   font-size: .8em;
   display: inline-block; }
 
-/* line 1305, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1306, ../../css/sass/sass_productStyle/studentPrint.scss */
 .scorePartiallyCorrect {
   color: #ffffff;
   padding: 2px 6px;
@@ -1276,7 +1277,7 @@ table.actyTableHdr .actyTableResponseHeader,
   line-height: 1.185em;
   font-size: .8em; }
 
-/* line 1316, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1317, ../../css/sass/sass_productStyle/studentPrint.scss */
 .scoreIncorrect {
   color: #ffffff;
   padding: 2px 6px;
@@ -1288,7 +1289,7 @@ table.actyTableHdr .actyTableResponseHeader,
   font-size: .8em;
   display: inline-block; }
 
-/* line 1328, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1329, ../../css/sass/sass_productStyle/studentPrint.scss */
 .score p,
 .scoreCorrect p,
 .scoreIncorrect p,
@@ -1296,86 +1297,359 @@ table.actyTableHdr .actyTableResponseHeader,
   display: inline-block; }
 
 /*Assessment Summary*/
-/* line 1336, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1337, ../../css/sass/sass_productStyle/studentPrint.scss */
 .assessmentSummaryHeader {
   border: 1px solid #cccccc;
   margin-top: 2.125em; }
 
-/* line 1341, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1342, ../../css/sass/sass_productStyle/studentPrint.scss */
 .assessmentSummaryHeader .displayTableCell {
   padding: .25em .5em;
   color: #333333;
   background: #cccccc; }
 
-/* line 1347, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1348, ../../css/sass/sass_productStyle/studentPrint.scss */
 .assessmentSummaryHeader .displayTableCell.assessmentSummaryTitle {
   font-size: 1.1em;
   font-weight: 600; }
 
-/* line 1352, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1353, ../../css/sass/sass_productStyle/studentPrint.scss */
 .assessmentSummaryHeader .displayTableCell.assessmentSummaryName {
   background: #4bb6f5;
   color: #ffffff;
   font-weight: 600;
   white-space: nowrap; }
 
-/* line 1359, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1360, ../../css/sass/sass_productStyle/studentPrint.scss */
 .assessmentSummaryHeader .displayTableCell.assessmentSummaryHeaderButtonContainer {
   text-align: right; }
 
-/* line 1363, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1364, ../../css/sass/sass_productStyle/studentPrint.scss */
 .activitySummaryContainer .displayTableCell,
 .activityComponentSummaryContainer .displayTableCell {
   background: #ffffff;
   /*border:1px solid #cccccc;*/ }
 
-/* line 1369, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1370, ../../css/sass/sass_productStyle/studentPrint.scss */
 .activityComponentSummaryContainer {
   background: #efefef; }
 
-/* line 1373, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1374, ../../css/sass/sass_productStyle/studentPrint.scss */
 .activitySummaryRowData,
 .activitySummaryRowTitle,
 .activityComponentSummaryRowTitle {
   padding: .25em;
   border-bottom: 1px solid #cccccc; }
 
-/* line 1380, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1381, ../../css/sass/sass_productStyle/studentPrint.scss */
 .displayTableCell .activitySummaryRowData {
   background: #eeeeee; }
 
-/* line 1384, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1385, ../../css/sass/sass_productStyle/studentPrint.scss */
 .displayTableCell .activityComponentSummaryRowData {
   border-bottom: 1px solid #cccccc;
   border-left: 1px solid #cccccc; }
 
-/* line 1389, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1390, ../../css/sass/sass_productStyle/studentPrint.scss */
 .displayTableCell .activityComponentSummaryRowComment {
   background: #ffffff;
   border-bottom: 1px solid #cccccc; }
 
-/* line 1394, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1395, ../../css/sass/sass_productStyle/studentPrint.scss */
 .activityComponentSummaryRowTitle {
   cursor: pointer; }
 
-/* line 1398, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1399, ../../css/sass/sass_productStyle/studentPrint.scss */
 .activityComponentSummaryRowTitle:hover {
   text-decoration: underline; }
 
-/* line 1402, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1403, ../../css/sass/sass_productStyle/studentPrint.scss */
 .displayTableCell .activitySummaryRowTitle {
   font-weight: 600;
   background: #eeeeee; }
 
-/* line 1407, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1408, ../../css/sass/sass_productStyle/studentPrint.scss */
 .summaryReportContainer {
   display: none; }
 
-/* line 1411, ../../css/sass/sass_productStyle/studentPrint.scss */
+/* line 1412, ../../css/sass/sass_productStyle/studentPrint.scss */
 .shortAnswerToggleContainer {
   text-align: center;
   width: 3em;
   padding-right: .6em; }
+
+/* line 1418, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper {
+  color: #050505;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 2px 2px 2px 0px rgba(50, 50, 50, 0.25);
+  -moz-box-shadow: 2px 2px 2px 0px rgba(50, 50, 50, 0.25);
+  box-shadow: 2px 2px 2px 0px rgba(50, 50, 50, 0.25); }
+
+/* line 1431, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperLines {
+  background-color: #fff;
+  background-image: linear-gradient(#eeeeee 0.1em, transparent 0.1em);
+  background-size: 100% 2em; }
+
+/* line 1438, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperLines2x {
+  background-color: #fff;
+  background-image: linear-gradient(#eeeeee 0.1em, transparent 0.1em);
+  background-size: 100% 3em; }
+
+/* line 1445, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperLines3x {
+  background-color: #fff;
+  background-image: linear-gradient(#eeeeee 0.1em, transparent 0.1em);
+  background-size: 100% 4em; }
+
+/* line 1452, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperGrid {
+  background-image: linear-gradient(transparent 1.938em, #848484 2em, transparent 2em), linear-gradient(90deg, transparent 1.938em, #848484 2em, transparent 2em);
+  background-size: 100% 2em, 2em 100%; }
+
+/* line 1459, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperGrid2x {
+  background-image: linear-gradient(transparent 2.938em, #848484 3em, transparent 3em), linear-gradient(90deg, transparent 2.938em, #848484 3em, transparent 3em);
+  background-size: 100% 3em, 3em 100%; }
+
+/* line 1466, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperGrid3x {
+  background-image: linear-gradient(transparent 3.938em, #848484 4em, transparent 4em), linear-gradient(90deg, transparent 3.938em, #848484 4em, transparent 4em);
+  background-size: 100% 4em, 4em 100%; }
+
+/* line 1473, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperYellow {
+  background: #FCF0AD; }
+
+/* line 1477, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperBlue {
+  background: #56C4E8; }
+
+/* line 1481, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperPink {
+  background: #F59DB9; }
+
+/* line 1485, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperGreen {
+  background: #D0E17D; }
+
+/* line 1489, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperCharacterPracticeSmall {
+  background-color: #ffffff;
+  background-image: linear-gradient(#848484 2px, transparent 2px), linear-gradient(90deg, #848484 2px, transparent 2px), linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(45deg, transparent 35px, rgba(0, 0, 0, 0.1) 36px, transparent 36px, transparent 36px), linear-gradient(-45deg, transparent 35px, rgba(0, 0, 0, 0.1) 36px, transparent 36px, transparent 36px);
+  background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px, 50px 50px, 50px 50px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px, -1px -1px, -1px -1px; }
+
+/* line 1502, ../../css/sass/sass_productStyle/studentPrint.scss */
+.canvasPaper.canvasPaperCharacterPracticeLarge {
+  background-color: #ffffff;
+  background-image: linear-gradient(#848484 4px, transparent 4px), linear-gradient(90deg, #848484 4px, transparent 4px), linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(45deg, transparent 70px, rgba(0, 0, 0, 0.1) 71px, transparent 72px, transparent 100px), linear-gradient(-45deg, transparent 70px, rgba(0, 0, 0, 0.1) 71px, transparent 72px, transparent 100px);
+  background-size: 100px 100px, 100px 100px, 50px 50px, 50px 50px, 100px 100px, 100px 100px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px, -1px -1px, -1px -1px; }
+
+/* line 1515, ../../css/sass/sass_productStyle/studentPrint.scss */
+.timeline__content {
+  background-color: #FFF;
+  border: 1px solid #CCC;
+  border-radius: 10px;
+  margin: 10px;
+  color: #333;
+  display: block;
+  padding: .5em;
+  position: relative; }
+
+/* line 1526, ../../css/sass/sass_productStyle/studentPrint.scss */
+.timeline__content .prompt {
+  white-space: nowrap; }
+
+/* line 1530, ../../css/sass/sass_productStyle/studentPrint.scss */
+.timeline__content img {
+  max-width: none;
+  max-height: 184px; }
+
+/*Lexical Items*/
+/* line 3198, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1539, ../../css/sass/sass_productStyle/studentPrint.scss */
+.flashcardScene {
+  width: 350px;
+  height: 175px;
+  border: 1px solid #CCCCCC;
+  perspective: 600px;
+  margin: 1em .5em;
+  box-shadow: 0px 2px 4px 0px; }
+
+/* line 3214, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1550, ../../css/sass/sass_productStyle/studentPrint.scss */
+.flashcardFrontFace {
+  font-weight: 600;
+  margin-top: 1.75em;
+  border-top: 1px solid #ff0000;
+  padding: .5em;
+  backface-visibility: hidden; }
+
+/* line 3222, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1559, ../../css/sass/sass_productStyle/studentPrint.scss */
+.flashcardBackFace {
+  text-align: center;
+  backface-visibility: hidden; }
+
+/* line 1564, ../../css/sass/sass_productStyle/studentPrint.scss */
+.flashcardsContainer,
+.carouselFlashcardsSlider {
+  display: flex;
+  flex-wrap: wrap; }
+
+/*----Lexical Item: Concentration Game----*/
+/* line 3265, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1573, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameboardContainer {
+  display: flex;
+  flex-wrap: wrap; }
+
+/* line 3271, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1579, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameStatBox {
+  margin: .5em;
+  display: inline-block; }
+
+/* line 3276, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1584, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameStatContainer {
+  display: flex;
+  margin: .5em;
+  background-color: #cccccc;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 2px 2px 2px 0px rgba(50, 50, 50, 0.25);
+  -moz-box-shadow: 2px 2px 2px 0px rgba(50, 50, 50, 0.25);
+  box-shadow: 2px 2px 2px 0px rgba(50, 50, 50, 0.25); }
+
+/* line 3288, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1596, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameStatRowContainer {
+  display: flex;
+  align-items: center;
+  margin: .25em; }
+
+/* line 3294, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1602, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameStatColContainer {
+  display: flex;
+  flex-direction: column; }
+
+/* line 3299, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1607, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameTurnsContainer {
+  align-items: center; }
+
+/* line 3303, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1611, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameTimeContainer {
+  align-items: center; }
+
+/* line 3307, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1615, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameRemainingContainer {
+  align-items: center; }
+
+/* line 3311, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1619, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameStat {
+  padding: 0em .75em;
+  background: #ffffff;
+  border-radius: 16px;
+  margin: 0em .25em; }
+
+/* line 3318, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1626, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameStatHeader {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #ffffff;
+  background: #848484;
+  color: #ffffff; }
+
+/* line 3360, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1634, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationMatchedCardsWrapperContainer {
+  margin: .25em 1em;
+  overflow: auto;
+  height: 550px;
+  width: 325px; }
+
+/* line 3367, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1641, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationMatchedCardsContainer {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #000000; }
+
+/* line 3372, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1646, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationMatchedCardsContainer h5 {
+  margin: 0em;
+  padding: .15em;
+  border-width: 0px 1px 1px 1px;
+  border-color: #000000;
+  border-style: solid; }
+
+/* line 3380, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1654, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameMatchedWordsContainer {
+  display: flex;
+  align-items: center;
+  border-width: 0px 1px 1px 1px;
+  border-color: #000000;
+  border-style: solid; }
+
+/* line 3387, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1661, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameMatchedWordsContainer > div {
+  padding: .15em; }
+
+/* line 3392, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1665, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGameMatchedWordsContainer .firstItem {
+  flex: 0 0 50%; }
+
+/* line 3396, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1669, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationGamePairContainer {
+  display: flex;
+  border-left: 1px solid #000000;
+  align-items: center; }
+
+/* line 3326, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1675, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationCard {
+  display: flex;
+  width: 160px;
+  height: 250px;
+  border: 1px solid #CCCCCC;
+  perspective: 600px;
+  border-radius: 10px;
+  margin: .25em;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  box-shadow: 0px 2px 4px 0px;
+  justify-content: center;
+  align-items: center; }
+
+/* line 3340, ../../css/sass/sass_productStyle/productStyle.scss */
+/* line 1691, ../../css/sass/sass_productStyle/studentPrint.scss */
+.concentrationCardFrontFace {
+  position: absolute;
+  height: 100%;
+  max-width: 100%;
+  backface-visibility: hidden; }
 
 /* Default set of pre-formatted tables; treatment applied through the CKEditor table dialog - advanced tab */
 /*COLORS AND STYLES HERE ARE DIRECT MATCHES OF DEFAULT SELF_STUDY COLORS.*/

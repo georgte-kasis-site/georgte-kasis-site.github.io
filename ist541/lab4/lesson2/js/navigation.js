@@ -86,7 +86,7 @@ var navigationModes = ["open","forward","back"];
 function initNavigation(viewMode, sectionSortKey, activitySortKey)
 {
     $(window).resize(scrollMenuMobile);
-    if ((typeof (sequenceSections) == "undefined")&&(modulesArray.length > 1))
+    if ((typeof (sequenceSections) == "undefined") && (modulesArray.length > 1))
     {
         sequenceSections = new Array();
         for (var m = 0; m < modulesArray.length; m++)
@@ -126,9 +126,6 @@ function initNavigation(viewMode, sectionSortKey, activitySortKey)
     lockNavigation();
     if (!module.locked)
     {
-
-//        loadNavigation();
-
         swapStyleSheet(((typeof (module.themePath) != "undefined") ? module.themePath : "Scaffold/Default/default/") + "css/style.css");
         var ca = false;
         if (typeof (correctAnswersArray) != "undefined")
@@ -165,36 +162,16 @@ function initNavigation(viewMode, sectionSortKey, activitySortKey)
     }
     componentStackManager = new ComponentStackManager("componentStackManager", contentPanels, { module: module, correctAnswers: ca, gradingProtocolValues: gpv, feedback: fb, lexicalItems: li }, function (data) { initNavigationCallback(data); }, currentViewMode);
     componentStackRunCount++;
-
     if (componentStackManager.moduleFeatures.toolbar)
     {
         var toolbarArray = new Array();
         toolbarArray.push({ title: "", iconName: "" });
 
         if (componentStackManager.moduleFeatures.studentNotes)
-            toolbarArray.push({ title: "Student Notes", iconName: "fa fa-sticky-note-o", callback: function (obj) { loadStudentNotes(obj); } });
+            toolbarArray.push({ title: "Student Notes", iconName: "fa fa-file-text-o", callback: function (obj) { loadStudentNotes(obj); } });
         if (componentStackManager.moduleFeatures.answerKey)
             toolbarArray.push({ title: "AnswerKey", iconName: gradingProtocolIcon, callback: function (obj) { loadStudentAnswerKey(obj); } });
-
-
         buildToolbar(toolbarArray);
-    }
-    else
-    {
-        if (componentStackManager.moduleFeatures.studentNotes)
-        {
-            var panelButtonHTML ='<div id="toolBarBtn_StudentNotes" title="Student Notes" class="displayTableCell btn pagerItem toolBarBtnActivityNav">';
-            panelButtonHTML += '<i id="toolBarIcon_StudentNotes" class="fa fa-sticky-note-o"></i>';
-            panelButtonHTML += '<i id="toolBarIconX2_StudentNotes"></i>';
-            panelButtonHTML += '</div>';
-            $("#textLargePeripheralButton").after(panelButtonHTML);
-            $("#toolBarBtn_StudentNotes").on("click", function (e)
-            {
-                var studentNoteHTML = '<div id="studentNotesWrapper" class="studentNotesWrapper"></div>';
-                openCustomDialog("Student Notes", studentNoteHTML, "", '<i class="fa fa-sticky-note-o"></i>');
-                loadStudentNotes($('#studentNotesWrapper'))
-            })
-        }
     }
 }
 
@@ -244,23 +221,17 @@ function loadHeader()
     headerHTML += '</div>';
     header.html(headerHTML);
 
-    //Adjust mainNav if running module outside assignment framework
-    /*
-    z-index: 200;
-    position: fixed;
-    top: 2.750em;
-    */
     $("#mainNav").css({"position":"fixed","top":"2.750em","z-index":"200"});
 }
 
-function loadNavigation()
+function loadNavigation(stackManager)
 {
-    loadActivityPanelsAndNavigation();
+    loadActivityPanelsAndNavigation(stackManager);
 }
 
 function initNavigationCallback(stackManager)
 {
-    loadNavigation();
+    loadNavigation(stackManager);
     var scaffoldPanel = $("#scaffoldPanel");
     if(scaffoldPanel.length <= 0)
     {
@@ -298,10 +269,10 @@ function initNavigationCallback(stackManager)
     }
     stackManager.runComponentStackSequence();
     var initNavigationCompleteEvent = $.Event("initNavigationComplete");
-    $(document).trigger(initNavigationCompleteEvent);    
+    $(document).trigger(initNavigationCompleteEvent);
 }
 
-function loadActivityPanelsAndNavigation()
+function loadActivityPanelsAndNavigation(stackManager)
 {
     contentPanels.html("");
     $("#sequenceNavContainer").remove();
@@ -347,13 +318,20 @@ function loadActivityPanelsAndNavigation()
         }
     }
 
-    loadMainNav();
+    loadMainNav(stackManager);
     var navPager = $("#navPager");
     if (firstPanel < 0)
     {
         currentActivitySortKey = lastPanel;
         if(lastPanel >= 0)
-            navPager.append("<li title=\"\" id=\"pagerItem_" + lastPanel + "\" class=\"btn pagerItem\" onclick=\"goToActivity('" + lastPanel + "');\"></li>");
+            navPager.append("<li title=\"\" id=\"pagerItem_" + lastPanel + "\" class=\"btn pagerItem\"></li>");
+        //Bind
+        $("#pagerItem_" + i ).on("click", {"lastPanel":lastPanel},function(event){
+            if(!$(this).hasClass("pagerDisabled")){
+                var lastPanel = event.data.lastPanel;
+                goToActivity(lastPanel);
+            }
+        })
         var panel = $("#panel_" + lastPanel);
         var pagerItem = $("#pagerItem_" + lastPanel);
         if (panel.data("role") == "Introduction" && lastPanel == 0)
@@ -370,7 +348,15 @@ function loadActivityPanelsAndNavigation()
         for (var i = firstPanel; i <= lastPanel; i++)
         {
             var activity = module.activities[i - 1];
-            navPager.append("<li title=\"\" id=\"pagerItem_" + i + "\" class=\"btn pagerItem\" onclick=\"goToActivity('" + i + "');\"></li>");
+            navPager.append("<li title=\"\" id=\"pagerItem_" + i + "\" class=\"btn pagerItem\"></li>");
+            //Bind
+            $("#pagerItem_" + i ).on("click", {"itemNum":i},function(event){
+                if(!$(this).hasClass("pagerDisabled")){
+                    var itemNum = event.data.itemNum;
+                    goToActivity(itemNum);
+                }
+            })
+
             var panel = $("#panel_" + i);
             var pagerItem = $("#pagerItem_" + i);
             if (panel.data("role") == "Introduction" && i == 0)
@@ -450,9 +436,9 @@ function loadSummaryPanel(){
             //score
             summaryPanelHTML += spf('<div id="activityComponentSummaryData_~" class="displayTableCell activityComponentSummaryRowData" style="~"></div>',[activityComponent.id, behaviorBg])
             //Comments
-            summaryPanelHTML += spf('<div class="displayTableCell activityComponentSummaryRowComment" style="~,min-width:2.188em; max-width:2.188em; text-align:center;"><span id="activityComponentSummaryComment_~" class="" style="cursor:pointer; display:none" onclick="goToActivity(\'~\',\'~\')"></span></div>',[behaviorBg, activityComponent.id, activity.index, activityComponent.id, "commentICON"])
+            summaryPanelHTML += spf('<div class="displayTableCell activityComponentSummaryRowComment" style="~ min-width:2.188em; max-width:2.188em; text-align:center;"><span id="activityComponentSummaryComment_~" class="" style="cursor:pointer; display:none" ></span></div>',[behaviorBg, activityComponent.id])
             //Title
-            summaryPanelHTML += spf('<div class="displayTableCell activityComponentSummaryRowTitle" style="width:100%; ~" onclick="goToActivity(\'~\',\'~\')">~</div>',[behaviorBg, activity.index, activityComponent.id, htmlDecode(activityComponent.title)])
+            summaryPanelHTML += spf('<div id="activityComponentSummaryRowTitle_~" class="displayTableCell activityComponentSummaryRowTitle" style="width:100%; ~">~</div>',[activityComponent.id, behaviorBg, htmlDecode(activityComponent.title)])
             
             summaryPanelHTML += '</div>'//End Row
         }
@@ -465,6 +451,26 @@ function loadSummaryPanel(){
     summaryPanelHTML += '<div id="summaryFooter" class="interfaceTopMarginOneEM"></div>'
     summaryPanelHTML += '</div>'
     contentPanels.append(summaryPanelHTML);
+
+    for (var i = 0; i < module.activities.length; i++){
+        var activity = module.activities[i];
+        for (var j = 0; j < activity.activityComponents.length; j++){
+            var activityComponent = activity.activityComponents[j];
+            $("#activityComponentSummaryComment_" + activityComponent.id).on("click", { activity: activity, activityComponent: activityComponent }, function(event){
+                if(!$(this).hasClass("disabled")){
+                    goToActivity(event.data.activity.index, event.data.activityComponent.id)
+                }
+            });
+            
+            $("#activityComponentSummaryRowTitle_" + activityComponent.id).on("click", { activity: activity, activityComponent: activityComponent}, function(event){
+                if (!$(this).hasClass("disabled"))
+                {
+                    goToActivity(event.data.activity.index, event.data.activityComponent.id)
+                }
+            });
+        }
+    }
+
 
     var summaryPanelLoadedEvent = $.Event("summaryPanelLoaded");
     $(document).trigger(summaryPanelLoadedEvent);
@@ -525,7 +531,7 @@ function adjustForNavigation(){
     var activityNavH = $("#activityNavContainer").outerHeight();
     var sequencNavH = ((typeof(modulesArray) != "undefined") && (modulesArray.length > 0)) ? $("#sequenceNavContainer").outerHeight() : 0;
     var totalNavigationHeight = activityNavH + sequencNavH;
-    $("#contentPanels").css({"position":"relative","top":totalNavigationHeight+"px"})
+    //$("#contentPanels").css({"position":"relative","top":totalNavigationHeight+"px"})
 }
 
 function scrollMenuMobile()
@@ -593,7 +599,7 @@ function loadSequenceNav(containerElement)
     $("#sequenceTab_"+currentSectionSortKey).addClass("selected")
 }
 
-function loadMainNav()
+function loadMainNav(stackManager)
 {
     mainNav.addClass("mainNav");
     if ((typeof(sequenceSections) != "undefined") && (sequenceSections.length > 1))
@@ -603,20 +609,50 @@ function loadMainNav()
 
     mainNavHTML += "<div id=\"textSmallPeripheralButton\" class=\"textSmallSelected\" onclick=\"setSmallText();\"><i class=\"fa fa-font\">&#8595;</i></div>";
     mainNavHTML += "<div id=\"textLargePeripheralButton\" class=\"textLarge\" onclick=\"setLargeText();\"><i class=\"fa fa-font\">&#8593;</i></div>";
+    if (stackManager && stackManager.moduleFeatures.studentNotes && (!stackManager.moduleFeatures.toolbar || stackManager.viewMode == "teacherReview"))
+    {
+        mainNavHTML += '<div id="studentNotesBtn" title="Student Notes" class="displayTableCell btn textLarge toolBarBtnActivityNav">';
+        mainNavHTML += '<i class="fa fa-file-text-o"></i>';
+        mainNavHTML += '</div>';
+    }
+
     //Audio Test Btn
     mainNavHTML += "<div class=\"displayTableCell\" id=\"audioTestBtn\" title=\"Test Audio Settings\"onclick=\"loadAudioTestPage();\">";
     mainNavHTML += "<div  class=\"textLarge\"><i class=\"fa fa-microphone\"></i></div>";
     mainNavHTML += "</div>";
 
-    
-    mainNavHTML += "<div class=\"displayTableCell\" style=\"vertical-align:top; min-width: 2.188em;\"><div id=\"previousButton\" class=\"btn prevBtn\" onclick=\"previousActivity();\"></div></div>";
+    mainNavHTML += "<div id=\"previousButtonCell\" class=\"displayTableCell\" style=\"vertical-align:top; min-width: 2.188em;\"><div id=\"previousButton\" class=\"btn prevBtn\"></div></div>";
     mainNavHTML += "    <div id=\"pagerDiv\" class=\"pagerDiv\">";
     mainNavHTML += "        <ul id=\"navPager\" class=\"navPager\">";
     mainNavHTML += "        </ul>";
     mainNavHTML += "    </div>";
-    mainNavHTML += "<div class=\"displayTableCell\" style=\"vertical-align:top; min-width: 2.188em;\"><div id=\"nextButton\" class=\"btn prevBtn\" onclick=\"nextActivity();\"></div></div>";
+    mainNavHTML += "<div class=\"displayTableCell\" style=\"vertical-align:top; min-width: 2.188em;\"><div id=\"nextButton\" class=\"btn nextBtn\"></div></div>";
     mainNavHTML += "</div>";
     mainNav.append(mainNavHTML);
+
+    var studentNotesBtn = $("#studentNotesBtn");
+    if (studentNotesBtn.length > 0)
+    {
+        studentNotesBtn.on("click", function (e)
+        {
+            var studentNoteHTML = '<div id="studentNotesWrapper" class="studentNotesWrapper"></div>';
+            openCustomDialog("Student Notes", studentNoteHTML, "", '<i class="fa fa-file-text-o"></i>');
+            loadStudentNotes($('#studentNotesWrapper'))
+        })
+    }
+
+    //Bind for next/previous
+    $("#previousButton").on("click", function(){
+        if(!$(this).hasClass("prevNextBtnDisabled")){
+            previousActivity();
+        }
+    })
+
+    $("#nextButton").on("click", function(){
+        if(!$(this).hasClass("prevNextBtnDisabled")){
+            nextActivity();
+        }
+    })
 
     initNavPosY = mainNav.css("top");
     updatedNavPosY = mainNav.css("top");
@@ -624,6 +660,9 @@ function loadMainNav()
     updatedPanelY = contentPanels.css("top");
     previousActivityBtn = $("#previousButton");
     nextActivityBtn = $("#nextButton");
+
+    var pagerDivRenderedEvent = $.Event("pagerDivRendered");
+    $(document).trigger(pagerDivRenderedEvent);
 }
 
 function setSmallText()
@@ -661,7 +700,7 @@ function previousActivity()
     killMedia($("#panel_" + currentActivitySortKey));
     if ((firstPanel >= 0) && (currentActivitySortKey > firstPanel))
     {
-        currentActivitySortKey--;
+        currentActivitySortKey--;lo
         $(".panel").hide();
         $("#panel_" + currentActivitySortKey).show();
     }
@@ -738,17 +777,31 @@ function renderFooterNav(containerElement)
 {
     var footerNavHTML = '<div id="footerNav" class="footerNav displayTable" style="margin-top:2.5em">'
     footerNavHTML += '<div class="displayTableCell">'
-    footerNavHTML += '<div id="previousButtonFooter" class="btn prevBtnFooter" onclick="previousActivity();"></div>'
+    footerNavHTML += '<div id="previousButtonFooter" class="btn prevBtnFooter"></div>'
     footerNavHTML += '</div>'
     footerNavHTML += '<div class="displayTableCell" style="width:100%">'
     footerNavHTML += '&nbsp;'//Center Buffer Cell
     footerNavHTML += '</div>'
     footerNavHTML += '<div class="displayTableCell">'
-    footerNavHTML += '<div id="nextButtonFooter" class="btn nextBtnFooter" onclick="nextActivity();"></div>'
+    footerNavHTML += '<div id="nextButtonFooter" class="btn nextBtnFooter"></div>'
     footerNavHTML += '</div>'
     footerNavHTML += '</div>'//End footerNav
     containerElement.css({"padding-bottom":0})
     containerElement.append(footerNavHTML)
+
+    //Bind for next/previous
+    $("#previousButtonFooter").on("click", function(){
+        if(!$(this).hasClass("prevNextBtnDisabled")){
+            previousActivity();
+        }
+    })
+
+    $("#nextButtonFooter").on("click", function(){
+        if(!$(this).hasClass("prevNextBtnDisabled")){
+            nextActivity();
+        }
+    })
+
 }
 
 function resolveNavigation(activityComponentId)
@@ -761,7 +814,7 @@ function resolveNavigation(activityComponentId)
     }
     else
     {
-        renderFooterNav($("#panel_" + currentActivitySortKey));
+        renderFooterNav($("#panel_" + currentActivitySortKey));//this is rendered here because its part of the panel_ and not part of the navigation
         var previousActivityBtnFooter = $("#previousButtonFooter");
         var nextActivityBtnFooter = $("#nextButtonFooter");
         if (previousActivityBtn.length > 0)
@@ -917,8 +970,6 @@ function unlockNavigation()
 {
     $("#assignmentComponentStackLoadingDiv").hide();
     $("#assignmentComponentStackLoadedDiv").show();
-    //if (typeof (setMainNavWidth) == "function")
-        //setMainNavWidth();
     resolveNavigation();
 }
 
@@ -947,7 +998,7 @@ function openCustomDialog(title, content, type, iconHTML, initialWidth, callback
     var customDialogHTML = '<div id="ucatDialog" class="ucatDialog '+dialogClassName+'" style="width: '+dialogWidth+'; height: 60%; visibility:hidden; opacity:0;">';
     customDialogHTML += '<div id="ucatDialogTitle" class="displayTable ucatDialogTitle '+headerClassName+'" style="width: 100%;">';
     customDialogHTML += '<div class="displayTableCell" style="padding-left: 0.625em;">'+iconHTML+'</div>';
-    customDialogHTML += '<div id="ucatDialogTitelText" class="displayTableCell titlebar" style="width:100%; text-align:center">'+title+'</div>';
+    customDialogHTML += '<div id="ucatDialogTitleText" class="displayTableCell titlebar" style="width:100%; text-align:center">'+title+'</div>';
     customDialogHTML += '<div class="displayTableCell ucatDialogBtn ucatDialogCloseBtn" onclick="ucatDialogClose();"><i class="fa fa-times"></i></div>';
     customDialogHTML += '</div>';//End titlebar
 

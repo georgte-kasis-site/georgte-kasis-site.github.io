@@ -3,6 +3,7 @@ var lockGameboard = false;
 var hasFlippedCard = false;
 var firstCardSelected, secondCardSelected;
 var concentrationCardsArray = [];
+var concentrationCardsMatchedArray = [];
 var concentrationCardTurnsUsed = 0;
 var gameboardCardLimit = 20;
 var concentrationCardDecks = [];
@@ -144,10 +145,11 @@ function loadConcentrationGameActivityComponent(containerElement, activityCompon
     shuffleArray(concentrationCardDecks[concentrationCardDecksIndex]);  // Shuffles the first deck
 
     var concentrationGameAcitivityHTML = '';
-    concentrationGameAcitivityHTML += `<div class="tabDetails">`;
+    concentrationGameAcitivityHTML += `<div style="display: flex;" class="tabDetails">`;
+    concentrationGameAcitivityHTML += '  <div>';
     concentrationGameAcitivityHTML += '  <div class="concentrationGameStatBox">'
     concentrationGameAcitivityHTML += '     <div class="concentrationGameStatContainer">';
-    concentrationGameAcitivityHTML += '         <div class="concentrationGameStatColContainer concentrationGameTurnsContainer">';
+    concentrationGameAcitivityHTML += '         <div class="concentrationGameStatColContainer. concentrationGameTurnsContainer">';
     concentrationGameAcitivityHTML += '             <div class="concentrationGameStatHeader" style="-webkit-border-top-left-radius: 6px;-moz-border-radius-topleft: 6px; border-top-left-radius: 6px;">Turns</div>';
     concentrationGameAcitivityHTML += '             <div class="concentrationGameStatRowContainer">';
     concentrationGameAcitivityHTML += `                 <div id="concentrationGameTurnCounter_${activityComponent.id}" class="concentrationGameStat">${concentrationCardTurnsUsed}</div>`;
@@ -173,7 +175,13 @@ function loadConcentrationGameActivityComponent(containerElement, activityCompon
     concentrationGameAcitivityHTML += '         </div>';
     concentrationGameAcitivityHTML += '     </div>';
     concentrationGameAcitivityHTML += '  </div>';
-    concentrationGameAcitivityHTML += `		<div id="concentrationGameboardContainer_${activityComponent.id}" class="concentrationGameboardContainer"></div>`;
+    concentrationGameAcitivityHTML += '  <div class="concentrationMatchedCardsWrapperContainer">';
+    concentrationGameAcitivityHTML += `	    <div id="concentrationMatchedCardsContainer_${activityComponent.id}" style="display: none;" class="concentrationMatchedCardsContainer">`;
+    concentrationGameAcitivityHTML += '         <h5>Matched Words</h5>';
+    concentrationGameAcitivityHTML += '     </div>';
+    concentrationGameAcitivityHTML += '  </div>';
+    concentrationGameAcitivityHTML += '  </div>';
+    concentrationGameAcitivityHTML += `	 <div id="concentrationGameboardContainer_${activityComponent.id}" class="concentrationGameboardContainer"></div>`;
     concentrationGameAcitivityHTML += '</div>';
 
     containerElement.html(concentrationGameAcitivityHTML);
@@ -197,7 +205,7 @@ function loadConcentrationCard(containerElement, concentrationCardObj, activityC
     }
 
     var concentrationCardHTML = '';
-    concentrationCardHTML += `<div id="concentrationCard_${concentrationCardId}" class="concentrationCard" data-value="${concentrationCardValue}">`;
+    concentrationCardHTML += `<div id="concentrationCard_${concentrationCardId}" class="concentrationCard">`;
     concentrationCardHTML += `	<img class="concentrationCardFrontFace" src="images/ui/cardBackGray.png" />`;
     switch (concentrationCardObj.cardType) {
         case 'text':
@@ -215,7 +223,8 @@ function loadConcentrationCard(containerElement, concentrationCardObj, activityC
     containerElement.append(concentrationCardHTML);
 
     var concentrationCard = $(`#concentrationCard_${concentrationCardId}`);
-    var concentrationCardBackAudio = $(`#concentrationCardBackAudio_${concentrationCardId}`)[0];
+    var concentrationCardBackAudio = $(`#concentrationCardBackAudio_${concentrationCardId}`);
+    concentrationCard.data('value', concentrationCardValue);
     concentrationCard.on('click', function (e) {
         startTimer();
         $(`.ucatPlaybackTime`).css('display', 'none');
@@ -223,13 +232,41 @@ function loadConcentrationCard(containerElement, concentrationCardObj, activityC
     });
 }
 
+function loadMatchedConcentrationCard(containerElement, matchedCardsArray) {
+    var translatedGlossaryPairCardIndex = matchedCardsArray[0].id === matchedCardsArray[0].value ? 1 : 0;   // Deciphers which index within our matchedCardsArray is our glossary item
+    var glossaryItemIndex = translatedGlossaryPairCardIndex == 0 ? 1 : 0;   // Deciphers which index within our matchedCardsArray is our translated glossary item
+    var pairCardType = matchedCardsArray[translatedGlossaryPairCardIndex].cardType;
+    var pairCardText = matchedCardsArray[translatedGlossaryPairCardIndex].text ? matchedCardsArray[translatedGlossaryPairCardIndex].text : false;
+    var pairCardImage = pairCardType == 'image' ? matchedCardsArray[translatedGlossaryPairCardIndex].imageUrl : false;
+    var pairCardAudio = pairCardType == 'audio' ? matchedCardsArray[translatedGlossaryPairCardIndex].audioResource.sourceFilePath : false;
+
+    var matchedConcentrationCardHTML = '';
+    matchedConcentrationCardHTML += '<div class="concentrationGameMatchedWordsContainer">';
+    matchedConcentrationCardHTML += `   <div class="firstItem">${matchedCardsArray[glossaryItemIndex].text}</div>`;
+    switch (pairCardType) {
+        case 'text':
+            matchedConcentrationCardHTML += `<div class="concentrationGamePairContainer">${pairCardText}</div>`;
+            break;
+        case 'image':
+            matchedConcentrationCardHTML += `<div class="concentrationGamePairContainer"><img src="${pairCardImage}" /><div>${pairCardText}</div></div>`;
+            break;
+        case 'audio':
+            matchedConcentrationCardHTML += `<div class="concentrationGamePairContainer"><audio src="${pairCardAudio}"></audio><div>${pairCardText}</div></div>`;
+            break;
+    }
+    matchedConcentrationCardHTML += '</div>';
+
+    containerElement.append(matchedConcentrationCardHTML);
+    setupUcatMedia(containerElement, {audio: { showduration: false, showplaybacktime: false }});
+}
+
 function flipConcentrationCard(concentrationCard, activityComponent, cardType, concentrationCardBackAudio) {
     if (lockGameboard) return;
     if (concentrationCard.is(firstCardSelected) || firstCardSelected == 'undefined') return;
 
     concentrationCard.addClass('concentrationCardReveal');
-    if (cardType == 'audio') {
-        concentrationCardBackAudio.play();
+    if (cardType == 'audio') { 
+        concentrationCardBackAudio[0].play();
     }
     if (!hasFlippedCard) {
         hasFlippedCard = true;
@@ -268,6 +305,7 @@ function createConcentrationPairCards(lexicalItemObj, concentrationCardsArray, g
                 'cardType': 'image',
                 'id': lexicalItemObj.translations[0].id,
                 'value': lexicalItemObj.translations[0].lexicalItemId,
+                'text': lexicalItemObj.translations[0].text,
                 'imageUrl': domainRootPath + lexicalItemObj.translations[0].imageResource.sourceFilePath,
             } : false;
             break;
@@ -315,6 +353,7 @@ function resetGameboard() {
 }
 
 function removeCards(activityComponent) {
+    lockGameboard = true;
     var revealedCards = $('.concentrationCardReveal');
     updateCardsRemainingArray(activityComponent.id);
     setTimeout(function () {
@@ -342,16 +381,20 @@ function updateTurnsUsedValue(activityComponentId) {
 
 function updateCardsRemainingArray(activityComponentId) {
     var cardsToRemoveArray = [firstCardSelected.data('value'), secondCardSelected.data('value')];
+    var matchedCardsArray = [];
     while (cardsToRemoveArray.length != 0) {
         var cardToBeRemovedValue = cardsToRemoveArray.shift();
         for (var i=0; i<concentrationCardDecks[concentrationCardDecksIndex].length; i++) {
             if (concentrationCardDecks[concentrationCardDecksIndex][i].value == cardToBeRemovedValue) {
+                matchedCardsArray.push(concentrationCardDecks[concentrationCardDecksIndex][i]);
                 concentrationCardDecks[concentrationCardDecksIndex].splice(i, 1);
                 break;
             }
         }
     } 
-
+    
+    $(`#concentrationMatchedCardsContainer_${activityComponentId}`).show();
+    loadMatchedConcentrationCard($(`#concentrationMatchedCardsContainer_${activityComponentId}`), matchedCardsArray);
     updateTotalCardsRemainingValue(activityComponentId);
 }
 
@@ -426,6 +469,7 @@ function chronograph() {
     if (minute == 60) {
         clearInterval(cron);
     }
+    
     $('#concentrationGameTimerSeconds').html(returnData(second));
     $('#concentrationGameTimerMinutes').html(returnData(minute));
 }

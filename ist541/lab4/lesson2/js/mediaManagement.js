@@ -53,6 +53,15 @@ $(document).ready(function ()
         enterEvent = "mouseenter";
         leaveEvent = "mouseleave";
     }
+
+    //console.log("WRITE YOU TUBE API")
+    //Add youtube api so it will be ready when called
+    var tag = document.createElement('script');
+    tag.id  = 'iframe_api';//Added id so that it doesnt get populated again if setupYouTubeEmbed is called
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 })
 
 function updatePlaysOnRefresh()
@@ -97,6 +106,7 @@ function toggleAllMediaPlayBtnCursors(){
 /*-----------CONSTRUCTOR--------------*/
 function setupUcatMedia(containerElement, settings)
 {
+    //console.log(settings.limitplays)
     lockoutMedia = false;//resets value on componentRefresh
     toggleAllMediaPlayBtnCursors();
     this.mediaMgmt();
@@ -107,6 +117,9 @@ function setupUcatMedia(containerElement, settings)
         transcriptHighlights: new Array()
     }, settings);
     setupMedia(containerElement, options);
+    setupYouTubeEmbed(containerElement);
+    setupUcatWriting(containerElement);
+
 }
 
 /*-----------REVERT--------------*/
@@ -165,6 +178,7 @@ function mediaMgmt()
     this.ucatMediaClass();
     this.setupMedia = function (containerElement, options)
     {
+        //console.log(options.limitplays)
         //AUDIO OR VIDEO
         $(containerElement).find("audio, video").each(function ()
         {
@@ -176,6 +190,8 @@ function mediaMgmt()
                 var argumentOptions = mediaType == 'audio' ? options.audio : options.video;
                 var transcriptHighlights = options.transcriptHighlights;
                 var defaultOptions = mediaType == 'audio' ? defaultUcatAudioOptions : defaultUcatVideoOptions
+                //console.log(argumentOptions.limitplays);
+                //console.log(defaultOptions.limitplays);
                 reconcileGlobalVariable(argumentOptions, defaultOptions);
                 var tagOptions = copyGlobalVariable(argumentOptions);
                 $.each(tag[0].dataset, function (key, value)
@@ -195,6 +211,7 @@ function mediaMgmt()
                     }
                     tagOptions[key] = value;
                 });
+                //console.log(tagOptions.limitplays)
                 //The media browser plug-in passes the videosizetitle as a data-attribute;
                 //legacy media should use standard playersize as fallback
                 tagOptions.videosize = tagOptions.videosizetitle ? window[tagOptions.videosizetitle] : standardVideoPlayer;
@@ -205,7 +222,7 @@ function mediaMgmt()
                 }
                 //Addded to force complete download of media
                 // tag.attr("preload","auto");
-
+                //console.log(tagOptions.limitplays)
                 //simply means that the browser has loaded enough meta-data to know the media’s .duration
                 tag.on('loadedmetadata', { o: tagOptions }, function (e)
                 {
@@ -245,7 +262,7 @@ function ucatMediaClass()
         // mediaTag.attr("poster",video.poster);
         var mediaId = mediaPlayers.length;
         mediaTag.attr("id","mediaTag_"+mediaId);
-
+        //console.log(options.limitplays)
         if (options.limitplays > 0)
         {
             // Cant allow the user to rewind a player
@@ -1057,7 +1074,7 @@ function ucatMediaClass()
             var highlightButtonCount = 0;
             if (options.transcriptHighlights)
             {
-                highlightButtonsHTML += '<div style="display:flex;">';
+                highlightButtonsHTML += '<div style="display:flex; justify-content: center;">';
                 for (var th = 0; th < options.transcriptHighlights.length; th++)
                 {
                     if (options.transcriptHighlights[th].language != false)
@@ -1069,7 +1086,7 @@ function ucatMediaClass()
                     }
                 }
                 highlightButtonsHTML += '</div>';//end table
-                highlightButtonsHTML += '<div style="text-align:center;">';
+                highlightButtonsHTML += '<div style="text-align:center; white-space:nowrap;">';
                 highlightButtonsHTML += 'TRACK TEXT';
                 highlightButtonsHTML += '</div>';
             }
@@ -1135,7 +1152,7 @@ function ucatMediaClass()
                     }
                 }
                 highlightButtonsHTML += '</div>';//end table
-                highlightButtonsHTML += '<div style="text-align:center;">';
+                highlightButtonsHTML += '<div style="text-align:center; white-space:nowrap;">';
                 highlightButtonsHTML += 'TRACK TEXT';
                 highlightButtonsHTML += '</div>';
             }
@@ -1506,16 +1523,20 @@ function updateUcatPlayerCurrentPlay(playerId, plays)
     var currentPlayer = mediaPlayers[playerId];
     if (typeof (currentPlayer) != "undefined")
     {
-        currentPlayer.currentPlay = plays;
-        var currentNum = currentPlayer.maxPlays - plays;
-        if (currentNum >= 0) { setUcatPlaysNumber(playerId, currentNum) }
-        if ((currentPlayer.maxPlays > 0) && (currentPlayer.currentPlay >= currentPlayer.maxPlays))
+        var containerElement = $("#" + currentPlayer.containerElementId);
+        if (containerElement.data("editor") != true)
         {
-            var maxMediaPlaysReachedEvent = $.Event("maxMediaPlaysReached");
-            maxMediaPlaysReachedEvent.currentPlayer = currentPlayer;
-            $(document).trigger(maxMediaPlaysReachedEvent);
-            if (currentPlayer.options.limitplays)
-                removeUcatPlayer(currentPlayer);
+            currentPlayer.currentPlay = plays;
+            var currentNum = currentPlayer.maxPlays - plays;
+            if (currentNum >= 0) { setUcatPlaysNumber(playerId, currentNum) }
+            if ((currentPlayer.maxPlays > 0) && (currentPlayer.currentPlay >= currentPlayer.maxPlays))
+            {
+                var maxMediaPlaysReachedEvent = $.Event("maxMediaPlaysReached");
+                maxMediaPlaysReachedEvent.currentPlayer = currentPlayer;
+                $(document).trigger(maxMediaPlaysReachedEvent);
+                if (currentPlayer.options.limitplays)
+                    removeUcatPlayer(currentPlayer);
+            }
         }
     }
 }
@@ -2653,7 +2674,7 @@ function playAudio(mediaId)
 
         function PowerOn()
         {
-            console.log("Powering up...");
+//            console.log("Powering up...");
             var caps = { audio: true };
             try
             {
@@ -2693,7 +2714,7 @@ function playAudio(mediaId)
             }
             else if (!gIsLame)
             {
-                console.log("Fetching lame library...");
+//                console.log("Fetching lame library...");
                 loadScript("lame", "js/lame.js", LameCreate);
             }
             else
@@ -2738,7 +2759,7 @@ function playAudio(mediaId)
 
         function PowerOff()
         {
-            console.log("Power down...");
+//            console.log("Power down...");
             if (gIsRecording)
             {
                 console.log("ERR: PowerOff: You need to stop recording first.");
@@ -2805,7 +2826,7 @@ function playAudio(mediaId)
                     downloadContainer.html("");
                 }
                 var creator;
-                console.log("Start recording...");
+//                console.log("Start recording...");
                 if (!gAudio)
                 {
                     console.log("ERR: No Audio source.");
@@ -2840,7 +2861,7 @@ function playAudio(mediaId)
                         gAudioSrc.connect(gNode);
                         gNode.connect(gAudioSrc.context.destination);
                         gIsRecording = true;
-                        console.log("RECORD");
+//                        console.log("RECORD");
                         recordButton.classList.add("recorderBtnDisabled");
                         recordButton.style.display = "none";
                         stopButton.classList.remove("recorderBtnDisabled");
@@ -2901,7 +2922,7 @@ function playAudio(mediaId)
 
         function onStop(btn)
         {
-            console.log("Stop recording...");
+//            console.log("Stop recording...");
             if (!gAudio)
             {
                 console.log("ERR: onStop: No audio.");
@@ -3180,8 +3201,12 @@ function loadTranscriptMediaObject(containerElement, mediaObject, transcriptHigh
     setupUcatMedia(containerElement, { "transcriptHighlights": transcriptHighlightObject ? transcriptHighlightObject : new Array() });
 }
 
-function loadTranscriptComponent(containerElement, resource, isRtl)
+var defaultTranscriptComponentOptions = { isRtl: false, showTranscription: true, showTranslation: true, showTranscriptHighlightBtn: true, showTranslationHighlightBtn: true };
+
+function loadTranscriptComponent(containerElement, resource, configSettings)
 {
+    var transcriptComponentSettings = extendDefaultObject(defaultTranscriptComponentOptions, configSettings);
+    
     reconcileResourceTranscriptText(resource);
     var idPrefix = containerElement.attr("id");
     var cuePointsContainers = ''
@@ -3191,17 +3216,16 @@ function loadTranscriptComponent(containerElement, resource, isRtl)
         cuePointsContainers += '<section class="cuePointsContainer cuePointsContent cuePointsBox" >';
 
         cuePointsContainers += '<div style="display:table;">';
-        if(!isRtl){
+        if (!transcriptComponentSettings.isRtl){
             cuePointsContainers += '<div id="' + idPrefix + '_transcriptVideoContainer" style="display:table-cell; vertical-align: top;">';
             cuePointsContainers += '</div>';
         }
-        
-        cuePointsContainers += '<div  style="display:table-cell; vertical-align: top;">';
+        cuePointsContainers += '<div  style="display:table-cell; vertical-align: top; width:100%;">';
         cuePointsContainers += '<div id="' + idPrefix + '_contentDivHeaderTitle" class="cuePointsContentDivHeaderTitle" style=""></div>';
         cuePointsContainers += '<section id="'+idPrefix+'_contentDivSection" class="cuePointsRow cuePointsFullHeightContent" style="height:100%;"></section>';
         cuePointsContainers += '</div>';
 
-        if(isRtl){
+        if (transcriptComponentSettings.isRtl){
             cuePointsContainers += '<div id="' + idPrefix + '_transcriptVideoContainer" style="display:table-cell; vertical-align: top;">';
             cuePointsContainers += '</div>';
         }
@@ -3234,8 +3258,13 @@ function loadTranscriptComponent(containerElement, resource, isRtl)
     {
         if (resource.transcriptText.paragraphs.length > 0)
         {
-            var transcriptToggleHTML = '<span id="' + idPrefix + '_transcriptTextToggle" class="cuePointBtnToggleOn" style="margin:0 1rem;">Transcript</span>';
-            transcriptToggleHTML += '<span id="' + idPrefix + '_translationTextToggle" class="cuePointBtnToggleOn" style="margin:0 1rem;">Translation</span>';
+            var transcriptToggleHTML = '';
+            if (transcriptComponentSettings.showTranscription){
+                transcriptToggleHTML += '<span id="' + idPrefix + '_transcriptTextToggle" class="cuePointBtnToggleOn" style="margin:0 1rem;">Transcript</span>';
+            }
+            if (transcriptComponentSettings.showTranslation){
+                transcriptToggleHTML += '<span id="' + idPrefix + '_translationTextToggle" class="cuePointBtnToggleOn" style="margin:0 1rem;">Translation</span>';
+            }
             contentDivHeaderTitle.html(transcriptToggleHTML);
 
             contentDivHeaderTitle.find("[id*='TextToggle']").on("click", { "idPrefix": idPrefix }, function (event)
@@ -3253,9 +3282,14 @@ function loadTranscriptComponent(containerElement, resource, isRtl)
             transcriptHTML += '<div class="cuePointsRow cuePointsHeader">'
             transcriptHTML += '<div style="display:flex; border-bottom: 1px solid #cccccc;">';
 
-            if (language)
-                transcriptHTML += '<div class="transcriptCell" style="font-weight: 700; width:50%;">Transcript (' + htmlDecode(language.title) + ')</div>';
-            transcriptHTML += '<div class="translationCell" style="font-weight: 700; width:50%;">Translation (English)</div>';
+            if (language){
+                if (transcriptComponentSettings.showTranscription){
+                    transcriptHTML += '<div class="transcriptCell" style="font-weight: 700; width:50%;">Transcript (' + htmlDecode(language.title) + ')</div>';
+                }
+            }
+            if (transcriptComponentSettings.showTranslation){
+                transcriptHTML += '<div class="translationCell" style="font-weight: 700; width:50%;">Translation (English)</div>';
+            }
             transcriptHTML += '</div>';
 
             transcriptHTML += '</div>';
@@ -3269,6 +3303,10 @@ function loadTranscriptComponent(containerElement, resource, isRtl)
 
         contentDivSection.html(transcriptHTML);
 
+
+        //remove the highlight toggle if interactive mode & no plain text is rendered.
+
+
         //Move player to column if video
         if(resource.resourceType == "Video"){
             $('#' + idPrefix +'_transcriptVideoContainer').html($('#' + idPrefix +'_transcriptMediaContainer'))
@@ -3277,12 +3315,14 @@ function loadTranscriptComponent(containerElement, resource, isRtl)
         if (resource.transcriptText.paragraphs.length > 0)
         {
             var transcriptDiv = $('#' + idPrefix + '_transcriptDiv');
-            loadTranscriptData(idPrefix, resource, transcriptDiv);
+            loadTranscriptData(idPrefix, resource, transcriptDiv, transcriptComponentSettings);
             var transcriptHighlights = new Array();
             if (language)
             {
-                transcriptHighlights.push({ "language": htmlDecode(language.title), "containerElementSelector": ".transcriptCell" });
-                transcriptHighlights.push({ "language": "English", "containerElementSelector": ".translationCell" });
+                if (transcriptComponentSettings.showTranscriptHighlightBtn)
+                    transcriptHighlights.push({ "language": htmlDecode(language.title), "containerElementSelector": ".transcriptCell" });
+                if (transcriptComponentSettings.showTranslationHighlightBtn)
+                    transcriptHighlights.push({ "language": "English", "containerElementSelector": ".translationCell" });
             }
             else
             {
@@ -3348,7 +3388,7 @@ function toggleTranscriptTextVisibility(idPrefix, toggleButton)
 
 }
 
-function loadTranscriptData(idPrefix, resource, transcriptContainerElement)
+function loadTranscriptData(idPrefix, resource, transcriptContainerElement, transcriptComponentSettings)
 {
     var language = false;
     for (var p = 0; p < resource.transcriptText.paragraphs.length; p++)
@@ -3363,6 +3403,7 @@ function loadTranscriptData(idPrefix, resource, transcriptContainerElement)
     if (resource.transcriptText.paragraphs)
     {
         var paragraphOpened = false;
+        var paragraphIndex = 0;
         for (var p = 0; p < resource.transcriptText.paragraphs.length; p++)
         {
             var paragraph = resource.transcriptText.paragraphs[p];
@@ -3379,22 +3420,31 @@ function loadTranscriptData(idPrefix, resource, transcriptContainerElement)
                     translationHTML ='';
 
                 }
-                transcriptHTML += '<div id="'+idPrefix+'_transcriptCell_'+p+'" class="paragraphCell transcriptCell" style="width:50%; padding: .5rem .5rem .5rem 0;"'+(language && language.rtl ? ' dir="rtl"' : '')+'><p>';
-                translationHTML += '<div id="' + idPrefix +'_translationCell_' + p +'" class="paragraphCell translationCell" style="width:50%; padding: .5rem 0 .5rem .5rem;"><p>';
+                if (transcriptComponentSettings.showTranscription)
+                    transcriptHTML += '<div id="' + idPrefix + '_transcriptCell_' + paragraphIndex+'" class="paragraphCell transcriptCell cuePoint" style="width:50%; padding: .5rem .5rem .5rem 0;"'+(language && language.rtl ? ' dir="rtl"' : '')+'><p>';
+                if (transcriptComponentSettings.showTranslation)
+                    translationHTML += '<div id="' + idPrefix + '_translationCell_' + paragraphIndex +'" class="paragraphCell translationCell cuePoint" style="width:50%; padding: .5rem 0 .5rem .5rem;"><p>';
                 paragraphOpened = true;
+                paragraphIndex++;
             }
             var lineBreak = paragraph.lineBreak ? '<br/>':'';
-            transcriptHTML += '<span data-starttime="' + paragraph.startTime + '" data-endtime="' + paragraph.endTime + '" class="cuePoint cuePointTL">' + htmlDecode(paragraph.transcriptText) + '</span>';
-            transcriptHTML += lineBreak;
-            translationHTML += '<span data-starttime="' + paragraph.startTime + '" data-endtime="' + paragraph.endTime + '" class="cuePoint cuePointEng">' + htmlDecode(paragraph.translationText) + '</span>';
-            translationHTML += lineBreak;
+            if (transcriptComponentSettings.showTranscription){
+                transcriptHTML += '<span data-starttime="' + paragraph.startTime + '" data-endtime="' + paragraph.endTime + '" class="cuePoint cuePointTL">' + htmlDecode(paragraph.transcriptText) + '</span>';
+                transcriptHTML += lineBreak;
+            }
+            if (transcriptComponentSettings.showTranslation){
+                translationHTML += '<span data-starttime="' + paragraph.startTime + '" data-endtime="' + paragraph.endTime + '" class="cuePoint cuePointEng">' + htmlDecode(paragraph.translationText) + '</span>';
+                translationHTML += lineBreak;
+            }
         }
         if (paragraphOpened)
         {
-            transcriptHTML += '</p></div>';
+            if (transcriptComponentSettings.showTranscription)
+                transcriptHTML += '</p></div>';
             transcriptArr.push(transcriptHTML);
             transcriptHTML ='';
-            translationHTML += '</p></div>';
+            if (transcriptComponentSettings.showTranslation)
+                translationHTML += '</p></div>';
             translationArr.push(translationHTML);
             translationHTML ='';
         }
@@ -3403,8 +3453,10 @@ function loadTranscriptData(idPrefix, resource, transcriptContainerElement)
     var finalOutputHTML = '<div style="">';
     for (var i = 0; i < transcriptArr.length; i++){
         finalOutputHTML += '<div style="display:flex;">'
-        finalOutputHTML += transcriptArr[i];
-        finalOutputHTML += translationArr[i];
+        if (transcriptComponentSettings.showTranscription)
+            finalOutputHTML += transcriptArr[i];
+        if (transcriptComponentSettings.showTranslation)
+            finalOutputHTML += translationArr[i];
         finalOutputHTML += '</div>';
     }
     finalOutputHTML += '</div>';
@@ -3434,3 +3486,95 @@ function reconcileResourceTranscriptText(resource)
         resource.transcriptText = transcriptObj;
     }
 }
+
+//YOUTUBE Embed
+//Modified from https://developers.google.com/youtube/iframe_api_reference
+
+function getRootUrl() {
+    return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + '/';
+}
+
+var ytPlayersArr = [];//initially is just a list of id's to convert to iframes. AFter initialization each entry gets converted to a youtube iframe instance
+var ytVideoArr = [];//Contains the you tube video id
+var ytPlayerId = 0;//used to increment the id of each iframe player
+function setupYouTubeEmbed(containerElement, isNewDomElement){
+    //check for any instances of youTubeEmbed class
+    if($(".youTubeEmbed").length > 0){
+        //console.log("setupYouTubeEmbed");
+        //console.log("Load Player")
+        $(containerElement).find("img.youTubeEmbed").each(function(){
+            var videoId = $(this).data("src");
+            ytVideoArr.push(videoId);
+            //$(this).replaceWith('<iframe id="youTubePlayer_'+ytPlayerId+'" width="640" height="390" src="https://www.youtube.com/embed/'+videoId+'?origin='+domainRootPath+'"" enablejsapi="true" frameborder="0" style="border: solid 4px #37474F"></iframe>');
+            $(this).replaceWith('<div id="youTubePlayer_'+ytPlayerId+'" data-src="'+videoId+'" class="youTubeEmbed" style="width:640px; height:390px; background:#333333;"><span style="color:#ffffff;">Loading YouTube Video....</span></div>');
+            ytPlayersArr.push('youTubePlayer_'+ytPlayerId);
+            ytPlayerId++
+            // onYouTubeIframeAPIReady();
+            if(isNewDomElement){
+                onYouTubeIframeAPIReady();
+            }
+        });
+    }
+}
+
+//MUST be called "onYouTubeIframeAPIReady()" for api to work
+function onYouTubeIframeAPIReady() {
+    //console.log("onYouTubeIframeAPIReady")
+    //console.log(ytPlayersArr);
+    for(var i=0; i < ytPlayersArr.length; i++){
+            ytPlayersArr[i] = createPlayers(i);
+    }
+}
+
+function createPlayers(playerId) {
+    var root = typeof (domainRootPath) != "undefined" ? domainRootPath : ""
+    return new YT.Player('youTubePlayer_'+playerId, {
+        height: '390',
+        width: '640',
+        videoId: ytVideoArr[playerId],
+        playerVars: {
+        'playsinline': 1,
+        'origin': root,
+        'enablejsapi': 1
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+function onPlayerReady(event) {
+        //console.log("onPlayerReady")
+        //var iframeId = event.target.h.id;
+        //$("#"+iframeId).css("border","4px solid #FF6D00")
+}
+
+function onPlayerStateChange(event) {
+        //console.log("onPlayerStateChange")
+        //console.log(event);
+        //changeBorderColor(event.data, event);
+}
+
+function changeBorderColor(playerStatus, event) {
+  //console.log("changeBorderColor")
+  var color;
+  if (playerStatus == -1) {
+    color = "#37474F"; // unstarted = gray
+  } else if (playerStatus == 0) {
+    color = "#FFFF00"; // ended = yellow
+  } else if (playerStatus == 1) {
+    color = "#33691E"; // playing = green
+  } else if (playerStatus == 2) {
+    color = "#DD2C00"; // paused = red
+  } else if (playerStatus == 3) {
+    color = "#AA00FF"; // buffering = purple
+  } else if (playerStatus == 5) {
+    color = "#FF6DOO"; // video cued = orange
+  }
+  if (color) {
+    var iframeId = event.target.h.id;
+    $("#"+iframeId).css("border-color",color);
+  }
+}
+

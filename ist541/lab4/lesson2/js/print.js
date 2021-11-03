@@ -87,13 +87,13 @@ function cleanPrint(printLevel)
                     activityNotes[activityNotes.length] = { "content": noteContent, "icon": noteBtn.html() };
                 });
 
-                if (modifiedContent.find('.mejs-container').length > 0)
+                if (modifiedContent.find('.ucatMedia').length > 0)
                 {
-                    modifiedContent.find('.mejs-container').each(function ()
+                    modifiedContent.find('.ucatMedia').each(function ()
                     {
-                        modifiedContent.find('.mejs-audio, .mejs-video').each(function ()
+                        modifiedContent.find('audio, video').each(function ()
                         {
-                            var mediaType = $(this).hasClass("mejs-audio") ? "Audio" : "Video";
+                            var mediaType = $(this).prop('nodeName') == "AUDIO" ? "Audio" : "Video";
                             var mediaIcon = '<span class="print' + mediaType + 'Icon"></span>';
                             $(this).replaceWith(mediaIcon).attr("class", "");
                         });
@@ -108,7 +108,67 @@ function cleanPrint(printLevel)
                         $(this).replaceWith(mediaIcon).attr("class", "");
                     });
                 }
-                modifiedContent.find('*[class*="mejs"]').remove();
+                modifiedContent.find('*[class*="transcriptionControlsWrapper"]').remove();
+
+                //Remove youtube
+                if (modifiedContent.find('.youTubeEmbed').length > 0)
+                {
+                    modifiedContent.find('.youTubeEmbed').each(function ()
+                    {
+                        var mediaIcon = '<span class="printVideoIcon"></span>';
+                        $(this).replaceWith(mediaIcon).attr("class", "");
+                    });
+                };
+
+                //Timeline
+                //Rebuild for print display
+                if ($(this).data("component") == "Timeline"){
+                    //find all the items and replace the entire html
+                    var itemStr = '';
+                    $(this).find('.timeline__content').each(function (){
+                        itemStr += '<div class="timeline__content">'+$(this).html()+'</div>';
+                    });
+                    var timelineContainer = '<div style="display:flex;flex-wrap:wrap;">'+itemStr+'</div>';
+                    var wordpoolItemsStr = '';
+                    if($(this).find(".timelineResponsesContainer").length > 0){
+                        wordpoolItemsStr += '<div style="width:100%; border-bottom:1px solid #cccccc">&nbsp;</div>'
+                        $(this).find('.timelineResponse--item').each(function (){
+                            wordpoolItemsStr += '<div class="timeline__content">'+$(this).html()+'</div>';
+                        });
+                    }
+                    var timelineWordpoolContainer = '<div style="display:flex;flex-wrap:wrap;">'+wordpoolItemsStr+'</div>';
+                    var finalStr = timelineContainer + timelineWordpoolContainer;
+                    $(this).html(finalStr);
+                }
+
+                //LexicalItem
+                //Rebuild for print display
+                if ($(this).data("component") == "LexicalItem"){
+                    //3 different render modes
+                    var renderMode
+                    if($(this).find(".flashcardsContainer").length > 0)
+                        renderMode = "flashcard"
+                    if($(this).find(".carouselFlashcardsSlider").length > 0)
+                        renderMode = "carousel"
+                    if($(this).find(".concentrationMatchedCardsWrapperContainer").length > 0)
+                        renderMode = "concentration"
+                    
+                    switch (renderMode)
+                    {
+                        case "flashcard":
+                            break
+                        case "carousel":
+                            modifiedContent.find(".carouselFlashcardsControls").remove();
+                            break
+                        case "concentration":
+                            modifiedContent.find(".concentrationCardFrontFace").remove();
+                            modifiedContent.find(".concentrationCard").each(function(){
+                                $(this).addClass("concentrationCardReveal")
+                            });
+                            break
+                    }
+                }
+
                 activityNotesAppendageHTML = "";
                 if (activityNotes.length > 0)
                 {
@@ -160,10 +220,10 @@ function cleanPrint(printLevel)
                         {
                             $(this).html("&nbsp;");
                         }
-                    })
-                    
-
+                    })   
                 }
+
+
 
                 modifiedContent = spf('<div class="activityComponent" data-component="~">~~</div>', [$(this).data("component"), modifiedContent.html(), activityNotesAppendageHTML]);;
                 activityPageWrapper.append(modifiedContent);
@@ -260,16 +320,62 @@ function cleanPrint(printLevel)
         });
     });
 
+    actyPageBody.find(".submitBtn").each(function (){
+        $(this).remove();
+    })
+
+    actyPageBody.find(".scoreCorrectSelfEvaluated, scoreIncorrectSelfEvaluated").each(function (){
+        $(this).remove();
+    })
+
     actyPageBody.find(".componentInstructions").each(function ()
     {
         $(this).removeAttr("style")
     })
 
-    actyPage.append(actyPageBody);
+    //Reource transcript
+    actyPageBody.find(".cuePointsContentDivHeaderTitle").each(function ()
+    {
+        $(this).remove();
+    });
 
+    actyPageBody.find(".cuePointsContainer").each(function ()
+    {
+        $(this).find("[id^='responseInputBox_']").each(function ()
+        {
+            var id = $(this).attr("id");
+            var textValue = document.getElementById(id).value;
+            // console.log(textValue);
+            var replacementDiv = '<div class="shortAnswerResponseContent" style="flex-direction: row; white-space: pre-wrap;">'+textValue+'</div>'
+            $(this).replaceWith(replacementDiv);
+        });
+    });
+    
+
+    //Canvas
+    actyPageBody.find('.controlsContainer').each(function (){$(this).remove()});
+
+    if (actyPageBody.find('canvas').length > 0)
+    {
+        actyPageBody.find('canvas').each(function ()
+        {
+            var id = $(this).attr("id")
+            var data = $("#"+id).parent().data("sketchpad");//Had to use id to get sketchpad data wopuldnt work with $(this).parent() for some reason?
+            var img = new Image();
+            img.classList = $(this).attr("class");
+            img.src = data.context.canvas.toDataURL();
+            $(this).replaceWith(img);
+        });
+    };
+
+    
+    actyPage.append(actyPageBody);
+    
     var dt = new Date();
     var w = window.open('', dt.getTime());
 
     w.document.write(actyPage.prop('outerHTML'));
     w.document.close();
+    
+
 }

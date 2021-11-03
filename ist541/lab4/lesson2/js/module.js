@@ -190,10 +190,21 @@ function getResponseById(responseId)
         {
             for (var k = 0; k < module.activities[i].activityComponents[j].prompts.length; k++)
             {
-                for (var l = 0; l < module.activities[i].activityComponents[j].prompts[k].responses.length; l++)
+                if (typeof (module.activities[i].activityComponents[j].prompts[k].responses) != "undefined")
                 {
-                    if (module.activities[i].activityComponents[j].prompts[k].responses[l].id == responseId)
-                        return module.activities[i].activityComponents[j].prompts[k].responses[l];
+                    for (var l = 0; l < module.activities[i].activityComponents[j].prompts[k].responses.length; l++)
+                    {
+                        if (module.activities[i].activityComponents[j].prompts[k].responses[l].id == responseId)
+                            return module.activities[i].activityComponents[j].prompts[k].responses[l];
+                    }
+                }
+            }
+            if (typeof (module.activities[i].activityComponents[j].responses) != "undefined")
+            {
+                for (var l = 0; l < module.activities[i].activityComponents[j].responses.length; l++)
+                {
+                    if (module.activities[i].activityComponents[j].responses[l].id == responseId)
+                        return module.activities[i].activityComponents[j].responses[l];
                 }
             }
         }

@@ -67,9 +67,14 @@
                 {
                     var transcriptionLanguage = { "id": 0, "digraph": "En", "rtl": false, "title": "English" };
                     var translationLanguage = false;
-                    if (module.languages && module.languages.length > 0)
+                    if (module.curriculumLanguage)
                     {
-                        //SME Workspace only provides a means to create a transcript in primary language and a translation
+                        translationLanguage = transcriptionLanguage;
+                        transcriptionLanguage = { "id": module.curriculumLanguage.id, "digraph": module.curriculumLanguage.digraph, "rtl": module.curriculumLanguage.rtl, "title": module.curriculumLanguage.title }
+                    }
+                    else if (module.languages && module.languages.length > 0)
+                    {
+                        //SME Workspace only provides a means to create a transcript in primary language and a translation                       
                         translationLanguage = transcriptionLanguage;
                         transcriptionLanguage = { "id": module.languages[0].id, "digraph": module.languages[0].digraph, "rtl": module.languages[0].rtl, "title": module.languages[0].title }
                     }

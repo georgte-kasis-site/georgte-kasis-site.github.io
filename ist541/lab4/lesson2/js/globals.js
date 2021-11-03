@@ -16,10 +16,10 @@ var Globals = {
     },
 
     feedbackTypes:{
-        'incorrect': 0, 'correct': 1, 'hint': 2, 'terminal': 3
+        'incorrect': 0, 'correct': 1, 'hint': 2, 'terminal': 3, 'information' : 4
     },
 
-    feedbackTypeTitles:["Incorrect", "Correct", "Hint", "Terminal"],
+    feedbackTypeTitles:["Incorrect", "Correct", "Hint", "Terminal", "Information"],
 
     // since the native isArray returns true for both objects and arrays, this tests for a true array, which should have these properties and methods defined
     isArray: function (ele) {
@@ -289,7 +289,7 @@ var behaviorTypes = [
     { id: 1, type: "Timed", displayTitle: "Timed", triggerType:"time" },
     { id: 2, type: "ProctorInitiated", displayTitle: "Proctor-Initiated", triggerType:"proctor" },
     {
-        id: 3, type: "Navigation", displayTitle: "Navigation Trigger", triggerType:"int", options: [{ value: 0, title: "previous activity had been completed" }, { value: 1, title: "all previous activities have been completed" }]
+        id: 3, type: "Navigation", displayTitle: "Navigation Trigger", triggerType:"int", options: [{ value: 0, title: "previous activity has been completed" }, { value: 1, title: "all previous activities have been completed" }]
     }];
 
 function msToTime(ms)
@@ -305,6 +305,38 @@ function msToTime(ms)
     //return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     return minutes + ":" + seconds;
 }
+
+var nonJudgedComponents = [
+    { title: "findandclick", renderModeIndex: 1 },
+    { title: "lexicalitem", renderModeIndex: -1 },
+    { title: "presentation", renderModeIndex: -1 },
+    { title: "resourcetranscript", renderModeIndex: 0 },
+    { title: "timeline", renderModeIndex: 0 },
+    { title: "timeline", renderModeIndex: 1 }];
+
+var nonScoredSelfStudyComponents = ["shortanswer", "speaking", "writing"];
+
+function getComponentTitle(component)
+{
+    if (component.inputComponent)
+        return component.inputComponent.title.replace(/ /g, "");
+    if (component.component && component.component.inputComponent)
+        return component.component.inputComponent.title.replace(/ /g, "");
+    return component.title.replace(/ /g, "");
+}
+
+function isComponentJudged(activityComponent)
+{
+    var componentTitle = getComponentTitle(activityComponent);
+    var renderModeIndex = getRenderModeLayoutIndex(activityComponent);
+    for (var njc = 0; njc < nonJudgedComponents.length; njc++)
+    {
+        if (componentTitle.toLowerCase() == nonJudgedComponents[njc].title.toLowerCase() && (nonJudgedComponents[njc].renderModeIndex == -1 || renderModeIndex == nonJudgedComponents[njc].renderModeIndex))
+            return false;
+    }
+    return true;
+}
+
 
 function serializeStringToJSON(string)
 {
@@ -1219,7 +1251,8 @@ function deriveAssignmentStatus(assignmentObject, isStudentAssignment)
 
 function openClassroomAssignment(assignment, goBack)
 {
-    var assignmentPath = assignment.application.rootPath + 'Assignment.aspx?assignmentId=' + assignment.id;
+    var assignmentPage = assignment.shared ? 'sharedAssignment.aspx' : 'Assignment.aspx';
+    var assignmentPath = assignment.application.rootPath + assignmentPage + '?assignmentId=' + assignment.id;
     if (goBack)
         assignmentPath += '&goBack=' + goBack;
     window.location.href = assignmentPath;
@@ -1334,7 +1367,7 @@ if($("#ancillary").length == 0){
     ancillary = $("#ancillary");
 }
 
-var tempDiv = false;
+var ucatDialogWrapper = false;
 function openCustomDialog(title, content, type, iconHTML, initialWidth, callback)
 {
     var dialogClassName = type + 'DialogContainer';
@@ -1343,7 +1376,7 @@ function openCustomDialog(title, content, type, iconHTML, initialWidth, callback
     var customDialogHTML = '<div id="ucatDialog" class="ucatDialog '+dialogClassName+'" style="width: '+dialogWidth+'; height: 60%; visibility:hidden; opacity:0;">';
     customDialogHTML += '<div id="ucatDialogTitle" class="displayTable ucatDialogTitle '+headerClassName+'" style="width: 100%;">';
     customDialogHTML += '<div class="displayTableCell" style="padding-left: 0.625em;">'+iconHTML+'</div>';
-    customDialogHTML += '<div id="ucatDialogTitelText" class="displayTableCell titlebar" style="width:100%; text-align:center">'+title+'</div>';
+    customDialogHTML += '<div id="ucatDialogTitleText" class="displayTableCell titlebar" style="width:100%; text-align:center">'+title+'</div>';
     customDialogHTML += '<div class="displayTableCell ucatDialogBtn ucatDialogCloseBtn" onclick="ucatDialogClose();"><i class="fa fa-times"></i></div>';
     customDialogHTML += '</div>';//End titlebar
 
@@ -1353,12 +1386,12 @@ function openCustomDialog(title, content, type, iconHTML, initialWidth, callback
     customDialogHTML += '</div>';
 
     
-    if($("#tempDiv").length > 0)
-        $("#tempDiv").remove();
+    if($("#ucatDialogWrapper").length > 0)
+        $("#ucatDialogWrapper").remove();
 
-    $('body').append('<div id="tempDiv"></div>');
-    tempDiv = $("#tempDiv");
-    tempDiv.html(customDialogHTML);
+    $('body').append('<div id="ucatDialogWrapper"></div>');
+    ucatDialogWrapper = $("#ucatDialogWrapper");
+    ucatDialogWrapper.html(customDialogHTML);
     
     var dialogContentElement = $("#ucatDialogContent");
     dialogContentElement.append(content);
@@ -1368,6 +1401,7 @@ function openCustomDialog(title, content, type, iconHTML, initialWidth, callback
         mediaOptions.audio.transcript = false;
         mediaOptions.video.transcript = false;
         setupUcatMedia(dialogContentElement, mediaOptions);
+        onYouTubeIframeAPIReady();//forces youtube just in case setupUcatMedia fails to call it for any reason
     }
     
     initUcatDialog();
@@ -1381,7 +1415,7 @@ function openCustomDialog(title, content, type, iconHTML, initialWidth, callback
 
 function initUcatDialog(){
     
-    tempDiv.show();
+    ucatDialogWrapper.show();
     var ucatDialog;
     var dialogJqElement = $(".ucatDialog");
     var dialogTitleJqElement = $(".ucatDialogTitle");
@@ -1393,12 +1427,11 @@ function initUcatDialog(){
     }
 
     ucatDialogClose = function() {
-        tempDiv.hide();
+        ucatDialogWrapper.hide();
         dialogJqElement.hide();
         killMedia(dialogJqElement);
-        if($("#tempDiv").length > 0)
-            $("#tempDiv").remove();
-
+        if($("#ucatDialogWrapper").length > 0)
+            $("#ucatDialogWrapper").remove();
         //if there is a listener bound to "ucatDialogClosed" then it will trigger
         var ucatDialogClosedEvent = $.Event("ucatDialogClosed");
         $(document).trigger(ucatDialogClosedEvent);
@@ -1437,7 +1470,7 @@ function closeCustomDialog()
 {
     //Legacy Code Calls this function. Only here to ensure no failing calls
     if($(".ucatDialog").length > 0){
-        tempDiv.hide();
+        ucatDialogWrapper.hide();
         var dialogJqElement = $(".ucatDialog");
         dialogJqElement.hide();
         killMedia(dialogJqElement);
@@ -1450,9 +1483,9 @@ function closeCustomDialog()
 
 function cleanString(str) 
 {
-    str = stripRTLDiv(htmlDecode(str)).text;
+    str = stripRTLDiv(htmlDecode(str, true)).text;
 	var cleanupPatterns = [
-		[/[\s\u00A0]{2,}/gi, " "], //  removes extra spaces(&nbsp;)
+        [/[\s\u00A0]{2,}/gi, " "], //  removes extra spaces(&nbsp;)
 		[/([\u0648]) */gi, "$1"],  // eliminates spaces after the Arabic و; students and native speakers mistakenly add space
 /*
     0000-001F = Controls
@@ -1469,14 +1502,16 @@ function cleanString(str)
     FE10-FE6F & FF01-FF02 & FF07-FF09 & FF0C-FF0E & FF1A-FF1B & FF1F = Presentation punctuation and different sizes of punctuation (e.g. - MS Word punctuation)
 
 */
-        [/[\u0000-\u001F\u0021-\u002F\u003A-\u003F\u005B-\u0060\u007B-\u007F\u0080-\u00B4\u00B6-\u00BF\u060C\u061B-\u061F\u2000-\u206F\u3001-\u303F\uA700-\uA71F\uFD3E\uFD3F\uFE10-\uFE6F\uFF01\uFF02\uFF07-\uFF09\uFF0C-\uFF0E\uFF1A\uFF1B\uFF1F]/gi, ""]
+        [/[\u0000-\u001F\u0021-\u002F\u003A-\u003F\u005B-\u0060\u007B-\u007F\u060C\u061B-\u061F\u2000-\u206F\u3001-\u303F\uA700-\uA71F\uFD3E\uFD3F\uFE10-\uFE6F\uFF01\uFF02\uFF07-\uFF09\uFF0C-\uFF0E\uFF1A\uFF1B\uFF1F]/gi, ""],
+        [/[\u0080-\u00B4\u00B6-\u00BF]/gi, " "]
 	];
 
 	var cleanString = str;
     if (typeof (cleanString) == "string") 
     {
 	    if (cleanString.length == 0)
-	        return cleanString;
+            return cleanString;
+        cleanString = cleanString.replace(/\n/gi, " ");
         for (var i = 0; i < cleanupPatterns.length; i++) 
         {
 			cleanString = cleanString.replace( cleanupPatterns[i][0], cleanupPatterns[i][1] ).trim();
@@ -1655,6 +1690,17 @@ function arrayContains(arr, obj)
 function formatThousandSeperator(x)
 {
     return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+}
+
+function extendDefaultObject(a, b)
+{
+    var c = copyGlobalVariable(a);
+    for (var key in b)
+    {
+        if (b.hasOwnProperty(key))
+            c[key] = b[key];
+    }
+    return c;
 }
 
 $.fn.extend(
@@ -2261,12 +2307,23 @@ function moduleLanguageExists(lang) {
     moduleLangInfo.font = "";
     var langs = typeof module == "undefined" ? ((userModule && userModule.module) ? userModule.module.languages : []) : module.languages;
     for (var k = 0; k < langs.length; k++)
-        if (langs[k].title.toLowerCase() == lang.toLowerCase()) {
+    {
+        if (langs[k].title.toLowerCase() == lang.toLowerCase()) 
+        {
             moduleLangInfo.isPresent = true;
             moduleLangInfo.font = langs[k].font.length > 0 ? langs[k].font : "";
             moduleLangInfo.subTag = langs[k].shortTitle.length > 0 ? langs[k].shortTitle : "";
         }
-
+        for (var d = 0; d < langs[k].dialects.length; d++)
+        {
+            if (langs[k].dialects[d].title.toLowerCase() == lang.toLowerCase()) 
+            {
+                moduleLangInfo.isPresent = true;
+                moduleLangInfo.font = langs[k].dialects[d].font.length > 0 ? langs[k].dialects[d].font : "";
+                moduleLangInfo.subTag = langs[k].dialects[d].shortTitle.length > 0 ? langs[k].dialects[d].shortTitle : "";
+            }
+        }
+    }
     return moduleLangInfo
 }
 
@@ -2365,7 +2422,7 @@ function addContextualHelp( containerElementId, helpDescription, insertLocation,
     }
 
     //adds a help toggle button before or after the containerElementId
-    var helpHTML = '<div id="'+containerElementId+'_helpContainer"><div class="displayTable">';
+    var helpHTML = '<div id="'+containerElementId+'_helpContainer"><div class="displayTable" style="table-layout:auto;">';
     //toggle ICON
     //Details
     helpHTML += '<div class="displayTableCell" style="width:100%;">'
@@ -2375,7 +2432,7 @@ function addContextualHelp( containerElementId, helpDescription, insertLocation,
     helpHTML += '</div>';
     helpHTML += '</div>';
     var showHelpToggle = autoDisplay ? 'collapseHelpIcon' : 'expandHelpIcon';
-    helpHTML += '<div id="'+containerElementId+'_helpDetails-toggle" class="displayTableCell iconCell '+showHelpToggle+'" style="height: auto; vertical-align: top;color:#6495ff;" onclick="toggleHelpDetails(this.id)"><div class="displayTable" style="text-align:center;margin-left:.5em; width:1em; height:1em; background:#6495ff; -webkit-border-radius: 50%; -moz-border-radius: 50%; border-radius: 50%;"><i style="font-size: .75em; color:#ffffff;" class="displayTableCell fa fa-question"></i></div></div>';
+    helpHTML += '<div id="'+containerElementId+'_helpDetails-toggle" class="displayTableCell iconCell '+showHelpToggle+'" style="cursor:pointer; height: auto; vertical-align: top;color:#6495ff;" onclick="toggleHelpDetails(this.id)"><div class="displayTable" style="text-align:center;margin-left:.5em; width:1em; height:1em; background:#6495ff; -webkit-border-radius: 50%; -moz-border-radius: 50%; border-radius: 50%;"><i style="font-size: .75em; color:#ffffff;" class="displayTableCell fa fa-question"></i></div></div>';
 
     helpHTML += '</div></div>';
     var containerElement = $("#"+containerElementId);
@@ -2448,6 +2505,9 @@ function customConfirm(message, yesCallback, noCallback, dialogType) {
 		    	$(this).parent().find(".ui-dialog-titlebar-close").each(function(){
 		    		$(this).hide()
 		    	})
+                //hack - added so this confirm dialog would appear above the ckeditor dialog
+                $(".ui-widget-overlay").css({"z-index":"99998"})
+                $(this).parent().css({"z-index":"99999"})
 		    },
 	    	title: "Warning!",
 	    	resizable: false,
@@ -2475,6 +2535,10 @@ function customConfirm(message, yesCallback, noCallback, dialogType) {
 }
 
 function killMedia(containerElement) {
+    if(!containerElement){
+            containerElement = $("document")
+    }
+
     //UCAT MediaPlayer
     if (typeof (currentPlayer) != "undefined"){
         if(!lockoutMedia){
@@ -2497,6 +2561,16 @@ function killMedia(containerElement) {
         catch(err) {
         }
     })
+
+    //Stop all YouTube Embeds
+    if(typeof(ytPlayersArr) != "undefined"){
+        for (var i = 0; i < ytPlayersArr.length; i++){
+            var player = ytPlayersArr[i];
+            if(typeof(player.pauseVideo) != "undefined"){
+                player.pauseVideo();
+            }
+        }
+    }
 }
 
 function createSmallLoader(containerElement)
@@ -3430,7 +3504,7 @@ $(document).ready(function ()
     if(origin == testingOrigin)
         initServerTagCode("Testing");
     if(origin == developmentOrigin)
-        initServerTagCode("Dev");
+        initServerTagCode("Punisher");
 })
 
 function initServerTagCode(serverType)

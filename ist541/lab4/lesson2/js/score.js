@@ -32,6 +32,7 @@ function loadAggregateStudentAnswerElementControls(event)
     {
         case "TRANSCRIPTION":
         case "FILLINTHEBLANK":
+        case "RESOURCETRANSCRIPT":
             allowAggregateAnswers = true;
             if(event.element.hasClass("scoreCorrect")){
                 event.element.removeClass("scoreCorrect");
@@ -308,6 +309,7 @@ function listAggregateStudentAnswersCallback(serverResponseObj, requestObj)
                     case "SHORTANSWER":
                     case "SPEAKING":
                     case "WRITING":
+                    case "RESOURCETRANSCRIPT":
                         aggregateStudentAnswersHTML += '<div id="scoreToken_' + serverResponseObj.studentAnswers[i].id + '" style="'+scoreStyle+'" class="'+scoreClass+'" data-studentanswerid="' + serverResponseObj.studentAnswers[i].id + '" data-maxvalue="' + requestObj.maxValue + '" data-maxbonusvalue="' + requestObj.maxBonusValue + '" data-value="' + studentValue + '" data-teachersubmitted="'+teacherSubmitted+'"><div class="displayTableCell"><i class="' + scoreIcon + '"></i></div><div class="displayTableCell" id="scoreSpan_' + serverResponseObj.studentAnswers[i].id + '">' + studentValue + '</div></div>';
                         break;
                     default:
@@ -397,188 +399,232 @@ function loadStudentScores(studentAnswers, activityComponentId)
             var activityComponent = activity.activityComponents[j];
             if ((typeof (activityComponentId) == "undefined") || (activityComponentId == activityComponent.id))
             {
-                $("#componentContainer_" + activityComponent.id).find("[id^='promptFeedbackToolBox_']").each(function ()
-                { $(this).hide(); });
-                for (var k = 0; k < activityComponent.prompts.length; k++)
+                if ((componentStackManager.viewMode.toLowerCase() != "selfstudy") || ((componentStackManager.viewMode.toLowerCase() == "selfstudy") && $.inArray(activityComponent.componentTitle.toLowerCase(), nonScoredSelfStudyComponents) == -1))
                 {
-                    var prompt = activityComponent.prompts[k];
-                    var inlineToolBox = $("#promptFeedbackToolBox_" + prompt.id);
-                    inlineToolBox.html("");
-                    inlineToolBox.prepend(generatePromptScoreSpan(prompt));
-                    $("#componentContainer_"+activityComponent.id).find(".inlineToolBoxBuffer").css("visibility", "hidden")//Only used in Matching
-                    $("#componentContainer_" + activityComponent.id).find(".inlineToolBoxBuffer").show()//Only used in Matching
-                    if (prompt.responses)
+                    $("#componentContainer_" + activityComponent.id).find("[id^='promptFeedbackToolBox_']").each(function ()
                     {
-                        for (var l = 0; l < prompt.responses.length; l++)
+                        $(this).hide();
+                    });
+                    for (var k = 0; k < activityComponent.prompts.length; k++)
+                    {
+                        var prompt = activityComponent.prompts[k];
+                        var inlineToolBox = $("#promptFeedbackToolBox_" + prompt.id);
+                        inlineToolBox.html("");
+                        inlineToolBox.prepend(generatePromptScoreSpan(prompt));
+                        $("#componentContainer_" + activityComponent.id).find(".inlineToolBoxBuffer").css("visibility", "hidden")//Only used in Matching
+                        $("#componentContainer_" + activityComponent.id).find(".inlineToolBoxBuffer").show()//Only used in Matching
+                        if (prompt.responses)
                         {
-                            var response = prompt.responses[l];
-                            switch (activityComponent.componentTitle.toUpperCase())
+                            for (var l = 0; l < prompt.responses.length; l++)
                             {
-                                case "CATEGORIZATION":
-                                    var responseFeedbackContainer = $("#responseFeedbackContainer_" + response.id);
-                                    var scoreSpanHTML = generateResponseScoreSpan("ridResponseToken_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.maxValue, response.bonusValue, false);
-                                    responseFeedbackContainer.html(scoreSpanHTML);
-                                    break;
-                                case "FILLINTHEBLANK":
-                                    if (response.correct)
-                                    {
-                                        var responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
-                                        if (responseFeedbackContainer.length == 0)
+                                var response = prompt.responses[l];
+                                switch (activityComponent.componentTitle.toUpperCase())
+                                {
+                                    case "CATEGORIZATION":
+                                        var responseFeedbackContainer = $("#responseFeedbackContainer_" + response.id);
+                                        var scoreSpanHTML = generateResponseScoreSpan("ridResponseToken_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.maxValue, response.bonusValue, false);
+                                        responseFeedbackContainer.html(scoreSpanHTML);
+                                        break;
+                                    case "FILLINTHEBLANK":
+                                        if (response.correct)
                                         {
-                                            $("#response_" + prompt.id + "_" + response.sortKey).before('<span id="inlineFeedbackContainer_' + prompt.id + '_' + response.sortKey + '" class="feedbackContainer inlineFeedbackContainer"></span>');
-                                            responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            var responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            if (responseFeedbackContainer.length == 0)
+                                            {
+                                                $("#response_" + prompt.id + "_" + response.sortKey).before('<span id="inlineFeedbackContainer_' + prompt.id + '_' + response.sortKey + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                                                responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            }
+                                            var scoreSpan = $("#skResponseToken_" + prompt.id + "_" + response.sortKey);
+                                            var scoreSpanHTML = generateResponseScoreSpan("skResponseToken_" + prompt.id + "_" + response.sortKey, prompt.id, 0, response.sortKey, response.correct, response.maxValue, response.bonusValue, true);
+                                            if (scoreSpan.length > 0)
+                                                scoreSpan.replaceWith(scoreSpanHTML);
+                                            else
+                                                responseFeedbackContainer.prepend(scoreSpanHTML);
+                                            responseFeedbackContainer.css({ "min-height": "auto", "height": "auto", "cursor": "default" });
+                                            responseFeedbackContainer.hide();//have to hide this or it will display an empty area. It will be shown if correct or incorrrect or partial further donw below
                                         }
-                                        var scoreSpan = $("#skResponseToken_" + prompt.id + "_" + response.sortKey);
-                                        var scoreSpanHTML = generateResponseScoreSpan("skResponseToken_" + prompt.id + "_" + response.sortKey, prompt.id, 0, response.sortKey, response.correct, response.maxValue, response.bonusValue, true );
+                                        break;
+                                    case "FINDANDCLICK":
+
+                                        switch (activityComponent.renderModeIndex)
+                                        {
+                                            case 1:
+                                                break;
+                                            default:
+                                                for (var sa = 0; sa < studentAnswers.length; sa++)
+                                                {
+                                                    if (studentAnswers[sa].responseId == response.id)
+                                                    {
+                                                        loadResponseHotspot(activityComponent, response, false);
+                                                        var responseHotspot = $("#responseHotspot_" + response.id);
+                                                        responseHotspot.addClass(response.correct ? "hotspotCorrect" : "hotspotIncorrect");
+                                                        responseHotspot.hide();
+                                                        var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
+                                                        var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.value, response.bonusValue, false);
+                                                        if (scoreSpan.length > 0)
+                                                            scoreSpan.replaceWith(scoreSpanHTML);
+                                                        else
+                                                            responseHotspot.prepend(scoreSpanHTML);
+                                                    }
+                                                }
+
+                                                break;
+                                        }
+                                        break;
+                                    case "MATCHING":
+                                        if (response.correct)
+                                        {
+                                            var matchingPromptDropArea = $("#matchingPromptDropArea_" + prompt.id);
+                                            var promptIndex = matchingPromptDropArea.data("promptindex");
+                                            var responseFeedbackContainer = $("#matchingColumnDivider_" + activityComponent.id + "_" + promptIndex);
+                                            var matchingLock = $("#matchingLock_" + activityComponent.id + "_" + promptIndex);
+                                            var responseToken = $("#pidResponseToken_" + prompt.id);
+                                            matchingLock.show();
+                                            responseToken.hide();
+                                            var responseTokenHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, response.id, response.sortKey, response.correct, prompt.maxValue, response.bonusValue, false);
+                                            if (responseToken.length > 0)
+                                                responseToken.replaceWith(responseToken)
+                                            else
+                                                responseFeedbackContainer.append(responseTokenHTML);
+                                        }
+                                        break;
+                                    case "ORDERING":
+                                        var responseFeedbackContainer = $("#responseFeedbackContainer_" + response.id);
+                                        responseFeedbackContainer.siblings(".orderingDragHandle").hide();
+                                        var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
+                                        var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.maxValue, response.bonusValue, false);
+                                        if (scoreSpan.length > 0)
+                                            scoreSpan.replaceWith(scoreSpanHTML);
+                                        else
+                                            responseFeedbackContainer.append(scoreSpanHTML);
+                                        break;
+                                    case "RESOURCETRANSCRIPT":
+                                        if (response.correct)
+                                        {
+                                            var responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            if (responseFeedbackContainer.length == 0)
+                                            {
+                                                $("#response_" + prompt.id + "_" + response.sortKey).before('<span id="inlineFeedbackContainer_' + prompt.id + '_' + response.sortKey + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                                                responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            }
+                                            var scoreSpan = $("#skResponseToken_" + prompt.id + "_" + response.sortKey);
+                                            var scoreSpanHTML = generateResponseScoreSpan("skResponseToken_" + prompt.id + "_" + response.sortKey, prompt.id, 0, response.sortKey, response.correct, response.maxValue, response.bonusValue, true);
+                                            if (scoreSpan.length > 0)
+                                                scoreSpan.replaceWith(scoreSpanHTML);
+                                            else
+                                                responseFeedbackContainer.prepend(scoreSpanHTML);
+                                            responseFeedbackContainer.css({ "min-height": "auto", "height": "auto", "cursor": "default" });
+                                            responseFeedbackContainer.hide();//have to hide this or it will display an empty area. It will be shown if correct or incorrrect or partial further donw below
+                                        }
+                                        break;
+                                    case "SHORTANSWER":
+                                        if (l == 0)
+                                        {
+                                            $("#shortAnswerResponseContainer_" + prompt.id).children(".displayTable").first().css("table-layout", "auto")
+
+                                            var scoreSpan = $("#pidResponseToken_" + prompt.id);
+                                            var scoreSpanHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, 0, 0, response.correct, response.maxValue, response.bonusValue, true, false);
+                                            if (scoreSpan.length > 0)
+                                            {
+                                                scoreSpan.replaceWith(scoreSpanHTML);
+                                            }
+                                            else
+                                            {
+                                                $("#shortAnswerResponseFeedbackContainer_" + prompt.id).prepend(scoreSpanHTML);
+                                            }
+                                        }
+                                        break;
+                                    case "SPEAKING":
+                                        if (l == 0)
+                                        {
+                                            var scoreSpan = $("#pidResponseToken_" + prompt.id);
+                                            var scoreSpanHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, 0, 0, response.correct, response.maxValue, response.bonusValue, true, false);
+                                            if (scoreSpan.length > 0)
+                                            {
+                                                scoreSpan.replaceWith(scoreSpanHTML);
+                                            }
+                                            else
+                                            {
+                                                $("#speakingResponseFeedbackContainer_" + prompt.id).prepend(scoreSpanHTML);
+                                            }
+                                        }
+                                        break;
+                                    case "TEXTSELECTOR":
+                                        var responseItem = $("#response_" + response.id);
+                                        responseItem.attr("class", "response");
+                                        for (var sa = 0; sa < studentAnswers.length; sa++)
+                                        {
+                                            if (studentAnswers[sa].responseId == response.id)
+                                            {
+                                                responseItem.addClass(response.correct ? "correct" : "incorrect");
+                                            }
+                                        }
+                                        var responseFeedbackContainer = $("#inlineFeedbackContainer_" + response.id);
+                                        var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
+                                        var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.value, response.bonusValue, false);
                                         if (scoreSpan.length > 0)
                                             scoreSpan.replaceWith(scoreSpanHTML);
                                         else
                                             responseFeedbackContainer.prepend(scoreSpanHTML);
-                                        responseFeedbackContainer.css({"min-height":"auto", "height":"auto","cursor":"default"});
+                                        responseFeedbackContainer.css({ "min-height": "auto", "height": "auto", "cursor": "default" });
                                         responseFeedbackContainer.hide();//have to hide this or it will display an empty area. It will be shown if correct or incorrrect or partial further donw below
-                                    }
-                                    break;
-                                case "FINDANDCLICK":
-                                    for (var sa = 0; sa < studentAnswers.length; sa++)
-                                    {
-                                        if (studentAnswers[sa].responseId == response.id)
+                                        break;
+                                    case "TIMELINE":
+                                        if (response.correct)
                                         {
-                                            loadResponseHotspot(activityComponent, response, false);
+                                            var responseToken = $("#pidResponseToken_" + prompt.id);
+                                            responseToken.hide();
+                                            var responseTokenHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, response.id, response.sortKey, response.correct, prompt.maxValue, response.bonusValue, false);
+                                            if (responseToken.length > 0)
+                                                responseToken.replaceWith(responseToken)
+                                            else
+                                                $("#inlineFeedbackContainer_"+response.id).append(responseTokenHTML);
                                         }
-                                    }
-
-                                    var responseFeedbackContainer = $("#responseHotspot_" + response.id);
-                                    responseFeedbackContainer.addClass(response.correct ? "hotspotCorrect" : "hotspotIncorrect");
-                                    responseFeedbackContainer.hide();
-                                    var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
-                                    var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.value, response.bonusValue, false);
-                                    if (scoreSpan.length > 0)
-                                        scoreSpan.replaceWith(scoreSpanHTML);
-                                    else
-                                        responseFeedbackContainer.prepend(scoreSpanHTML);
-                                    break;
-                                case "MATCHING":
-                                    if (response.correct)
-                                    {
-                                        var matchingPromptDropArea = $("#matchingPromptDropArea_" + prompt.id);
-                                        var promptIndex = matchingPromptDropArea.data("promptindex");
-                                        var responseFeedbackContainer = $("#matchingColumnDivider_" + activityComponent.id + "_" + promptIndex);
-                                        var matchingLock = $("#matchingLock_" + activityComponent.id + "_" + promptIndex);
-                                        var responseToken = $("#pidResponseToken_" + prompt.id);
-                                        matchingLock.show();
-                                        responseToken.hide();
-                                        var responseTokenHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, response.id, response.sortKey, response.correct, prompt.maxValue, response.bonusValue, false);
-                                        if (responseToken.length > 0)
-                                            responseToken.replaceWith(responseToken)
-                                        else
-                                            responseFeedbackContainer.append(responseTokenHTML);
-                                    }
-                                    break;
-                                case "ORDERING":
-                                    var responseFeedbackContainer = $("#responseFeedbackContainer_" + response.id);
-                                    responseFeedbackContainer.siblings(".orderingDragHandle").hide();
-                                    var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
-                                    var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.maxValue, response.bonusValue, false);
-                                    if (scoreSpan.length > 0)
-                                        scoreSpan.replaceWith(scoreSpanHTML);
-                                    else
-                                        responseFeedbackContainer.append(scoreSpanHTML);
-                                    break;
-                                case "SHORTANSWER":
-                                    if (l == 0)
-                                    {
-                                        $("#shortAnswerResponseContainer_" + prompt.id).children(".displayTable").first().css("table-layout", "auto")
-
-                                        var scoreSpan = $("#pidResponseToken_" + prompt.id);
-                                        var scoreSpanHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, 0, 0, response.correct, response.maxValue, response.bonusValue, true, false);
-                                        if (scoreSpan.length > 0)
+                                        break;
+                                    case "TRANSCRIPTION":
+                                        if (response.correct)
                                         {
-                                            scoreSpan.replaceWith(scoreSpanHTML);
+                                            var responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            if (responseFeedbackContainer.length == 0)
+                                            {
+                                                $("#response_" + prompt.id + "_" + response.sortKey).before('<span id="inlineFeedbackContainer_' + prompt.id + '_' + response.sortKey + '" class="feedbackContainer inlineFeedbackContainer"></span>');
+                                                responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
+                                            }
+                                            var scoreSpan = $("#skResponseToken_" + prompt.id + "_" + response.sortKey);
+                                            var scoreSpanHTML = generateResponseScoreSpan("skResponseToken_" + prompt.id + "_" + response.sortKey, prompt.id, 0, response.sortKey, response.correct, response.maxValue, response.bonusValue, true);
+                                            if (scoreSpan.length > 0)
+                                                scoreSpan.replaceWith(scoreSpanHTML);
+                                            else
+                                                responseFeedbackContainer.prepend(scoreSpanHTML);
+                                            responseFeedbackContainer.css({ "min-height": "auto", "height": "auto", "cursor": "default" });
+                                            responseFeedbackContainer.hide();//have to hide this or it will display an empty area. It will be shown if correct or incorrrect or partial further donw below
                                         }
-                                        else
+                                        break;
+                                    case "WRITING":
+                                        if (l == 0)
                                         {
-                                            $("#shortAnswerResponseFeedbackContainer_" + prompt.id).prepend(scoreSpanHTML);
+                                            var scoreSpan = $("#pidResponseToken_" + prompt.id);
+                                            var scoreSpanHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, 0, 0, response.correct, response.maxValue, response.bonusValue, true, false);
+                                            if (scoreSpan.length > 0)
+                                            {
+                                                scoreSpan.replaceWith(scoreSpanHTML);
+                                            }
+                                            else
+                                            {
+                                                $("#writingResponseFeedbackContainer_" + prompt.id).prepend(scoreSpanHTML);
+                                            }
                                         }
-                                    }
-                                    break;
-                                case "SPEAKING":
-                                    if (l == 0)
-                                    {
-                                        var scoreSpan = $("#pidResponseToken_" + prompt.id);
-                                        var scoreSpanHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, 0, 0, response.correct, response.maxValue, response.bonusValue, true, false);
-                                        if (scoreSpan.length > 0)
-                                        {
-                                            scoreSpan.replaceWith(scoreSpanHTML);
-                                        }
-                                        else
-                                        {
-                                            $("#speakingResponseFeedbackContainer_" + prompt.id).prepend(scoreSpanHTML);
-                                        }
-                                    }
-                                    break;
-                                case "TEXTSELECTOR":
-                                    var responseItem = $("#response_" + response.id);
-                                    responseItem.attr("class", "response");
-                                    for (var sa = 0; sa < studentAnswers.length; sa++)
-                                    {
-                                        if (studentAnswers[sa].responseId == response.id)
-                                        {
-                                            responseItem.addClass(response.correct ? "correct" : "incorrect");
-                                        }
-                                    }
-                                    var responseFeedbackContainer = $("#inlineFeedbackContainer_" + response.id);
-                                    var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
-                                    var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.value, response.bonusValue, false);
-                                    if (scoreSpan.length > 0)
-                                        scoreSpan.replaceWith(scoreSpanHTML);
-                                    else
-                                        responseFeedbackContainer.prepend(scoreSpanHTML);
-                                    responseFeedbackContainer.css({"min-height":"auto", "height":"auto","cursor":"default"});
-                                    responseFeedbackContainer.hide();//have to hide this or it will display an empty area. It will be shown if correct or incorrrect or partial further donw below
-                                    break;
-                                case "TRANSCRIPTION":
-                                    if (response.correct)
-                                    {
-                                        var responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
-                                        if (responseFeedbackContainer.length == 0)
-                                        {
-                                            $("#response_" + prompt.id + "_" + response.sortKey).before('<span id="inlineFeedbackContainer_' + prompt.id + '_' + response.sortKey + '" class="feedbackContainer inlineFeedbackContainer"></span>');
-                                            responseFeedbackContainer = $("#inlineFeedbackContainer_" + prompt.id + "_" + response.sortKey);
-                                        }
-                                        var scoreSpan = $("#skResponseToken_" + prompt.id + "_" + response.sortKey);
-                                        var scoreSpanHTML = generateResponseScoreSpan("skResponseToken_" + prompt.id + "_" + response.sortKey, prompt.id, 0, response.sortKey, response.correct, response.maxValue, response.bonusValue, true);
+                                        break;
+                                    default:
+                                        var responseFeedbackContainer = $("#responseFeedbackContainer_" + response.id);
+                                        var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
+                                        var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.value, response.bonusValue, false);
                                         if (scoreSpan.length > 0)
                                             scoreSpan.replaceWith(scoreSpanHTML);
                                         else
-                                            responseFeedbackContainer.prepend(scoreSpanHTML);
-                                        responseFeedbackContainer.css({"min-height":"auto", "height":"auto","cursor":"default"});
-                                        responseFeedbackContainer.hide();//have to hide this or it will display an empty area. It will be shown if correct or incorrrect or partial further donw below
-                                    }
-                                    break;
-                                case "WRITING":
-                                    if (l == 0)
-                                    {
-                                        var scoreSpan = $("#pidResponseToken_" + prompt.id);
-                                        var scoreSpanHTML = generateResponseScoreSpan("pidResponseToken_" + prompt.id, prompt.id, 0, 0, response.correct, response.maxValue, response.bonusValue, true, false);
-                                        if (scoreSpan.length > 0)
-                                        {
-                                            scoreSpan.replaceWith(scoreSpanHTML);
-                                        }
-                                        else
-                                        {
-                                            $("#writingResponseFeedbackContainer_" + prompt.id).prepend(scoreSpanHTML);
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    var responseFeedbackContainer = $("#responseFeedbackContainer_" + response.id);
-                                    var scoreSpan = $("#responseToken_" + prompt.id + "_" + response.id);
-                                    var scoreSpanHTML = generateResponseScoreSpan("responseToken_" + prompt.id + "_" + response.id, prompt.id, response.id, response.sortKey, response.correct, response.value, response.bonusValue, false);
-                                    if (scoreSpan.length > 0)
-                                        scoreSpan.replaceWith(scoreSpanHTML);
-                                    else
-                                        responseFeedbackContainer.append(scoreSpanHTML);
-                                    break;
+                                            responseFeedbackContainer.append(scoreSpanHTML);
+                                        break;
+                                }
                             }
                         }
                     }
@@ -589,6 +635,10 @@ function loadStudentScores(studentAnswers, activityComponentId)
     for (var i = 0; i < studentAnswers.length; i++)
     {
         var studentScore = studentAnswers[i];
+        var activityComponent = getActivityComponent(studentScore.activityComponentId);
+        var showResponseToken = true;
+        if (activityComponent.componentTitle == "Timeline")
+            showResponseToken = false;
         if ((typeof (activityComponentId) == "undefined") || (activityComponentId == studentScore.activityComponentId))
         {
             $("#promptFeedbackToolBox_" + studentScore.promptId).show();
@@ -651,38 +701,19 @@ function loadStudentScores(studentAnswers, activityComponentId)
                 {
                     scoreToken.addClass("scoreIncorrect");
                     responseScoreIcon.addClass("fa-times");
-                    //No longer showing triangle for these. Cannot tell the difference between a zero and a not scored item.
-                    /*
-                    if (notIncorrect)
+                }
+                if (showResponseToken)
+                {
+                    if (scoreToken.parent().hasClass("inlineFeedbackContainer"))
                     {
-                        scoreToken.addClass("scorePartiallyCorrect");
-                        responseScoreIcon.addClass("fa-exclamation-triangle");
-                        scoreToken.attr("title","Pending Teacher Grade");
+                        scoreToken.parent().css("display", "inline-block");
                     }
                     else
                     {
-                        scoreToken.addClass("scoreIncorrect");
-                        responseScoreIcon.addClass("fa-times");
+                        scoreToken.parent().show();
                     }
-                    */
-                    //showScore = studentScore.latestGrade != 0;
+                    scoreToken.show();
                 }
-                /*
-                if (showScore)
-                    scoreSpan.show();
-                else
-                    scoreSpan.hide();
-                */
-
-                if(scoreToken.parent().hasClass("inlineFeedbackContainer")){
-                    scoreToken.parent().css("display","inline-block");
-                    //scoreSpan.show();//must show the scoreSpan to be able to edit zero score on contructed responses
-                } else {
-                    scoreToken.parent().show();
-                }
-
-                scoreToken.show();
-
 
                 var responseScoreTokenLoadedEvent = $.Event("responseScoreTokenLoaded");
                 responseScoreTokenLoadedEvent.scoreToken = scoreToken;
@@ -697,7 +728,6 @@ function loadStudentScores(studentAnswers, activityComponentId)
                 var matchingLock = $("#matchingLock_" + studentScore.activityComponentId + "_" + promptIndex);
                 matchingLock.hide();
                 var responseToken = $("#pidResponseToken_" + prompt.id);
-
             }
         }
     }
@@ -706,7 +736,6 @@ function loadStudentScores(studentAnswers, activityComponentId)
 
 function generatePromptScoreSpan(prompt)
 {
-    //console.log("generatePromptScoreSpan")
     var promptScoreSpanHTML = "<div class=\"displayTableCell\" style=\"vertical-align: middle !important; padding:0 0.25em;\">";
     promptScoreSpanHTML += "<span id=\"promptScoreTotalSpan_" + prompt.id + "\" class=\"score\" data-promptid=\"" + prompt.id + "\" data-maxscore=\"" + prompt.maxValue + "\" data-maxbonusscore=\"" + prompt.maxBonusValue + "\">";
     if (prompt.maxValue > 0)
@@ -725,7 +754,6 @@ function generatePromptScoreSpan(prompt)
 
 function generateResponseScoreSpan(elementId, promptId, responseId, sortKey, correct, maxScore, bonusValue, editable, notIncorrect)
 {
-    //console.log("generateResponseScoreSpan")
     var scoreSpanElementId = elementId.replace("Token", "ScoreSpan");
     var responseScoreSpanHTML = "<div id=\"" + elementId + "\" style=\"display:none;\" class=\"score " + (editable ? "scoreEditable" : "") + "\" data-promptid=\"" + promptId + "\" data-responseid=\"" + responseId + "\" data-sortkey=\"" + sortKey + "\" data-maxscore=\"" + maxScore + "\" data-maxbonusscore=\"" + bonusValue + "\" data-correct=\"" + correct + "\"  " + ((notIncorrect==true) ? "data-notincorrect=\"true\"" : "")+">";
     responseScoreSpanHTML += "  <div class=\"displayTableCell\"><i id=\"scoreIcon_"+elementId+"\" class=\"fa\"></i></div>"

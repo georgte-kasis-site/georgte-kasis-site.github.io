@@ -1,5 +1,4 @@
 var genericRenderModeLayouts = ["default", "checkboxOnly"];
-var nonJudgedComponents = ["presentation", "lexicalitem","resourcetranscript"];
 
 function loadActivityComponent(containerElement, activityComponent)
 {
@@ -13,7 +12,6 @@ function loadActivityComponent(containerElement, activityComponent)
     containerDetailsDiv.show();
     activityComponent.renderModeLayout = getRenderModeLayout(activityComponent);
     activityComponent.renderModeIndex = getRenderModeLayoutIndex(activityComponent);
-
     if (typeof (activityComponent.renderModeLayout) == "undefined")
         activityComponent.renderModeLayout = getRenderModeLayout(activityComponent);
     //OVERRIDE UNSUPPORTED COMPONENT CONFIGURATION OPTIONS
@@ -456,9 +454,16 @@ function loadComponentTabBar(containerElement, activityComponent)
                 var displayTitleHTML = activityComponent.itemTitle.length > 0 ? htmlDecode(activityComponent.itemTitle) : "";
                 var tabLabelHTML = stripRTLDiv(displayTitleHTML).rtl ? ("<span class=\"tabItem tabItem_" + i + " isRTL\"></span> " + displayTitleHTML) : (displayTitleHTML + " <span class=\"tabItem tabItem_" + i + "\"></span>");
                 tabContainer.append("<span id=\"tab_" + activityComponent.id + "_" + i + "\" class=\"tab" + ((currentPage == i) ? " tabSelected " : "") + "\">" + tabLabelHTML + "</span>");
-                $("#tab_" + activityComponent.id + "_" + i).bind("click", { ac: activityComponent, tabIndex: i }, function (event)
+                $("#tab_" + activityComponent.id + "_" + i).on("click", { ac: activityComponent, tabIndex: i }, function (event)
                 {
-                    openActivityComponentTab(event.data.ac, event.data.tabIndex, event.data.si, event.data.ei);
+                    if (!$(this).hasClass("tabDisabled"))
+                    {
+                        openActivityComponentTab(event.data.ac, event.data.tabIndex);
+                        var openActivityComponentTabEvent = $.Event("openActivityComponentTab");
+                        openActivityComponentTabEvent.activityComponentId = event.data.ac.id;
+                        openActivityComponentTabEvent.tabIndex = event.data.tabIndex;
+                        $(document).trigger(openActivityComponentTabEvent);
+                    }
                 });
             }
         }
@@ -475,7 +480,7 @@ function openActivityComponentTab(activityComponent, tabIndex)
         {
             $("#componentTabBar_" + activityComponent.id).find(".tabSelected").each(function ()
             {
-                $(this).attr("class", "tab");
+                $(this).removeClass("tabSelected");
             });
             $("#tab_" + activityComponent.id + "_" + tabIndex).addClass("tabSelected");
             if (tabIndex > 0)

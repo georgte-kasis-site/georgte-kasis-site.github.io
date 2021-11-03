@@ -17,7 +17,7 @@
     if (activityComponent.renderRTL)
     {
         promptHTML += '     <div id="promptNoteCell_' + prompt.id + '" class="displayTableCell noteCell"></div>';
-        promptHTML += '     <div class="displayTableCell" style="width:100%; padding:.5em">'+htmlDecode(promptText)+'</div>';
+        promptHTML += '     <div class="displayTableCell" style="width:100%; padding:.5em">' + htmlDecode(promptText) + '</div>';
         promptHTML += '     <div id="promptFeedbackContainer_' + prompt.id + '" class="displayTableCell feedbackContainer promptFeedbackContainer"></div>'
     }
     else
@@ -33,6 +33,15 @@
     var promptDiv = $(spf('<div id="responses_~" class="centered"></div>',[prompt.id] ) );
     promptDiv.append( $(spf('<div id="responsesContainer_~" class="responseContainer hotspotContainer">~</div></div>', [prompt.id, htmlDecode(prompt.text)]) ) );
     tabDetail.append(promptDiv);
+
+    if (activityComponent.renderModeIndex == 1)
+    {
+        for (var r = 0; r < prompt.responses.length; r++)
+        {
+            loadResponseHotspot(activityComponent, prompt.responses[r], false);
+            bindResponseHotspotClick(activityComponent, prompt, prompt.responses[r]);
+        }
+    }
     var promptLoadedEvent = $.Event("promptLoaded");
     promptLoadedEvent.containerElement = $("#promptNoteCell_" + prompt.id);
     promptLoadedEvent.prompt = prompt;
@@ -49,15 +58,6 @@ function loadResponseHotspot(activityComponent, response, trigger)
         if (hotspot.length <= 0)
         {
             var img = $('#responsesContainer_' + response.promptId + ' img').get(0);
-            /*USING ACTUAL PIXELS FOR ASSIGNMENT PROTOTYPE UNTIL PRELOADING CAN BE FIGURED FOR SCALED POSITIONING
-                            var imgX = img.naturalWidth;
-                            var imgY = img.naturalHeight;
-                            var x = Math.round((responseDataArr[0] / imgX) * 100);
-                            var y = Math.round((responseDataArr[1] / imgY) * 100);
-                            var w = Math.round(((responseDataArr[2] - responseDataArr[0]) / imgX) * 100);
-                            var h = Math.round(((responseDataArr[3] - responseDataArr[1]) / imgY) * 100);
-            */
-
             var x = responseDataArr[0];
             var y = responseDataArr[1];
             var w = responseDataArr[2] - responseDataArr[0];
@@ -77,10 +77,56 @@ function loadResponseHotspot(activityComponent, response, trigger)
             }
 
             var hotspotLoadedEvent = $.Event("hotspotLoaded");
-            hotspotLoadedEvent.responseId = response.id;
+            hotspotLoadedEvent.response = response;
             hotspotLoadedEvent.promptId = response.promptId;
-            hotspotLoadedEvent.activityComponentId = activityComponent.id;
+            hotspotLoadedEvent.activityComponent = activityComponent;
             $(document).trigger(hotspotLoadedEvent);
         }
+    }
+}
+
+function bindResponseHotspotClick(activityComponent, prompt, response)
+{
+    if (activityComponent.renderModeIndex == 1)
+    {
+        var hotspot = $("#responseHotspot_" + response.id);
+        if (hotspot.length > 0)
+        {
+            hotspot.click(function ()
+            {
+                var responseFeedbackText = typeof (response.feedback) != "undefined" && response.feedback.length > 0 ? htmlDecode(response.feedback[0].text) : "";
+                var feedbackHTML = '<div id="responseFeedback_' + response.id + '">' + responseFeedbackText + '</div>';
+                var iconHTML = '<span><i class="icon fa fa-info-circle"></i></span>';
+                openCustomDialog("Information", feedbackHTML, "information", iconHTML);
+            });
+        }
+    }
+    else
+    {
+        $("#responsesContainer_" + prompt.id).children("img").on("click", { activityComponent: activityComponent, prompt: prompt, response: response }, function (e)
+        {
+            var img = $('#responsesContainer_' + e.data.prompt.id + ' img').get(0);
+            var imgX = img.naturalWidth;
+            var imgY = img.naturalHeight;
+
+            var responseDataArr = $.parseJSON(e.data.response.text);
+            if (responseDataArr.length == 4)
+            {
+                var offset = $(this).offset();
+                var clickX = e.pageX - offset.left;
+                var clickY = e.pageY - offset.top;
+                if ((clickX >= Math.round(responseDataArr[0] / imgX * img.width)) && (clickX <= Math.round(responseDataArr[2] / imgX * img.width)) && (clickY >= Math.round(responseDataArr[1] / imgY * img.height)) && (clickY <= Math.round(responseDataArr[3] / imgY * img.height)))
+                {
+                    switch (e.data.activityComponent)
+                    {
+                        case 1:
+                            break;
+                        default:
+                            loadResponseHotspot(e.data.activityComponent, e.data.response, true);
+                            break;
+                    }
+                }
+            }
+        });
     }
 }

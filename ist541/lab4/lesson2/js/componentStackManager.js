@@ -145,6 +145,7 @@
                 me.moduleFeatures.source = true;
                 me.moduleFeatures.glossary = true;
                 me.moduleFeatures.notes = true;
+                me.moduleFeatures.studentNotes = assignment.allowStudentNotes;
 
                 if (studentAssignment.submitDate)
                 {
@@ -226,6 +227,26 @@
             me.moduleFeatures.mediaOptions.audio.transcript = true;
             me.moduleFeatures.mediaOptions.video.transcript = true;
         }
+        if (me.viewMode == "sharedAssignment")
+        {
+            me.requiredData.correctAnswers = true;
+            me.requiredData.feedback = true;
+            me.requiredData.lexicalItems = true;
+            me.requiredData.studentAnswers = ((typeof (studentAssignment) != "undefined") && studentAssignment && studentAssignment.initiateDate);
+            me.moduleFeatures.studentNotes = ((typeof (studentAssignment) != "undefined") && studentAssignment && studentAssignment.studentNotes !== false);
+            me.moduleFeatures.info = true;
+            me.moduleFeatures.print = true;
+            me.moduleFeatures.rating = true;
+            me.moduleFeatures.source = true;
+            me.moduleFeatures.notes = true;
+            me.moduleFeatures.glossary = true;
+            me.moduleFeatures.header = false;
+            me.moduleFeatures.timer = false;
+            me.moduleFeatures.limitBrowserFunctionality = false;
+            me.moduleFeatures.triggerHiddenActivities = true;
+            me.moduleFeatures.mediaOptions.audio.transcript = true;
+            me.moduleFeatures.mediaOptions.video.transcript = true;
+        }
         if (me.viewMode == "reports")
         {
             if (typeof (assignment) != "undefined" && assignment && assignment.completeDate)
@@ -269,7 +290,6 @@
         {
             me.mergeRequiredData();
             me.navigationCallback(me);
-//            me.runComponentStackSequence();
         }
     }
 
@@ -303,7 +323,6 @@
                     me.data.module.activities.splice(me.data.module.hiddenActivities[ha].sortKey - 1, 0, me.data.module.hiddenActivities.splice(ha,1)[0]);
                 }
             }
-
             if (me.data.module.activities)
             {
                 for (var a = 0; a < me.data.module.activities.length; a++)
@@ -349,6 +368,8 @@
             for (var ac = 0; ac < activity.activityComponents.length; ac++)
             {
                 var activityComponent = activity.activityComponents[ac];
+                if (typeof (assignment) != "undefined" && assignment && assignment.shared)
+                    activityComponent.randomizePrompts = false;
                 activityComponent.maxValue = 0;
                 activityComponent.maxBonusValue = 0;
                 if (activityComponent.prompts)
@@ -376,6 +397,7 @@
                                     break;
                                 case "selfStudyPreview":
                                 case "selfStudy":
+                                case "sharedAssignment":
                                     prompt.recorder = { record: true, download: true, submit: true };
                                     break;
                                 default:
@@ -404,6 +426,7 @@
                                     break;
                                 case "selfStudyPreview":
                                 case "selfStudy":
+                                case "sharedAssignment":
                                     prompt.sketchpad = { drawTools: true, stepControls: true, submit: true };
                                     break;
                                 default:
@@ -605,6 +628,7 @@
                         break;
                     case "selfStudy":
                     case "selfStudyPreview":
+                    case "sharedAssignment":
                         console.log("SELF STUDY DONE?");
                         break;
                     case "reports":
@@ -637,6 +661,7 @@
                             if ((status.toLowerCase() != "archived") && (typeof (loadUpdateScoreControls) == "function"))
                                 loadUpdateScoreControls();
                             loadReviewSummary();
+                            loadStudentAnswersSummary();
 //                            loadTeachersEdition(me.data.correctAnswers, me.data.gradingProtocolValues);
                             loadComments(me.data.comments);
                         }
@@ -666,11 +691,9 @@
                         break;
                     case "selfStudy":
                     case "selfStudyPreview":
-                        loadCheckAnswers();
-                        loadCheckAnswersSummary();
+                    case "sharedAssignment":
                         if ((typeof (studentAssignment) != "undefined" && studentAssignment && studentAssignment.initiateDate) && (studentAssignment.authorizationToken.canDo || studentAssignment.authorizationToken.canReview))
                         {
-//                            getStudentSessionData();
                             if (typeof (me.data.studentAnswers != "undefined"))
                             {
                                 loadStudentAnswers(me.data.studentAnswers);
@@ -686,9 +709,22 @@
                                     {
                                         loadStudentScores(studentAnswers, checkAnswerActivityComponentIds[a]);
                                     }
-                                    loadCheckAnswersSummary();
                                 }
                             }
+                            if (studentAssignment.authorizationToken.completed)
+                            {
+                                loadReviewSummary();
+                            }
+                            else
+                            {
+                                loadCheckAnswers();
+                                loadCheckAnswersSummary();
+                            }
+                        }
+                        else
+                        {
+                            loadCheckAnswers();
+                            loadCheckAnswersSummary();
                         }
                         setModuleCompletionData();
                         break;
@@ -758,7 +794,7 @@
             }
             else if (serverResponseObj.module)
                 me.data.module = serverResponseObj.module;
-            if ((me.viewMode == "selfStudy")||(me.viewMode == "selfStudyPreview"))
+            if ((me.viewMode == "selfStudy")||(me.viewMode == "selfStudyPreview")||(me.viewMode == "sharedAssignment"))
                 me.data.module.locked = false;
             if ((me.streamData.module) && (!me.streamProcess.module))
             {

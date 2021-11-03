@@ -51,6 +51,7 @@
     {
         settings.height = responseData.height;
         settings.width = responseData.width;
+        settings.canvasBgClass = responseData.canvasBgClass;
     }
     if (prompt.sketchpad)
         $("#writingResponseContent_" + prompt.id).ucatCanvas(prompt.sketchpad, settings);

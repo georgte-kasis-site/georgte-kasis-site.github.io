@@ -18,6 +18,8 @@ $(document).ready(function ()
 
 function loadStudentAnswers(sa)
 {
+    var headerNavName = $("#id_headerNavName");
+    var summaryPanelName = $("#summaryPanelName");
     studentAnswers = sa;
     for (var a = 0; a < module.activities.length; a++)
     {
@@ -32,15 +34,22 @@ function loadStudentAnswers(sa)
     }
     if (typeof (studentAssignment) != "undefined")
     {
-        $("#id_headerNavName").html(studentAssignment.studentName);
-        $("#id_headerNavName").show();
-        $("#summaryPanelName").html(studentAssignment.studentName);
-        $("#summaryPanelName").show();
+        if ((typeof (assignment) != "undefined") && (assignment.shared) && !assignment.completeDate)
+        {
+            headerNavName.html('<i class="fa fa-magic"></i>&nbsp;' + studentAssignment.studentName + '&nbsp;has Control');
+        }
+        else
+        {
+            headerNavName.html(studentAssignment.studentName);
+        }
+        headerNavName.show();
+        summaryPanelName.html(studentAssignment.studentName);
+        summaryPanelName.show();
     }
     else
     {
-        $("#id_headerNavName").hide();
-        $("#summaryPanelName").hide();
+        headerNavName.hide();
+        summaryPanelName.hide();
     }
     setModuleCompletionData();
 }
@@ -106,22 +115,29 @@ function loadStudentActivityAnswers(activity)
                             responseBlank.show();
                             break;
                         case "FINDANDCLICK":
-                            var response = false;
-                            for (var l = 0; l < activityComponent.prompts.length; l++)
+                            switch (activityComponent.renderModeIndex)
                             {
-                                if (studentAnswer.promptId == activityComponent.prompts[l].id)
-                                {
-                                    var prompt = activityComponent.prompts[l];
-                                    for (var m = 0; m < prompt.responses.length; m++)
+                                case 1:
+                                    break;
+                                default:
+                                    var response = false;
+                                    for (var l = 0; l < activityComponent.prompts.length; l++)
                                     {
-                                        if (prompt.responses[m].id == studentAnswer.responseId)
-                                            response = prompt.responses[m];
+                                        if (studentAnswer.promptId == activityComponent.prompts[l].id)
+                                        {
+                                            var prompt = activityComponent.prompts[l];
+                                            for (var m = 0; m < prompt.responses.length; m++)
+                                            {
+                                                if (prompt.responses[m].id == studentAnswer.responseId)
+                                                    response = prompt.responses[m];
 
+                                            }
+                                        }
                                     }
-                                }
+                                    if (response)
+                                        loadResponseHotspot(activityComponent, response);
+                                    break;
                             }
-                            if (response)
-                                loadResponseHotspot(activityComponent, response);
                             break;
                         case "MATCHING":
                             var dropArea = $("#matchingPromptDropArea_" + studentAnswer.promptId);
@@ -145,6 +161,47 @@ function loadStudentActivityAnswers(activity)
                                 if ((studentAnswer.sortKey == counter) && (responseDiv.attr("id") != responseDivToMove.attr("id")))
                                     responseDivToMove.insertBefore(responseDiv);
                             });
+                            break;
+                        case "RESOURCETRANSCRIPT":
+                            studentAnswer.responseText = htmlDecode(studentAnswer.responseText, true);
+                            var responseRTL = false;
+                            for (var l = 0; l < activityComponent.prompts.length; l++)
+                            {
+                                if (studentAnswer.promptId == activityComponent.prompts[l].id)
+                                {
+                                    var prompt = activityComponent.prompts[l];
+                                    for (var m = 0; m < prompt.responses.length; m++)
+                                    {
+                                        if (prompt.responses[m].id == studentAnswer.responseId)
+                                            responseRTL = prompt.responses[m].rtl;
+
+                                    }
+                                }
+                            }
+                            var responseBlank = $("#response_" + studentAnswer.promptId + "_" + studentAnswer.sortKey);
+
+                            if (responseBlank.hasClass("response"))
+                            {
+                                $("#responseInputBox_" + studentAnswer.promptId + "_" + studentAnswer.sortKey).val(studentAnswer.responseText);
+                            }
+                            else if (responseBlank.hasClass("blank"))
+                            {
+                                var blankHtml = "<div id=\"response_" + studentAnswer.promptId + "_" + studentAnswer.sortKey + "\" type=\"text\" class=\"response\" style=\"width:auto;\" data-promptid=\"" + studentAnswer.promptId + "\" data-index=\"" + studentAnswer.sortKey + "\">";
+//                                blankHtml += "<span id=\"responseInputBox_" + studentAnswer.promptId + "_" + studentAnswer.sortKey + "\" class=\"customInputBox\" data-promptid=\"" + studentAnswer.promptId + "\" data-index=\"" + studentAnswer.sortKey + "\">" + studentAnswer.responseText + "</span>";
+                                blankHtml += '<textarea id="responseInputBox_' + studentAnswer.promptId + '_' + studentAnswer.sortKey + '" rows="3" style="width:100%;" dir="' + (responseRTL ? "rtl" : "ltr") + '" data-promptid="' + studentAnswer.promptId + '" data-index="' + studentAnswer.sortKey + '" data-activitycomponentid="' + activityComponent.id + '" disabled="true"></textarea>';
+                                blankHtml += "</div>";
+                                responseBlank.replaceWith(blankHtml);
+                                $("#responseInputBox_" + studentAnswer.promptId + "_" + studentAnswer.sortKey).val(studentAnswer.responseText);
+                                responseBlank = $("#response_" + studentAnswer.promptId + "_" + studentAnswer.sortKey);
+                            }
+                            var inlineFeedbackContainer = $("#inlineFeedbackContainer_" + studentAnswer.promptId + "_" + studentAnswer.sortKey);
+                            if (inlineFeedbackContainer.length <= 0)
+                            {
+                                responseBlank.before("<span id=\"inlineFeedbackContainer_" + studentAnswer.promptId + "_" + studentAnswer.sortKey + "\" class=\"feedbackContainer inlineFeedbackContainer\"></span>");
+                                inlineFeedbackContainer = $("#inlineFeedbackContainer_" + studentAnswer.promptId + "_" + studentAnswer.sortKey);
+                            }
+                            inlineFeedbackContainer.show();
+                            responseBlank.show();
                             break;
                         case "SHORTANSWER":
                             $("#responseInputBox_" + studentAnswer.promptId).html(htmlDecode(studentAnswer.responseText));
@@ -171,6 +228,11 @@ function loadStudentActivityAnswers(activity)
                                     }
                                 }
                             }
+                            break;
+                        case "TIMELINE":
+                            var timelineAnswerContainer = $("#timelineAnswerContainer_" + studentAnswer.promptId);
+                            var draggableResponse = $("#response_" + studentAnswer.responseId);
+                            timelineAnswerContainer.append(draggableResponse);
                             break;
                         case "TRANSCRIPTION":
                             var responseBlank = $("#response_" + studentAnswer.promptId + "_" + studentAnswer.sortKey);
@@ -233,45 +295,48 @@ function loadStudentSummaryPage()
         {
             var activityComponent = activity.activityComponents[j];
             var displayActivityComponent = true;
-            for (var k = 0; k < activityComponent.prompts.length; k++)
+            if (isComponentJudged(activityComponent))
             {
-                var prompt = activityComponent.prompts[k];
-                switch (activityComponent.componentTitle.toUpperCase())
-                {
-                    case "CATEGORIZATION":
-                        displayActivityComponentCount++;
-                        break;
-                    case "PRESENTATION":
-                        displayActivityComponent = false;
-                        break;
-                    case "TRANSCRIPTION":
-                    case "FILLINTHEBLANK":
-                        displayActivityComponentCount++;
-                        break;
-                    default:
-                        displayActivityComponentCount++;
-                        break;
-                }
+                displayActivityComponent = true;
+                displayActivityComponentCount++;
+            }
+            else
+            {
+                displayActivityComponent = false;
             }
             if (displayActivityComponent)
             {
                 if (activityComponent.complete)
                 {
-                    $("#activityComponentSummaryData_" + activityComponent.id).html("<i class=\"fa fa-check\" style=\"color:#4ecf3b; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "','" + activityComponent.id + "');\"></i>");
+                    $("#activityComponentSummaryData_" + activityComponent.id).html("<i class=\"fa fa-check\" style=\"color:#4ecf3b;\"></i>");
                 }
                 else
                 {
-                    $("#activityComponentSummaryData_" + activityComponent.id).html("<i class=\"fa fa-exclamation-triangle\" style=\"color:#e5882e; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "','" + activityComponent.id + "');\"></i>");
+                    $("#activityComponentSummaryData_" + activityComponent.id).html("<i class=\"fa fa-exclamation-triangle\" style=\"color:#e5882e;\"></i>");
                     incompleteActivityComponentCount++;
                 }
+                $("#activityComponentSummaryData_" + activity.id).on("click", {"activityIndex":activity.index, "activityComponentId":activityComponent.id}, function(e){
+                    if(!$(this).hasClass("disabled")){
+                        var aIndex = e.data.activityIndex
+                        var aComponentId = e.data.activityComponentId
+                        goToActivity(aIndex, aComponentId);
+                    }
+                })
             }
         }
         if (displayActivityComponentCount > 0)
         {
-            if (activity.complete)
-                $("#activitySummaryData_" + activity.id).html("<i class=\"fa fa-check\" style=\"color:#4ecf3b; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "');\"></i>");
-            else
-                $("#activitySummaryData_" + activity.id).html("<i class=\"fa fa-exclamation-triangle\" style=\"color:#e5882e; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "');\"></i>");
+            if (activity.complete){
+                $("#activitySummaryData_" + activity.id).html("<i class=\"fa fa-check\" style=\"color:#4ecf3b;\"></i>");
+            } else {
+                $("#activitySummaryData_" + activity.id).html("<i class=\"fa fa-exclamation-triangle\" style=\"color:#e5882e;\"></i>");
+            }
+            $("#activitySummaryData_" + activity.id).on("click", {"activityIndex":activity.index}, function(e){
+                if(!$(this).hasClass("disabled")){
+                    var aIndex = e.data.activityIndex
+                    goToActivity(aIndex);
+                }
+            })
         }
     }
     $("#moduleSummaryData_" + module.id).data("incompleteActivityComponentCount", incompleteActivityComponentCount);
@@ -433,6 +498,9 @@ function updateStudentAnswers(action, componentTitle, activityComponentId, promp
         case "TRANSCRIPTION":
             responseIds = "";
             break;
+        case "RESOURCETRANSCRIPT":
+            responseIds = "";
+            break;
         case "SHORTANSWER":
             break;
         case "FINDANDCLICK":
@@ -455,6 +523,9 @@ function updateStudentAnswers(action, componentTitle, activityComponentId, promp
             });
             break;
         case "SPEAKING":
+            break;
+        case "TIMELINE":
+            responseIds = "";
             break;
         case "WRITING":
             break;
@@ -566,61 +637,63 @@ function setActivityCompletionData(activity, hiddenActivity)
     {
         var activityComponent = activity.activityComponents[j];
         activityComponent.complete = true;
-        var displayActivityComponent = true;
-        for (var k = 0; k < activityComponent.prompts.length; k++)
+        var displayActivityComponent = false;
+        if (isComponentJudged(activityComponent))
         {
-            var prompt = activityComponent.prompts[k];
-            var promptComplete = false;
-            switch (activityComponent.componentTitle.toUpperCase())
+            displayActivityComponent = true;
+            for (var k = 0; k < activityComponent.prompts.length; k++)
             {
-                case "CATEGORIZATION":
-                    activityComponent.complete = false;
-                    for (var l = 0; l < studentAnswers.length; l++)
-                    {
-                        if (studentAnswers[l].activityComponentId == activityComponent.id)
-                            activityComponent.complete = true;
-                    }
-                    break;
-                case "MATCHING":
-                    for (var l = 0; l < studentAnswers.length; l++)
-                    {
-                        if (studentAnswers[l].promptId == prompt.id)
-                            promptComplete = true;
-                    }
-                    if (!promptComplete)
+                var prompt = activityComponent.prompts[k];
+                var promptComplete = false;
+                switch (activityComponent.componentTitle.toUpperCase())
+                {
+                    case "CATEGORIZATION":
                         activityComponent.complete = false;
-                    break;
-                case "PRESENTATION":
-                    displayActivityComponent = false;
-                    break;
-                case "TRANSCRIPTION":
-                case "FILLINTHEBLANK":
-                    var maxAnswerCount = $("#responsesContainer_" + prompt.id).find("[id^='response_" + prompt.id + "_']").length;
-                    var studentAnswerCount = 0;
-                    for (var l = 0; l < studentAnswers.length; l++)
-                    {
-                        if (studentAnswers[l].promptId == prompt.id)
-                            studentAnswerCount++;
-                    }
-                    if (studentAnswerCount == maxAnswerCount)
-                        promptComplete = true;
-                    if (!promptComplete)
-                        activityComponent.complete = false;
-                    break;
-                default:
-                    if (prompt.responses && prompt.responses.length > 0)
-                    {
+                        for (var l = 0; l < studentAnswers.length; l++)
+                        {
+                            if (studentAnswers[l].activityComponentId == activityComponent.id)
+                                activityComponent.complete = true;
+                        }
+                        break;
+                    case "MATCHING":
+                    case "TIMELINE":
                         for (var l = 0; l < studentAnswers.length; l++)
                         {
                             if (studentAnswers[l].promptId == prompt.id)
                                 promptComplete = true;
                         }
-                    }
-                    else
-                        promptComplete = true;
-                    if (!promptComplete)
-                        activityComponent.complete = false;
-                    break;
+                        if (!promptComplete)
+                            activityComponent.complete = false;
+                        break;
+                    case "TRANSCRIPTION":
+                    case "FILLINTHEBLANK":
+                        var maxAnswerCount = $("#responsesContainer_" + prompt.id).find("[id^='response_" + prompt.id + "_']").length;
+                        var studentAnswerCount = 0;
+                        for (var l = 0; l < studentAnswers.length; l++)
+                        {
+                            if (studentAnswers[l].promptId == prompt.id)
+                                studentAnswerCount++;
+                        }
+                        if (studentAnswerCount == maxAnswerCount)
+                            promptComplete = true;
+                        if (!promptComplete)
+                            activityComponent.complete = false;
+                        break;
+                    default:
+                        if (prompt.responses && prompt.responses.length > 0)
+                        {
+                            for (var l = 0; l < studentAnswers.length; l++)
+                            {
+                                if (studentAnswers[l].promptId == prompt.id)
+                                    promptComplete = true;
+                            }
+                        }
+                        else
+                            promptComplete = true;
+                        if (!promptComplete)
+                            activityComponent.complete = false;
+                        break;
+                }
             }
         }
         if (displayActivityComponent && !activityComponent.complete)

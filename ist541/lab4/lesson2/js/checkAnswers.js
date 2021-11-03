@@ -52,6 +52,12 @@ function updateStudentAnswerSubmitControls(action, componentTitle, activityCompo
             $("#response"+promptId+"_"+responseIndex).removeClass("active");
             $("#responseInputBox_"+promptId+"_"+responseIndex+"_submit").html('<i class="fa fa-check"></i>')
             break;
+        case "RESOURCETRANSCRIPT":
+            //reset submit and input boxes
+            $("#responseInputBox_" + promptId + "_" + responseIndex + "_submit").attr("class", "submitBtn btnGrey disabled").show();
+            $("#response" + promptId + "_" + responseIndex).removeClass("active");
+            $("#responseInputBox_" + promptId + "_" + responseIndex + "_submit").html('<i class="fa fa-check"></i>')
+            break;
         case "SHORTANSWER":
             $("#responseInputSubmit_"+promptId).html('<i class="fa fa-check"></i> Submit')
             break;
@@ -79,8 +85,8 @@ function loadCheckAnswers()
         for (var j = 0; j < activity.activityComponents.length; j++)
         {
             var activityComponent = activity.activityComponents[j];
-            activityComponent.renderRefresh = true;
-            activityComponent.renderCheckAnswer = true;
+            activityComponent.renderRefresh = isComponentJudged(activityComponent);
+            activityComponent.renderCheckAnswer = isComponentJudged(activityComponent);
             switch (activityComponent.componentTitle.toUpperCase())
             {
                 case "PRESENTATION":
@@ -99,7 +105,7 @@ function loadCheckAnswers()
                     {
                         if ((activityComponent.prompts[k].responses.length > 0) && (activityComponent.prompts[k].responses[0].text != ""))
                         {
-                            activityComponent.renderCheckAnswer = true;
+                            activityComponent.renderCheckAnswer = isComponentJudged(activityComponent);
                             buildShortAnswerResponseHTML(activityComponent.prompts[k]);
                         }
                     }
@@ -114,7 +120,7 @@ function loadCheckAnswers()
                     {
                         if ((activityComponent.prompts[k].responses.length > 0) && (activityComponent.prompts[k].responses[0].text != ""))
                         {
-                            activityComponent.renderCheckAnswer = true;
+                            activityComponent.renderCheckAnswer = isComponentJudged(activityComponent);
                             buildSpeakingResponseHTML(activityComponent.prompts[k]);
                         }
                     }
@@ -125,12 +131,13 @@ function loadCheckAnswers()
                     {
                         if ((activityComponent.prompts[k].responses.length > 0) && (activityComponent.prompts[k].responses[0].text != ""))
                         {
-                            activityComponent.renderCheckAnswer = true;
+                            activityComponent.renderCheckAnswer = isComponentJudged(activityComponent);
                             buildWritingResponseHTML(activityComponent.prompts[k]);
                         }
                     }
                     break;
                 default:
+                    break;
             }
             if (activityComponent.showCheckAnswers == false)
             {
@@ -173,18 +180,27 @@ function loadModuleCheckAnswersButton(containerElement)
     }
     if (checkAnswerCount > 0)
     {
-        var buttonMarkup = "<span id=\"moduleCheckAnswerBtn\" class=\"activityButton checkAnswerBtn green\" style=\"display: inline; white-space:nowrap; padding:.5em;\"><i class=\"fa fa-check\"></i><span> Check All Answers</span></span>";
+        var disabled = ((typeof (assignment) != "undefined") && (assignment.shared) && !studentAssignment.authorizationToken.canDo);
+        var buttonMarkup = '<span id="moduleCheckAnswerBtn" class="activityButton checkAnswerBtn green' + (disabled ? ' checkAnswerBtnDisabled' : '')+'" style="display: inline; white-space:nowrap; padding:.5em;"><i class="fa fa-check"></i><span> Check All Answers</span></span>';
         containerElement.append(buttonMarkup);
     }
     $("#moduleCheckAnswerBtn").click(function ()
     {
-        for (var a = 0; a < module.activities.length; a++)
+        if (!$(this).hasClass("checkAnswerBtnDisabled"))
         {
-            for (var ac = 0; ac < module.activities[a].activityComponents.length; ac++)
+            for (var a = 0; a < module.activities.length; a++)
             {
-                var activityComponent = module.activities[a].activityComponents[ac];
-                if(activityComponent.renderCheckAnswer)
-                    checkActivityComponentAnswers(activityComponent);
+                for (var ac = 0; ac < module.activities[a].activityComponents.length; ac++)
+                {
+                    var activityComponent = module.activities[a].activityComponents[ac];
+                    if (activityComponent.renderCheckAnswer)
+                    {
+                        checkActivityComponentAnswers(activityComponent);
+                        var activityComponentAnswersCheckedEvent = $.Event("activityComponentAnswersChecked");
+                        activityComponentAnswersCheckedEvent.activityComponent = activityComponent;
+                        $(document).trigger(activityComponentAnswersCheckedEvent);
+                    }
+                }
             }
         }
     });
@@ -192,11 +208,18 @@ function loadModuleCheckAnswersButton(containerElement)
 
 function loadActivityComponentCheckAnswersButton(containerElement, activityComponent)
 {
-    var buttonMarkup = "<div class=\"displayTableCell\"><span id=\"activityComponentCheckAnswerBtn_" + activityComponent.id + "\" class=\"activityButton checkAnswerBtn green\"><i class=\"fa fa-check\"></i></span></div>";
+    var disabled = ((typeof (assignment) != "undefined") && (assignment.shared) && !studentAssignment.authorizationToken.canDo);
+    var buttonMarkup = '<div class="displayTableCell"><span id="activityComponentCheckAnswerBtn_' + activityComponent.id + '" class="activityButton checkAnswerBtn green' + (disabled ? ' checkAnswerBtnDisabled' : '')+'"><i class="fa fa-check"></i></span></div>';
     containerElement.append(buttonMarkup);
     $("#activityComponentCheckAnswerBtn_" + activityComponent.id).on("click", function ()
     {
-        checkActivityComponentAnswers(activityComponent);
+        if (!$(this).hasClass("checkAnswerBtnDisabled"))
+        {
+            checkActivityComponentAnswers(activityComponent);
+            var activityComponentAnswersCheckedEvent = $.Event("activityComponentAnswersChecked");
+            activityComponentAnswersCheckedEvent.activityComponent = activityComponent;
+            $(document).trigger(activityComponentAnswersCheckedEvent);
+        }
     });
 }
 
@@ -209,6 +232,10 @@ function checkAnswers()
             for (var ac = 0; ac < module.activities[a].activityComponents.length; ac++)
             {
                 checkActivityComponentAnswers(module.activities[a].activityComponents[ac]);
+                var activityComponentAnswersCheckedEvent = $.Event("activityComponentAnswersChecked");
+                activityComponentAnswersCheckedEvent.activityComponent = module.activities[a].activityComponents[ac];
+                $(document).trigger(activityComponentAnswersCheckedEvent);
+
             }
         }
     }
@@ -229,6 +256,7 @@ function checkActivityComponentAnswers(activityComponent)
                     studentAnswers[sa].correct = false;
                     for (var p = 0; p < activityComponent.prompts.length; p++)
                     {
+                        var prompt = activityComponent.prompts[p];
                         if (studentAnswers[sa].promptId == activityComponent.prompts[p].id)
                         {
                             for (var r = 0; r < activityComponent.prompts[p].responses.length; r++)
@@ -236,13 +264,30 @@ function checkActivityComponentAnswers(activityComponent)
                                 switch (activityComponent.componentTitle.toUpperCase())
                                 {
                                     case "SHORTANSWER":
+                                    case "SPEAKING":
+                                    case "WRITING":
+                                        var promptFeedbackContainer = $("#promptFeedbackContainer_" + activityComponent.prompts[p].id);
+                                        var crtSuggestedResponseButton = $("#crtSuggestedResponseBtn_" + activityComponent.prompts[p].id);
+                                        if (crtSuggestedResponseButton.length > 0)
+                                            crtSuggestedResponseButton.remove();
+                                        promptFeedbackContainer.before('<div id="crtSuggestedResponseBtn_' + activityComponent.prompts[p].id+'" class="displayTableCell" title="Self Evaluated"><span class="scoreCorrectSelfEvaluated"><i class="fa fa-graduation-cap"></i></span></div>');
+                                        crtSuggestedResponseButton = $("#crtSuggestedResponseBtn_" + activityComponent.prompts[p].id);
                                         if (studentAnswers[sa].responseText.length > 0)
                                         {
                                             $("#responseContainer_" + activityComponent.prompts[p].responses[r].id).show();
+                                            $('#crtSuggestedResponseBtn_' + activityComponent.prompts[p].id).on("click", function(){
+                                                var iconHTML = '<span><i class="icon fa fa-graduation-cap"></i></span>';
+                                                var selfEvauationHTML = '<div>Compare your response with teachers Suggested Response.</div>'
+                                                openCustomDialog("Self Evaluation", selfEvauationHTML, "information", iconHTML, "680px", function(){
+                                                    $("#ucatDialog").css("height","140px");
+                                                });
+                                            });
                                         }
+
                                         break;
                                     case "FILLINTHEBLANK":
                                     case "TRANSCRIPTION":
+                                    case "RESOURCETRANSCRIPT":
                                         if (studentAnswers[sa].sortKey == activityComponent.prompts[p].responses[r].sortKey)
                                         {
                                             if (cleanString(studentAnswers[sa].responseText).toUpperCase() == cleanString(activityComponent.prompts[p].responses[r].text).toUpperCase())
@@ -275,23 +320,12 @@ function checkActivityComponentAnswers(activityComponent)
                                         break;
                                     case "MATCHING":
                                     case "CATEGORIZATION":
+                                    case "TIMELINE":
                                         if ((studentAnswers[sa].promptId == activityComponent.prompts[p].id) && (studentAnswers[sa].responseId == activityComponent.prompts[p].responses[r].id))
                                         {
                                             studentAnswers[sa].originalGrade = activityComponent.prompts[p].responses[r].value;
                                             studentAnswers[sa].bonusValue = activityComponent.prompts[p].responses[r].bonusValue;
                                             studentAnswers[sa].correct = activityComponent.prompts[p].responses[r].correct;
-                                        }
-                                        break;
-                                    case "SPEAKING":
-                                        if (studentAnswers[sa].responseText.length > 0)
-                                        {
-                                            $("#responseContainer_" + activityComponent.prompts[p].responses[r].id).show();
-                                        }
-                                        break;
-                                    case "WRITING":
-                                        if (studentAnswers[sa].responseText.length > 0)
-                                        {
-                                            $("#responseContainer_" + activityComponent.prompts[p].responses[r].id).show();
                                         }
                                         break;
                                     default:
@@ -303,13 +337,44 @@ function checkActivityComponentAnswers(activityComponent)
                                         }
                                         break;
                                 }
-                                studentAnswers[sa].latestGrade = studentAnswers[sa].originalGrade;
                             }
+                            switch (activityComponent.componentTitle.toUpperCase())
+                            {
+                                case "RESOURCETRANSCRIPT":
+                                    var resource = prompt.resources.length == 1 ? getResource(prompt.resources[0].id) : false;
+                                    var response = prompt.responses.length == 1 ? prompt.responses[0] : false;
+                                    if (resource && response && typeof (resource.transcriptText) != "undefined" && typeof (resource.transcriptText.paragraphs) != "undefined" && resource.transcriptText.paragraphs.length > 0)
+                                    {
+                                        var paragraphs = resource.transcriptText.paragraphs;
+                                        for (var rp = 0; rp < paragraphs.length; rp++)
+                                        {
+                                            if (studentAnswers[sa].sortKey == rp)
+                                            {
+                                                var paragraph = paragraphs[rp];
+                                                var responseBlank = $("#response_"+prompt.id+"_"+studentAnswers[sa].sortKey);
+                                                var responseTranscript = responseBlank.data("transcript");
+                                                var responseTranslation = responseBlank.data("translation");
+                                                var correctText = responseTranscript ? paragraph.transcriptText : paragraph.translationText;
+                                                if (cleanString(studentAnswers[sa].responseText).toUpperCase() == cleanString(correctText).toUpperCase())
+                                                {
+                                                    studentAnswers[sa].originalGrade = response.value;
+                                                    studentAnswers[sa].bonusValue = response.bonusValue;
+                                                    studentAnswers[sa].correct = response.correct;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            studentAnswers[sa].latestGrade = studentAnswers[sa].originalGrade;
                             var studentAnswerCheckedEvent = $.Event("studentAnswerChecked");
                             studentAnswerCheckedEvent.studentAnswerId = studentAnswers[sa].id;
                             studentAnswerCheckedEvent.originalGrade = studentAnswers[sa].originalGrade;
                             studentAnswerCheckedEvent.bonusValue = studentAnswers[sa].bonusValue;
                             studentAnswerCheckedEvent.latestGrade = studentAnswers[sa].latestGrade;
+                            studentAnswerCheckedEvent.correct = studentAnswers[sa].correct;
                             $(document).trigger(studentAnswerCheckedEvent);
                             $("#promptFeedbackToolBox_" + activityComponent.prompts[p].id).show();
                         }
@@ -324,116 +389,140 @@ function checkActivityComponentAnswers(activityComponent)
 
 function loadRefreshModuleButton(containerElement)
 {
-    var buttonMarkup = "<span id=\"refreshModuleBtn\" class=\"activityButton refreshComponentBtn blue\" style=\"display:none; white-space:nowrap; padding: .5em;\"><i class=\"fa fa-refresh\"></i><span> Reset All Answers</span></span>";
+    var disabled = ((typeof (assignment) != "undefined") && (assignment.shared) && !studentAssignment.authorizationToken.canDo);
+
+    var buttonMarkup = '<span id="refreshModuleBtn" class="activityButton refreshComponentBtn blue' + (disabled ? ' refreshComponentBtnDisabled' : '')+'" style="display:none; white-space:nowrap; padding: .5em;"><i class="fa fa-refresh"></i><span> Reset All Answers</span></span>';
     containerElement.append(buttonMarkup);
     $("#refreshModuleBtn").on("click", function ()
     {
-        customConfirm("Are you sure you wish to reset all answers?", function ()
+        if (!$(this).hasClass("refreshComponentBtnDisabled"))
         {
-            studentAnswers = new Array();
-            for (var a = 0; a < module.activities.length; a++)
+            customConfirm("Are you sure you wish to reset all answers?", function ()
             {
-                for (var ac = 0; ac < module.activities[a].activityComponents.length; ac++)
+                refreshModuleStudentAnswers();
+
+                var studentAnswersRemovedEvent = $.Event("studentAnswersRemoved");
+                studentAnswersRemovedEvent.moduleId = module.id;
+                studentAnswersRemovedEvent.activityComponentId = 0;
+                $(document).trigger(studentAnswersRemovedEvent);
+            });
+        }
+    });
+}
+
+function refreshModuleStudentAnswers()
+{
+    studentAnswers = new Array();
+    for (var a = 0; a < module.activities.length; a++)
+    {
+        for (var ac = 0; ac < module.activities[a].activityComponents.length; ac++)
+        {
+            var activityComponent = module.activities[a].activityComponents[ac];
+            refreshActivityComponent(activityComponent);
+            if (activityComponent.componentTitle == "ShortAnswer")
+            {
+                for (var p = 0; p < activityComponent.prompts.length; p++)
                 {
-                    var activityComponent = module.activities[a].activityComponents[ac];
-                    refreshActivityComponent(activityComponent);
-                    if (activityComponent.componentTitle == "ShortAnswer")
+                    if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
                     {
-                        for (var p = 0; p < activityComponent.prompts.length; p++)
-                        {
-                            if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
-                            {
-                                buildShortAnswerResponseHTML(activityComponent.prompts[p]);
-                            }
-                        }
-                    }
-                    else if (activityComponent.componentTitle == "Speaking")
-                    {
-                        for (var p = 0; p < activityComponent.prompts.length; p++)
-                        {
-                            if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
-                            {
-                                buildSpeakingResponseHTML(activityComponent.prompts[p]);
-                            }
-                        }
-                    }
-                    else if (activityComponent.componentTitle == "Writing")
-                    {
-                        for (var p = 0; p < activityComponent.prompts.length; p++)
-                        {
-                            if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
-                            {
-                                buildWritingResponseHTML(activityComponent.prompts[p]);
-                            }
-                        }
+                        buildShortAnswerResponseHTML(activityComponent.prompts[p]);
                     }
                 }
             }
-            $("#moduleSummaryData_" + module.id).html("");
-            loadCheckAnswersSummary();
+            else if (activityComponent.componentTitle == "Speaking")
+            {
+                for (var p = 0; p < activityComponent.prompts.length; p++)
+                {
+                    if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
+                    {
+                        buildSpeakingResponseHTML(activityComponent.prompts[p]);
+                    }
+                }
+            }
+            else if (activityComponent.componentTitle == "Writing")
+            {
+                for (var p = 0; p < activityComponent.prompts.length; p++)
+                {
+                    if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
+                    {
+                        buildWritingResponseHTML(activityComponent.prompts[p]);
+                    }
+                }
+            }
+        }
+    }
+    $("#moduleSummaryData_" + module.id).html("");
+    loadCheckAnswersSummary();
 
-            var studentAnswersRemovedEvent = $.Event("studentAnswersRemoved");
-            studentAnswersRemovedEvent.moduleId = module.id;
-            studentAnswersRemovedEvent.activityComponentId = 0;
-            $(document).trigger(studentAnswersRemovedEvent);
-
-            //SCORM TEST RESET SCORE EVENT
-            var moduleScoreResetEvent = $.Event("moduleScoreReset");
-            $(document).trigger(moduleScoreResetEvent);
-        });
-    });
+    //SCORM TEST RESET SCORE EVENT
+    var moduleScoreResetEvent = $.Event("moduleScoreReset");
+    $(document).trigger(moduleScoreResetEvent);
 }
 
 function loadRefreshComponentButton(containerElement, activityComponent)
 {
-    var buttonMarkup = "<div class=\"displayTableCell\" style=\"width:100%;\"><span id=\"refreshComponentBtn_" + activityComponent.id + "\" class=\"activityButton refreshComponentBtn blue\"><i class=\"fa fa-refresh\"></i></span></div>";
+    var disabled = ((typeof (assignment) != "undefined") && (assignment.shared) && !studentAssignment.authorizationToken.canDo);
+    var buttonMarkup = '<div class="displayTableCell" style="width:100%;"><span id="refreshComponentBtn_' + activityComponent.id + '" class="activityButton refreshComponentBtn blue' + (disabled ? ' refreshComponentBtnDisabled' : '')+'"><i class="fa fa-refresh"></i></span></div>';
     containerElement.append(buttonMarkup);
     $("#refreshComponentBtn_" + activityComponent.id).on("click", function ()
     {
-        var sa = studentAnswers.length
-        while (sa--)
+        if (!$(this).hasClass("refreshComponentBtnDisabled"))
         {
-            if (studentAnswers[sa].activityComponentId == activityComponent.id)
-            {
-                studentAnswers.splice(sa, 1);
-            }
+            refreshActivityComponentAnswers(activityComponent);
+            var studentAnswersRemovedEvent = $.Event("studentAnswersRemoved");
+            studentAnswersRemovedEvent.moduleId = 0;
+            studentAnswersRemovedEvent.activityComponentId = activityComponent.id;
+            $(document).trigger(studentAnswersRemovedEvent);
         }
-        refreshActivityComponent(activityComponent);
-        if (activityComponent.componentTitle == "ShortAnswer")
-        {
-            for (var p = 0; p < activityComponent.prompts.length; p++)
-            {
-                if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
-                {
-                    buildShortAnswerResponseHTML(activityComponent.prompts[p]);
-                }
-            }
-        }
-        if (activityComponent.componentTitle == "Speaking")
-        {
-            for (var p = 0; p < activityComponent.prompts.length; p++)
-            {
-                if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
-                {
-                    buildSpeakingResponseHTML(activityComponent.prompts[p]);
-                }
-            }
-        }
-        if (activityComponent.componentTitle == "Writing")
-        {
-            for (var p = 0; p < activityComponent.prompts.length; p++)
-            {
-                if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
-                {
-                    buildWritingResponseHTML(activityComponent.prompts[p]);
-                }
-            }
-        }
-        var studentAnswersRemovedEvent = $.Event("studentAnswersRemoved");
-        studentAnswersRemovedEvent.moduleId = 0;
-        studentAnswersRemovedEvent.activityComponentId = activityComponent.id;
-        $(document).trigger(studentAnswersRemovedEvent);
     });
+}
+
+function refreshActivityComponentAnswers(activityComponent)
+{
+    var sa = studentAnswers.length
+    while (sa--)
+    {
+        if (studentAnswers[sa].activityComponentId == activityComponent.id)
+        {
+            studentAnswers.splice(sa, 1);
+        }
+    }
+    refreshActivityComponent(activityComponent);
+    if (activityComponent.componentTitle == "ShortAnswer")
+    {
+        for (var p = 0; p < activityComponent.prompts.length; p++)
+        {
+            if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
+            {
+                buildShortAnswerResponseHTML(activityComponent.prompts[p]);
+            }
+        }
+    }
+    if (activityComponent.componentTitle == "Speaking")
+    {
+        for (var p = 0; p < activityComponent.prompts.length; p++)
+        {
+            if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
+            {
+                buildSpeakingResponseHTML(activityComponent.prompts[p]);
+            }
+        }
+    }
+    if (activityComponent.componentTitle == "Writing")
+    {
+        for (var p = 0; p < activityComponent.prompts.length; p++)
+        {
+            if ((activityComponent.prompts[p].responses.length > 0) && (activityComponent.prompts[p].responses[0].text != ""))
+            {
+                buildWritingResponseHTML(activityComponent.prompts[p]);
+            }
+            var studentAnswersRemovedEvent = $.Event("studentAnswersRemoved");
+            studentAnswersRemovedEvent.moduleId = 0;
+            studentAnswersRemovedEvent.activityComponentId = activityComponent.id;
+            $(document).trigger(studentAnswersRemovedEvent);
+        }
+    }
+    loadCheckAnswersSummary();
 }
 
 function buildShortAnswerResponseHTML(prompt)
@@ -634,6 +723,7 @@ function buildWritingResponseHTML(prompt)
 
 function loadCheckAnswersSummary()
 {
+    setModuleCompletionData();
     var moduleTotal = 0;
     var moduleBonusTotal = 0;
     var displayModuleScore = false;
@@ -651,6 +741,15 @@ function loadCheckAnswersSummary()
             var displayActivityComponentScore = false;
             var activityComponentTotal = 0;
             var activityComponentBonusTotal = 0;
+
+            if (isComponentJudged(activityComponent))
+            {
+                displayActivityComponentCount++;
+            }
+            else
+            {
+                displayActivityComponent = false;
+            }
             for (var k = 0; k < activityComponent.prompts.length; k++)
             {
                 var prompt = activityComponent.prompts[k];
@@ -685,20 +784,34 @@ function loadCheckAnswersSummary()
             if (displayActivityComponentScore)
             {
                 if (activityComponent.maxBonusValue > 0)
-                    $("#activityComponentSummaryData_" + activityComponent.id).html("<span id=\"activityComponentBonusScoreTotalSpan_" + activityComponent.id + "\" class=\"score" + ((activityComponentBonusTotal > 0) ? "Correct" : "Incorrect") + "\" style=\"cursor:pointer;\" onclick=\"goToActivity(" + activity.index + ", " + activityComponent.id + ");\">"+((activityComponentBonusTotal > 0) ? "<i class=\"fa fa-plus\"></i>" : "")+"<span id=\"activityComponentBonusScoreSpan_" + activityComponent.id + "\" style=\"margin-left:0.5em;\">" + activityComponentBonusTotal + "</span></span>");
+                    $("#activityComponentSummaryData_" + activityComponent.id).html('<span id="activityComponentBonusScoreTotalSpan_' + activityComponent.id + '" class="score' + ((activityComponentBonusTotal > 0) ? 'Correct' : 'Incorrect') + '" style="cursor:pointer;">'+((activityComponentBonusTotal > 0) ? '<i class="fa fa-plus"></i>' : '')+'<span id="activityComponentBonusScoreSpan_' + activityComponent.id + '" style="margin-left:0.5em;">' + activityComponentBonusTotal + '</span></span>');
                 else
-                    $("#activityComponentSummaryData_" + activityComponent.id).html("<span id=\"activityComponentScoreTotalSpan_" + activityComponent.id + "\" class=\"score" + ((activityComponentTotal >= activityComponent.maxValue) ? "Correct" : ((activityComponentTotal > 0) ? "PartiallyCorrect" : "Incorrect")) + "\" style=\"cursor:pointer;\" onclick=\"goToActivity(" + activity.index + ", " + activityComponent.id + ");\"><span id=\"activityComponentScoreSpan_" + activityComponent.id + "\">" + activityComponentTotal + "</span><span>/</span><span id=\"activityComponentMaxScoreSpan_" + activityComponent.id + "\">" + activityComponent.maxValue + "</span></span>");
+                    $("#activityComponentSummaryData_" + activityComponent.id).html('<span id="activityComponentScoreTotalSpan_' + activityComponent.id + '" class="score' + ((activityComponentTotal >= activityComponent.maxValue) ? 'Correct' : ((activityComponentTotal > 0) ? 'PartiallyCorrect' : 'Incorrect')) + '" style="cursor:pointer;"><span id="activityComponentScoreSpan_' + activityComponent.id + '">' + activityComponentTotal + '</span><span>/</span><span id="activityComponentMaxScoreSpan_' + activityComponent.id + '">' + activityComponent.maxValue + '</span></span>');
+                $("#activityComponentSummaryData_" + activityComponent.id).on("click", {"activityIndex":activity.index, "activityComponentId":activityComponent.id}, function(e){
+                    if(!$(this).hasClass("disabled")){
+                        var aIndex = e.data.activityIndex;
+                        var aComponentId = e.data.activityComponentId
+                        goToActivity(aIndex, aComponentId);
+                    }
+                })
             }
             else if (displayActivityComponent)
             {
                 if (activityComponent.complete)
                 {
-                    $("#activityComponentSummaryData_" + activityComponent.id).html("<i class=\"fa fa-check\" style=\"color:#4ecf3b; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "','" + activityComponent.id + "');\"></i>");
+                    $("#activityComponentSummaryData_" + activityComponent.id).html('<i class="fa fa-check" style="color:#4ecf3b;"></i>');
                 }
                 else
                 {
-                    $("#activityComponentSummaryData_" + activityComponent.id).html("<i class=\"fa fa-exclamation-triangle\" style=\"color:#e5882e; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "','" + activityComponent.id + "');\"></i>");
+                    $("#activityComponentSummaryData_" + activityComponent.id).html('<i class="fa fa-exclamation-triangle" style="color:#e5882e;"></i>');
                 }
+                $("#activityComponentSummaryData_" + activityComponent.id).on("click", {"activityIndex":activity.index, "activityComponentId":activityComponent.id}, function(e){
+                    if(!$(this).hasClass("disabled")){
+                        var aIndex = e.data.activityIndex;
+                        var aComponentId = e.data.activityComponentId
+                        goToActivity(aIndex, aComponentId);
+                    }
+                })
             }
         }
         if (displayActivityScore)
@@ -706,32 +819,46 @@ function loadCheckAnswersSummary()
             var activitySummaryData = $("#activitySummaryData_" + activity.id);
             activitySummaryData.html("");
             if (activity.maxValue > 0)
-                activitySummaryData.append("<span id=\"activityScoreTotalSpan_" + activity.id + "\" class=\"score" + ((activityTotal >= activity.maxValue) ? "Correct" : ((activityTotal > 0) ? "PartiallyCorrect" : "Incorrect")) + "\" style=\"cursor:pointer;\" onclick=\"goToActivity(" + activity.index + ",'" + activityComponent.id + "');\"><span id=\"activityScoreSpan_" + activity.id + "\">" + activityTotal + "</span><span>/</span><span id=\"activityMaxScoreSpan_" + activity.id + "\">" + activity.maxValue + "</span></span>");
+                activitySummaryData.append('<span id="activityScoreTotalSpan_' + activity.id + '" class="score' + ((activityTotal >= activity.maxValue) ? 'Correct' : ((activityTotal > 0) ? 'PartiallyCorrect' : 'Incorrect')) + '" style="cursor:pointer;" ><span id="activityScoreSpan_' + activity.id + '">' + activityTotal + '</span><span>/</span><span id="activityMaxScoreSpan_' + activity.id + '">' + activity.maxValue + '</span></span>');
             if(activity.maxBonusValue > 0)
-                activitySummaryData.append("<span id=\"activityBonusScoreTotalSpan_" + activity.id + "\" class=\"score" + ((activityBonusTotal > 0) ? "Correct" : "Incorrect") + "\" style=\"cursor:pointer;\" onclick=\"goToActivity(" + activity.index + ",'" + activityComponent.id + "');\">"+((activityBonusTotal > 0) ? "<i class=\"fa fa-plus\"></i>" : "")+"<span id=\"activityBonusScoreSpan_" + activity.id + "\" style=\"margin-left:0.5em;\">" + activityBonusTotal + "</span></span>");
+                activitySummaryData.append('<span id="activityBonusScoreTotalSpan_' + activity.id + '" class="score' + ((activityBonusTotal > 0) ? 'Correct' : 'Incorrect') + '" style="cursor:pointer;" >'+((activityBonusTotal > 0) ? '<i class="fa fa-plus"></i>' : '')+'<span id="activityBonusScoreSpan_' + activity.id + '" style="margin-left:0.5em;">' + activityBonusTotal + '</span></span>');
+            $("#activityBonusScoreTotalSpan_" + activity.id).on("click", {"activityIndex":activity.index, "activityComponentId":activityComponent.id}, function(e){
+                if(!$(this).hasClass("disabled")){
+                    var aIndex = e.data.activityIndex
+                    var aComponentId = e.data.activityComponentId
+                    goToActivity(aIndex, aComponentId);
+                }
+            })
         }
         else if (displayActivityComponentCount > 0)
         {
-            if (activity.complete)
-                $("#activitySummaryData_" + activity.id).html("<i class=\"fa fa-check\" style=\"color:#4ecf3b; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "');\"></i>");
-            else
-                $("#activitySummaryData_" + activity.id).html("<i class=\"fa fa-exclamation-triangle\" style=\"color:#e5882e; cursor:pointer;\" onclick=\"goToActivity('" + activity.index + "');\"></i>");
+            if (activity.complete){
+                $("#activitySummaryData_" + activity.id).html('<i class="fa fa-check" style="color:#4ecf3b;"></i>');
+            } else {
+                $("#activitySummaryData_" + activity.id).html('<i class="fa fa-exclamation-triangle" style="color:#e5882e;"></i>');
+            }
+            $("#activitySummaryData_" + activity.id).on("click", {"activityIndex":activity.index}, function(e){
+                if(!$(this).hasClass("disabled")){
+                    var aIndex = e.data.activityIndex
+                    goToActivity(aIndex);
+                }
+            })
         }
     }
     $("#summaryPanelName").hide();
-    $("#summaryFooter").html("<div id=\"checkAnswersFooterDiv\" style=\"text-align:center; margin-top:.5em;\"></div>");
+    $("#summaryFooter").html('<div id="checkAnswersFooterDiv" style="text-align:center; margin-top:.5em;"></div>');
     var checkAnswersFooterDiv = $("#checkAnswersFooterDiv");
     loadRefreshModuleButton(checkAnswersFooterDiv);
     loadModuleCheckAnswersButton(checkAnswersFooterDiv);
+    var moduleSummaryData = $("#moduleSummaryData_" + module.id);
+    moduleSummaryData.html("");
     if (displayModuleScore)
     {
-        var moduleSummaryData = $("#moduleSummaryData_" + module.id);
-        moduleSummaryData.html("");
         if(module.maxValue > 0)
-            moduleSummaryData.append("<span id=\"moduleScoreTotalSpan_" + module.id + "\" class=\"moduleScoreTotalSpan score" + ((moduleTotal >= module.maxValue) ? "Correct" : ((moduleTotal > 0) ? "PartiallyCorrect" : "Incorrect")) + "\"><span id=\"moduleScoreSpan_" + module.id + "\">" + moduleTotal + "</span><span>/</span><span id=\"moduleMaxScoreSpan_" + module.id + "\">" + module.maxValue + "</span></span>");
+            moduleSummaryData.append('<span id="moduleScoreTotalSpan_' + module.id + '" class="moduleScoreTotalSpan score' + ((moduleTotal >= module.maxValue) ? 'Correct' : ((moduleTotal > 0) ? 'PartiallyCorrect' : 'Incorrect')) + '"><span id="moduleScoreSpan_' + module.id + '">' + moduleTotal + '</span><span>/</span><span id="moduleMaxScoreSpan_' + module.id + '">' + module.maxValue + '</span></span>');
         if ((module.maxBonusValue > 0)&&(moduleBonusTotal > 0))
-            moduleSummaryData.append("<span id=\"moduleBonusScoreTotalSpan_" + module.id + "\" class=\"moduleScoreTotalSpan scoreCorrect\"><i class=\"fa fa-plus\"></i><span id=\"moduleBonusScoreSpan_" + module.id + "\" style=\"margin-left:0.5em;\">" + moduleBonusTotal + "</span></span>");
-        moduleSummaryData.append("<span style=\"padding-left:.5em\">" + (((moduleTotal + moduleBonusTotal) / (module.maxValue > 0 ? module.maxValue : 1)) * 100).toFixed(2) + "%</span>");
+            moduleSummaryData.append('<span id="moduleBonusScoreTotalSpan_' + module.id + '" class="moduleScoreTotalSpan scoreCorrect"><i class="fa fa-plus"></i><span id="moduleBonusScoreSpan_' + module.id + '" style="margin-left:0.5em;">' + moduleBonusTotal + '</span></span>');
+        moduleSummaryData.append('<span style="padding-left:.5em">' + (((moduleTotal + moduleBonusTotal) / (module.maxValue > 0 ? module.maxValue : 1)) * 100).toFixed(2) + '%</span>');
         $("#refreshModuleBtn").css("display", "inline");
     }
     else

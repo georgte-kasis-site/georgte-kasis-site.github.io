@@ -727,7 +727,7 @@ function terminalFeedback(studentText, keyText, moduleLanguage)
 
     this.formatText = function (txt)
     {
-        return txt.toLowerCase().replace(/<\/?[^>]+>/g, '').replace(/&nbsp;/gi, ' ').replace(/[\,\.\;\:\(\)\?\!]/g, '');
+        return txt.toLowerCase().replace(/\n/gi, ' ').replace(/<\/?[^>]+>/g, '').replace(/\s+/gi, ' ').replace(/&nbsp;/gi, ' ').replace(/[\,\.\;\:\(\)\?\!]/g, '');
     }
 
     this.init();
